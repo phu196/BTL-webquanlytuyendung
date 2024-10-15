@@ -4,12 +4,11 @@ services:
         build: .
         ports:
             - "3000:3000"
-        env_file:
-            - .env
         depends_on:
             - mongodb
         environment:
             - NODE_OPTIONS=--experimental-modules
+            - MONGO_URI=mongodb://mongodb:27017/btl_cnpm
         volumes:
             - .:/app
     mongodb:
