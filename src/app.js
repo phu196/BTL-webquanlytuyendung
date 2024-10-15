@@ -7,6 +7,10 @@ const path = require("path");
 
 const app = express();
 
+// Load routes
+const router = require("./routes");
+const { title } = require("process");
+
 // Middleware
 app.use(morgan("dev"));
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -27,7 +31,9 @@ mongoose
     .catch((err) => console.log(err));
 
 // Routes
-app.use("/", require("./routes/index"));
+app.get("/", (req, res) => {
+    res.render("index", { title: "LinkedIn Clone" });
+});
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {

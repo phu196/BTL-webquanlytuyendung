@@ -1,33 +1,37 @@
 {
-  "name": "btl-nmcnpm-154020",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node src/app.js",
-    "dev": "nodemon --inspect src/app.js"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/huynambka/BTL-NMCNPM-154020.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/huynambka/BTL-NMCNPM-154020/issues"
-  },
-  "homepage": "https://github.com/huynambka/BTL-NMCNPM-154020#readme",
-  "dependencies": {
-    "dotenv": "^16.4.5",
-    "ejs": "^3.1.10",
-    "express": "^4.21.0",
-    "mongoose": "^8.7.0"
-  },
-  "devDependencies": {
-    "body-parser": "^1.20.3",
-    "morgan": "^1.10.0",
-    "nodemon": "^3.1.7"
-  }
+    "name": "btl-nmcnpm-154020",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "start": "node src/app.js",
+        "dev": "nodemon --inspect src/app.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/huynambka/BTL-NMCNPM-154020.git"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/huynambka/BTL-NMCNPM-154020/issues"
+    },
+    "homepage": "https://github.com/huynambka/BTL-NMCNPM-154020#readme",
+    "dependencies": {
+        "dotenv": "^16.4.5",
+        "ejs": "^3.1.10",
+        "express": "^4.21.0",
+        "mongoose": "^8.7.0",
+        "jsonwebtoken": "9.0.2",
+        "bcrypt": "5.1.1",
+        "passport": "0.7.0",
+        "passport-jwt": "4.0.0"
+    },
+    "devDependencies": {
+        "body-parser": "^1.20.3",
+        "morgan": "^1.10.0",
+        "nodemon": "^3.1.7"
+    }
 }
