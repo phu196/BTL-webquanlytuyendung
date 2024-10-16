@@ -27,7 +27,8 @@
         "jsonwebtoken": "9.0.2",
         "bcrypt": "5.1.1",
         "passport": "0.7.0",
-        "passport-jwt": "4.0.0"
+        "passport-jwt": "4.0.0",
+        "http-status-codes": "2.1.4"
     },
     "devDependencies": {
         "body-parser": "^1.20.3",
