@@ -3,6 +3,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const morgan = require("morgan");
 const bodyParser = require("body-parser");
+const cookieParser = require("cookie-parser");
 const path = require("path");
 
 const app = express();
@@ -13,9 +14,13 @@ const { title } = require("process");
 
 // Middleware
 app.use(morgan("dev"));
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(cookieParser());
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, "public")));
+
+const passport = require("./middlewares/passport");
+app.use(passport.initialize());
 
 // Template engine
 app.set("view engine", "ejs");
@@ -31,6 +36,8 @@ mongoose
     .catch((err) => console.log(err));
 
 // Routes
+app.use("/auth", router.authRoutes);
+app.use("/user", router.userRoutes);
 app.get("/", (req, res) => {
     res.render("index", { title: "LinkedIn Clone" });
 });
