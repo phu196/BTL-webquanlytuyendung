@@ -1,8 +1,3 @@
-const express = require("express");
-const router = express.Router();
-
-router.get("/", (req, res) => {
-    res.render("index", { title: "TopCV Clone" });
-});
-
-module.exports = router;
+const authRoutes = require("./auth");
+const userRoutes = require("./user");
+module.exports = { authRoutes, userRoutes };

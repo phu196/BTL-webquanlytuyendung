@@ -1,16 +1,20 @@
 FROM node:16
 
 # Thiết lập thư mục làm việc
-WORKDIR /app
+RUN mkdir /home/app
 
-# Sao chép package.json và package-lock.json
-COPY package*.json ./
-
-# Cài đặt các phụ thuộc
-RUN npm install
+WORKDIR /home/app
 
 # Sao chép toàn bộ mã nguồn
-COPY . .
+COPY ./src ./src
+
+# Sao chép package.json
+COPY package.json .
+
+COPY .env .
+
+# Cài đặt các dependencies
+RUN npm install
 
 # Thiết lập biến môi trường
 ENV PORT=3000
@@ -19,4 +23,4 @@ ENV PORT=3000
 EXPOSE 3000
 
 # Chạy ứng dụng
-CMD [ "npm", "start" ]
+CMD [ "npm", "run", "dev" ]
