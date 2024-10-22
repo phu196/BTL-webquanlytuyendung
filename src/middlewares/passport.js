@@ -8,7 +8,6 @@ const extractCookie = (req) => {
     if (req && req.cookies) {
         token = req.cookies["token"];
     }
-    console.log(req.cookies);
     return token;
 };
 

@@ -11,7 +11,7 @@ COPY ./src ./src
 # Sao chép package.json
 COPY package.json .
 
-COPY .env .
+COPY .env.example .
 
 # Cài đặt các dependencies
 RUN npm install
