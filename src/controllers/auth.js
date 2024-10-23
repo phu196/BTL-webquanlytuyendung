@@ -4,7 +4,8 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
 const register = async (req, res) => {
-    const { username, fullname, email, password } = req.body;
+    const { username, fullname, email, password, telephone, userType } =
+        req.body;
     const user = await User.findOne({ username });
     if (user) {
         return res
@@ -17,6 +18,8 @@ const register = async (req, res) => {
         username,
         fullname,
         email,
+        telephone,
+        userType,
         password: hashedPassword,
     });
     await newUser.save();
@@ -44,12 +47,7 @@ const login = async (req, res) => {
     const token = jwt.sign(payload, process.env.JWT_SECRET, {
         expiresIn: "1h",
     });
-    res.cookie("token", token, {
-        httpOnly: true,
-        maxAge: 3600000,
-        secure: true,
-    });
-    res.redirect("/user/me");
+    res.status(StatusCodes.OK).json({ success: true, token });
 };
 
 module.exports = { register, login };
