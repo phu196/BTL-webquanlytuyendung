@@ -80,12 +80,17 @@ const JobSchema = new mongoose.Schema({
         type : String,
         require : [true, "Type of work is not provided"]
     },
-    skill:{
-        type : Array,
+    skill:[{
+        type : String,
         require : [true, "Skill is not provided"]
-    }
+    }],
+    applicant:[{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+    }],
+
 
 
 });
-const Job = mongoose.model('Job', JobSchema);
+const Job = mongoose.model('Job', JobSchema,"jobs");
 module.exports = Job;

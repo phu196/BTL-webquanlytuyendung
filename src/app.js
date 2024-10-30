@@ -7,17 +7,24 @@ const cookieParser = require("cookie-parser");
 const path = require("path");
 
 const app = express();
-
-// Load routes
-const router = require("./routes");
-const { title } = require("process");
-
 // Middleware
 app.use(morgan("dev"));
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, "public")));
+
+// TinyMCE
+app.use('/tinymce', express.static(path.join(__dirname, 'node_modules', 'tinymce')));
+// Load routes
+const router = require("./routes");
+const { title } = require("process");
+const routerApplicant = require("./routes/applicant/applicant_routes");
+routerApplicant(app);
+const routerCompany = require("./routes/company/index_routes");
+routerCompany(app);
+
+
 
 const passport = require("./middlewares/passport");
 app.use(passport.initialize());
