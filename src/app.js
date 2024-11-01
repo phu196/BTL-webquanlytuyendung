@@ -38,6 +38,7 @@ mongoose
 // Routes
 app.use("/auth", router.authRoutes);
 app.use("/user", router.userRoutes);
+app.use("/company", router.companyRoutes);
 app.get("/", (req, res) => {
     const companies = [
         {

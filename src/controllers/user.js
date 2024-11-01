@@ -4,7 +4,7 @@ const bcrypt = require("bcrypt");
 const { StatusCodes } = require("http-status-codes");
 
 const getUserInfo = async (req, res) => {
-    res.json({ message: "User found" });
+    res.json({ success: true, message: "User found" });
 };
 
 module.exports = { getUserInfo };
