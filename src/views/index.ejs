@@ -5,14 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><%= title %></title>
     <link rel="stylesheet" href="/css/style.css">
+    <style>
+    </style>
 </head>
 <body>
-    <h1>Welcome to <%= title %>!</h1>
-    <script>
-        const token = localStorage.getItem('token');
-        if (!token) {
-            window.location.href = '/auth/login';
-        }
-    </script>
+    <%- include('partials/header') %>
+    <%- include('partials/search') %>
+    <%- include('partials/body-jobs') %>
+    <%- include('partials/footer') %>
 </body>
 </html>
