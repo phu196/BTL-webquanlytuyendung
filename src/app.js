@@ -8,16 +8,19 @@ const path = require("path");
 
 const app = express();
 
-// Load routes
-const router = require("./routes");
-const { title } = require("process");
-
 // Middleware
 app.use(morgan("dev"));
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, "public")));
+
+// Load routes
+const router = require("./routes");
+const { title } = require("process");
+const routerCompany = require("./routes/company/index_routes");
+routerCompany(app);
+
 
 const passport = require("./middlewares/passport");
 app.use(passport.initialize());
@@ -44,5 +47,5 @@ app.get("/", (req, res) => {
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-    console.log();
+    console.log();  
 });
