@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <%- include('../partials/admin-head', {title: "Registrations - Admin Panel"}) %>
+        <title>Registration - Admin Panel</title>
+    </head>
+    <body>
+        <%- include('../partials/admin-sidebar') %>
+
+        <div class="main-content">
+            <h2>Registration</h2>
+            <p>List of company registrations:</p>
+            <table class="table table-striped">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>#</th>
+                        <th>Company Name</th>
+                        <th>Contact Person</th>
+                        <th>Position</th>
+                        <th>Email</th>
+                        <th>Phone Number</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>TopDev</td>
+                        <td>Nguyễn Văn A</td>
+                        <td>HR Specialist</td>
+                        <td>hr@topdev.vn</td>
+                        <td>0912345678</td>
+                        <td><button class="btn btn-danger btn-sm">Delete</button></td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>TechCorp</td>
+                        <td>Trần Văn B</td>
+                        <td>Hiring Manager</td>
+                        <td>tranb@techcorp.com</td>
+                        <td>0987654321</td>
+                        <td><button class="btn btn-danger btn-sm">Delete</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </body>
+</html>

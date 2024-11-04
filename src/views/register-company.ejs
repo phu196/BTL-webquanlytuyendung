@@ -15,7 +15,7 @@
         <br />
 
         <form class="bg-light p-4 rounded" style="max-width: 600px; margin: auto">
-            <h4 class="mb-3">Yêu cầu tư vấn</h4>
+            <h4 class="mb-3">Đăng ký tài khoản nhà tuyển dụng</h4>
             <p>Điền thông tin sau để nhận tư vấn trực tiếp từ TopDev</p>
             <div class="mb-3">
                 <label for="companyName" class="form-label">Tên công ty</label>
@@ -47,18 +47,6 @@
                     <input type="tel" class="form-control" id="phoneNumber" placeholder="Ví dụ: 0912345678" required />
                 </div>
             </div>
-            <div class="mb-3">
-                <label for="jobRequirement" class="form-label">
-                    Vui lòng mô tả yêu cầu tuyển dụng IT của bạn hoặc để lại ghi chú cụ thể cho chúng tôi
-                </label>
-                <textarea
-                    id="jobRequirement"
-                    class="form-control"
-                    rows="3"
-                    placeholder="Miêu tả yêu cầu tuyển dụng tại đây"
-                    required
-                ></textarea>
-            </div>
             <div class="form-check mb-3">
                 <input class="form-check-input" type="checkbox" id="agreePrivacy" required />
                 <label class="form-check-label" for="agreePrivacy">
@@ -70,7 +58,9 @@
             </div>
             <button type="submit" id="consultationForm" class="btn btn-primary">Gửi thông tin</button>
         </form>
-
+        <br />
+        <br />
+        <br />
         <%- include('partials/footer') %>
 
         <!-- Bootstrap JS and dependencies -->
@@ -84,7 +74,6 @@
                 const currentPosition = document.getElementById("currentPosition").value;
                 const email = document.getElementById("email").value;
                 const phoneNumber = document.getElementById("phoneNumber").value;
-                const jobRequirement = document.getElementById("jobRequirement").value;
                 const agreePrivacy = document.getElementById("agreePrivacy").checked;
 
                 const requestData = {
@@ -93,7 +82,6 @@
                     currentPosition,
                     email,
                     phoneNumber,
-                    jobRequirement,
                 };
 
                 fetch("/company/register", {

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <%- include('../partials/admin-head', {title: "Companies Control - Admin Panel"}) %>
+        <title>Companies - Admin Panel</title>
+    </head>
+    <body>
+        <%- include('../partials/admin-sidebar') %>
+
+        <div class="main-content">
+            <h2>Companies</h2>
+            <p>List of registered companies:</p>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Company Name</th>
+                        <th>Email</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>TechCorp</td>
+                        <td>info@techcorp.com</td>
+                        <td><button class="btn btn-danger btn-sm">Delete</button></td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>InnoSolutions</td>
+                        <td>contact@innosolutions.com</td>
+                        <td><button class="btn btn-danger btn-sm">Delete</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </body>
+</html>

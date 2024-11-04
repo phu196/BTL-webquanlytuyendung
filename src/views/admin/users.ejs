@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <%- include('../partials/admin-head', {title: "Users Control - Admin Panel"}) %>
+        <title>Users - Admin Panel</title>
+    </head>
+    <body>
+        <%- include('../partials/admin-sidebar') %>
+
+        <div class="main-content">
+            <h2>Users</h2>
+            <p>List of registered users:</p>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>John Doe</td>
+                        <td>johndoe@example.com</td>
+                        <td><button class="btn btn-danger btn-sm">Delete</button></td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>Jane Smith</td>
+                        <td>janesmith@example.com</td>
+                        <td><button class="btn btn-danger btn-sm">Delete</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </body>
+</html>
