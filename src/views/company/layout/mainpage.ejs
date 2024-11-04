@@ -8,7 +8,7 @@
     <style>
         /* Styling for the Company Banner */
         .company-banner {
-            background-color: #fafaf8;
+            background-color: #f10f0f;
             padding: 20px;
             border-radius: 8px;
             margin-bottom: 20px;
@@ -77,10 +77,10 @@
                             <div>
                                 <h6><%= job.title %></h6>
                                 <p class="mb-1 text-muted">
-                                    <strong>Salary:</strong> <%= job.salary_from %> - <%= job.salary_to %> <%= job.salary_currency %> 
+                                    <strong>Salary:</strong> <%= job.salary %>
                                 </p>
                                 <p class="mb-1 text-muted"><strong>Location:</strong> <%= job.region %></p>
-                                <p class="mb-1 text-muted"><strong>Last Date:</strong> <%= job.last_date.toDateString() %></p>
+                                <p class="mb-1 text-muted"><strong>Last Date:</strong> <%= job.last_date %></p>
                                 <a href="#" class="btn btn-outline-primary btn-sm mt-2">Apply Now</a>
                             </div>
                         </div>

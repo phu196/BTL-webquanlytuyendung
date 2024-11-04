@@ -5,15 +5,9 @@ const JobSchema = new mongoose.Schema({
         type : String,
         require : [true, "Title is not provided"]
     },
-    salary_from:{
-        type : Number
-    },
-    salary_to:{
-        type : Number
-    },
-    salary_currency:{
+    salary:{
         type : String,
-        require : [true, "Currency is not provided"]
+        require : [true, "Salary is not provided"]
     },
     salary_negotiation:{
         type : Boolean,

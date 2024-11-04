@@ -19,43 +19,53 @@ module.exports.index = async(req,res) =>{
     }
 }
 
-// [GET] /company/setup
-module.exports.changeInfo = async(req,res) =>{
-    res.render("company/layout/setup")
+
+
+// [GET] /company/:id/post
+module.exports.companyJobs = async (req,res) =>{
+    res.render('./company/layout/job_post')
 }
 
-// [POST] /company/setup
-module.exports.postChangeInfo = async(req, res) => {
-    const { company_name, phone,city,city_name,address,tax_code,website, email, description } = req.body;
-    console.log(req.body);
-    const [detail, ward, district] = address.split(",");
-   
-    const company = await Company.find({tax_code: tax_code});
-    
-    if(company.length !=0){
-        console.log(company)
-        res.send("Company already exists");
+// [POST] /company/:id/post
+module.exports.postCompanyJobs =async (req,res) =>{
+    console.log(req.body)
+    const id = req.params.id;
+    const {jobTitle,jobDescription,jobRequirement,jobBenefit,jobLocation,jobDeadline,jobQuantity,jobType,jobExperience,jobSkill,jobSalary} = req.body;
+    const company = await Company.findById(id);
+    const salary_negotiation = false;
+    if (jobSalary !="Thoả thuận"){
+        const salary_negotiation = false;
     }
-    else{
-        await Company.create({
-            company_name: company_name,
-            company_phone: phone,
-            location: city_name,
-            company_logo:"",
-            company_address: {
-                detail: detail,
-                ward: ward,
-                district: district,
-                province: city_name,
-                country: "Vietnam"
-            },
-            company_TIN : tax_code,
-            company_website: website,
-            company_email: email,
-            company_description: description,
-            company_job:[]
-        });
-        res.redirect("/");
+    else {
+        const salary_negotiation = true;
     }
-    
+    //console.log(jobtitle,job_description,job_requirement,job_benefit,job_location,job_Deadline,jobQuantity,jobType,jobExperience,jobSkill,jobSalary);
+    const job = new Job({
+        title: jobTitle,
+        job_description: jobDescription,
+        job_requirement: jobRequirement,
+        job_benefit: jobBenefit,
+        company_name: company.company_name,
+        company_id: company._id,
+        region: jobLocation,
+        job_experience: jobExperience,
+        number_of_recruitment: jobQuantity,
+        job_status: true,
+        type_of_work: jobType,
+        skill: jobSkill.split(","),
+        salary: jobSalary,
+        salary_negotiation: salary_negotiation,
+        last_date: jobDeadline,
+        level:""
+    });
+    console.log(job);
+    try {
+        await job.save();
+        company.company_job.push(job);
+        await company.save();
+        res.redirect(`/company?id=${id}`);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Internal Server Error');
+    }
 }

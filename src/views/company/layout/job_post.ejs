@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Đăng bài tuyển dụng</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+  <div class="container my-5">
+    <h2 class="text-center mb-4">Đăng Bài Tuyển Dụng</h2>
+
+    <form action="" method="POST">
+      <!-- Tên công việc -->
+      <div class="mb-3">
+        <label for="jobTitle" class="form-label">Tên công việc</label>
+        <input type="text" class="form-control" id="jobTitle" name="jobTitle" placeholder="VD: Frontend Developer" required>
+      </div>
+
+      <!-- Mô tả công việc -->
+      <div class="mb-3">
+        <label for="jobDescription" class="form-label">Mô tả công việc</label>
+        <textarea class="form-control" id="jobDescription" name="jobDescription" rows="5" placeholder="Mô tả chi tiết công việc" required></textarea>
+      </div>
+
+      <!-- Yêu cầu công việc -->
+      <div class="mb-3">
+        <label for="jobRequirements" class="form-label">Yêu cầu công việc</label>
+        <textarea class="form-control" id="jobRequirements" name="jobRequirements" rows="4" placeholder="Các yêu cầu kỹ năng, kinh nghiệm cần thiết" required></textarea>
+      </div>
+
+      <!-- Quyền lợi -->
+      <div class="mb-3">
+        <label for="jobBenefits" class="form-label">Quyền lợi</label>
+        <textarea class="form-control" id="jobBenefits" name="jobBenefits" rows="4" placeholder="Các quyền lợi khi làm việc tại công ty" required></textarea>
+      </div>
+
+      <!-- Địa điểm làm việc -->
+      <div class="mb-3">
+        <label for="jobLocation" class="form-label">Địa điểm làm việc</label>
+        <input type="text" class="form-control" id="jobLocation" name="jobLocation" placeholder="VD: Hà Nội, Hồ Chí Minh" required>
+      </div>
+
+      <!-- Hạn nộp hồ sơ -->
+      <div class="mb-3">
+        <label for="jobDeadline" class="form-label">Hạn nộp hồ sơ</label>
+        <input type="date" class="form-control" id="jobDeadline" name="jobDeadline" required>
+      </div>
+      <!-- Số lượng tuyển -->
+      <div class="mb-3">
+        <label for="jobQuantity" class="form-label">Số lượng tuyển</label>
+        <input type="number" class="form-control" id="jobQuantity" name="jobQuantity" placeholder="VD: 5" required>
+      </div>
+      <!-- Hình thức làm việc -->
+      <div class="mb-3">
+        <label for="jobType" class="form-label">Hình thức làm việc</label>
+        <select class="form-select" id="jobType" name="jobType" required>
+          <option value="fulltime">Full-time</option>
+          <option value="parttime">Part-time</option>
+          <option value="remote">Remote</option>
+        </select>
+      </div>
+      <!--Số năm kinh nghiệm-->
+      <div class="mb-3">
+        <label for="jobExperience" class="form-label">Số năm kinh nghiệm</label>
+        <input type="number" class="form-control" id="jobExperience" name="jobExperience" placeholder="VD: 1" required>
+      </div>
+      <!--Kĩ năng liên quan-->
+      <div class="mb-3">
+        <label for="jobSkill" class="form-label">Kĩ năng liên quan</label>
+        <input type="text" class="form-control" id="jobSkill" name="jobSkill" placeholder="VD: HTML, CSS, JavaScript" required>
+      </div>
+      <!-- Mức lương -->
+      <div class="mb-3">
+        <label for="jobSalary" class="form-label">Mức lương</label>
+        <input type="text" class="form-control" id="jobSalary" name="jobSalary" placeholder="VD: 10 - 15 triệu VNĐ hoặc Thoả thuận" required>
+      </div>
+
+      <!-- Nút Đăng bài -->
+      <div class="d-grid">
+        <button type="submit" class="btn btn-primary btn-lg">Đăng Bài Tuyển Dụng</button>
+      </div>
+    </form>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
