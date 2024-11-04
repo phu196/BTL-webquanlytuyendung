@@ -5,13 +5,12 @@ const jwt = require("jsonwebtoken");
 const Company = require("../models/Company");
 
 const register = async (req, res) => {
-    const { username, fullname, email, password, telephone, userType } =
-        req.body;
+    const { username, fullname, email, password, telephone } = req.body;
     const user = await User.findOne({ username });
     if (user) {
         return res
-            .status(StatusCodes.BAD_REQUEST)
-            .json({ message: "Username already exists" });
+            .status(StatusCodes.UNAUTHORIZED)
+            .json({ success: false, message: "Username already exists" });
     }
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
@@ -20,7 +19,6 @@ const register = async (req, res) => {
         fullname,
         email,
         telephone,
-        userType,
         password: hashedPassword,
     });
     await newUser.save();
