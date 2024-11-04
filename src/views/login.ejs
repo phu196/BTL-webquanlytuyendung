@@ -24,6 +24,13 @@
                                 <label for="password" class="form-label">Password</label>
                                 <input type="password" class="form-control" id="password" name="password" required>
                             </div>
+                            <div class="mb-3">
+                                <label for="user-type" class="form-label">User Type</label>
+                                <select class="form-select" id="user-type" name="userType" required>
+                                    <option value="user">User</option>
+                                    <option value="company">Company</option>
+                                </select>
+                            </div>
                             <button type="button" class="btn btn-primary w-100" onclick="handleLogin()">Login</button>
                         </form>
                         <div class="text-center mt-3"></div>
@@ -54,9 +61,11 @@
         {
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
+            const userType = document.getElementById('user-type').value;
             const data = {
                 username: username,
                 password: password,
+                loginAs: userType
             };
             fetch('/auth/login', {
                 method: 'POST',
@@ -69,8 +78,6 @@
             }).then(data => {
                 if (data.success) {
                     alert('Login successful');
-                    token = data.token;
-                    localStorage.setItem('token', token);
                     window.location.href = '/';
                 } else {
                     alert('Login failed');
