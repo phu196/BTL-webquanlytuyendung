@@ -7,6 +7,10 @@ const passportJWT = passport.authenticate("jwt", {
     session: false,
 });
 
+router.post("/register", companyController.register);
+router.get("/register", (req, res) => {
+    res.render("register-company");
+});
 router.get("/me", passportJWT, companyController.getCompanyInfo);
 
 module.exports = router;
