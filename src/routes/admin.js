@@ -1,25 +1,30 @@
 const router = require("express").Router();
 const passport = require("passport");
 
+const adminController = require("../controllers/admin");
+
 const passportJWT = passport.authenticate("jwt-admin", {
-    failureRedirect: "/auth/login",
+    failureRedirect: "/404",
     session: false,
 });
 router.get("/statistics", passportJWT, (req, res) => {
     res.render("admin/statistics");
 });
-router.get("/users", passportJWT, (req, res) => {
-    res.render("admin/users");
-});
-router.get("/companies", passportJWT, (req, res) => {
-    res.render("admin/companies");
-});
-router.get("/registrations", passportJWT, (req, res) => {
-    res.render("admin/registrations");
-});
+
+router.get("/users", passportJWT, adminController.getUsers);
+router.post("/users/delete", passportJWT, adminController.deleteUser);
+
+router.get("/companies", passportJWT, adminController.getCompanies);
+router.post("/companies/delete", passportJWT, adminController.deleteCompany);
+
+router.get("/registrations", passportJWT, adminController.getCompanyRegistrations);
+router.post("/registrations/delete", passportJWT, adminController.deleteCompanyRegistration);
+router.post("/registrations/done", passportJWT, adminController.approveCompanyRegistration);
+
 router.get("/feedbacks", passportJWT, (req, res) => {
     res.render("admin/feedbacks");
 });
+
 router.get("/", passportJWT, (req, res) => {
     res.render("admin/index");
 });

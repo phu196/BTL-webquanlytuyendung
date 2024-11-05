@@ -46,5 +46,5 @@ app.use("/admin", router.adminRoutes);
 app.get("/", router.dashboardRoutes);
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-    console.log();
+    console.log("Server is running on port", PORT);
 });

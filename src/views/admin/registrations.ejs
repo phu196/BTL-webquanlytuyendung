@@ -19,30 +19,75 @@
                         <th>Position</th>
                         <th>Email</th>
                         <th>Phone Number</th>
-                        <th>Actions</th>
+                        <th colspan="2" style="text-align: center">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
+                    <% for( let i = 0; i < companyRegistrations.length; i++ ) { %>
                     <tr>
-                        <td>1</td>
-                        <td>TopDev</td>
-                        <td>Nguyễn Văn A</td>
-                        <td>HR Specialist</td>
-                        <td>hr@topdev.vn</td>
-                        <td>0912345678</td>
-                        <td><button class="btn btn-danger btn-sm">Delete</button></td>
+                        <td><%= i + 1 %></td>
+                        <td><%= companyRegistrations[i]["companyName"] %></td>
+                        <td><%= companyRegistrations[i]["fullName"] %></td>
+                        <td><%= companyRegistrations[i]["currentPosition"] %></td>
+                        <td><%= companyRegistrations[i]["email"] %></td>
+                        <td><%= companyRegistrations[i]["phoneNumber"] %></td>
+                        <td style="text-align: center">
+                            <button class="btn btn-success btn-sm" id="<%= companyRegistrations[i]["_id"] %>" onclick="handleDone(this.id)">Done</button>
+                        <td style="text-align: center">
+                            <button class="btn btn-danger btn-sm" id="<%= companyRegistrations[i]["_id"] %>" onclick="handleDelete(this.id)">Delete</button>
+                        </td>
                     </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>TechCorp</td>
-                        <td>Trần Văn B</td>
-                        <td>Hiring Manager</td>
-                        <td>tranb@techcorp.com</td>
-                        <td>0987654321</td>
-                        <td><button class="btn btn-danger btn-sm">Delete</button></td>
-                    </tr>
+                    <% } %>
                 </tbody>
             </table>
         </div>
+        <script>
+            const handleDelete = (id) => {                
+                agree = confirm("Are you sure you want to delete this registration?");
+                if (agree) {
+                    fetch("/admin/registrations/delete", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({ id }),
+                    })
+                        .then((response) => {
+                            return response.json();
+                        })
+                        .then((data) => {
+                            if (data.success) {
+                                alert("Registration deleted successfully");
+                                window.location.reload();
+                            } else {
+                                alert("Failed to delete registration");
+                            }
+                        });
+                }
+            };
+            const handleDone = (id) => {
+                agree = confirm("Are you sure you want to approve this registration?");
+                if (agree) {
+                    fetch("/admin/registrations/done", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({ id }),
+                    })
+                        .then((response) => {
+                            return response.json();
+                        })
+                        .then((data) => {
+                            if (data.success) {
+                                alert("Registration approved successfully");
+                                window.location.reload();
+                            } else {
+                                alert("Failed to approve registration");
+                            }
+                        });
+                }
+            };
+        </script>
     </body>
 </html>

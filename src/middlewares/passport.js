@@ -24,7 +24,6 @@ passport.use(
     new jwtStrategy(options, async (req, jwtPayload, done) => {
         try {
             const { userId } = { ...jwtPayload };
-            console.log("Admin: " + userId);
             const admin = await User.findById(userId);
             if (!admin || !(admin.role === "admin")) {
                 return done(null, false);
