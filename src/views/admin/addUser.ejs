@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <%- include('../partials/admin-head', {title: "Add User Account - Admin Panel"}) %>
+    </head>
+    <body>
+        <%- include('../partials/admin-sidebar') %>
+
+        <div class="main-content">
+            <h2>Add User Account</h2>
+            <p>Fill in the details below to create a new user account:</p>
+            <form action="/admin/users/add" method="POST">
+                <div class="form-group">
+                    <label for="fullName">Fullname</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="fullName"
+                        name="fullName"
+                        placeholder="Enter fullname"
+                        required
+                    />
+                </div>
+                <div class="form-group">
+                    <label for="userName">Username</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="userName"
+                        name="userName"
+                        placeholder="Enter user name"
+                        required
+                    />
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input
+                        type="email"
+                        class="form-control"
+                        id="email"
+                        name="email"
+                        placeholder="Enter email"
+                        required
+                    />
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input
+                        type="password"
+                        class="form-control"
+                        id="password"
+                        name="password"
+                        placeholder="Enter password"
+                        required
+                    />
+                </div>
+                <div class="form-group">
+                    <label for="phoneNumber">Phone Number</label>
+                    <input
+                        type="tel"
+                        class="form-control"
+                        id="phoneNumber"
+                        name="phoneNumber"
+                        placeholder="Enter phone number"
+                        required
+                    />
+                </div>
+                <button class="btn btn-primary" onclick="handleCreate()">Create Account</button>
+            </form>
+        </div>
+        <script>
+            const handleCreate = () => {
+                const username = document.getElementById("userName").value;
+                const fullname = document.getElementById("fullName").value;
+                const email = document.getElementById("email").value;
+                const password = document.getElementById("password").value;
+                const phoneNumber = document.getElementById("phoneNumber").value;
+
+                fetch("/admin/users/add", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({ username, fullname, email, password, phoneNumber }),
+                })
+                    .then((response) => {
+                        return response.json();
+                    })
+                    .then((data) => {
+                        if (data.success) {
+                            alert("User account created successfully");
+                            window.location.href = "/admin/users";
+                        } else {
+                            alert("Failed to create user account");
+                        }
+                    });
+            };
+        </script>
+    </body>
+</html>

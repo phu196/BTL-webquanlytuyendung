@@ -1,3 +1,5 @@
+const bcrypt = require("bcrypt");
+
 const CompanyRegistration = require("../models/CompanyRegistration");
 const Company = require("../models/Company");
 const User = require("../models/User");
@@ -49,7 +51,16 @@ const deleteCompany = async (req, res) => {
 
 const addCompany = async (req, res) => {
     try {
-        console.log("Feature in development");
+        const { companyName, email, password, phoneNumber } = req.body;
+        const hashPassword = await bcrypt.hash(password, 10);
+        const company = new Company({
+            company_name: companyName,
+            company_email: email,
+            password: hashPassword,
+            company_phone: phoneNumber,
+        });
+        await company.save();
+        res.status(200).json({ success: true, message: "Company added successfully" });
     } catch (error) {
         res.status(500).json({ success: false, message: error.message });
     }
@@ -72,6 +83,36 @@ const deleteUser = async (req, res) => {
         res.status(500).json({ success: false, message: error.message });
     }
 };
+
+const addUser = async (req, res) => {
+    try {
+        const { username, fullname, email, password, phoneNumber } = req.body;
+        const hashPassword = await bcrypt.hash(password, 10);
+        const user = new User({
+            username,
+            fullname,
+            email,
+            password: hashPassword,
+            phoneNumber,
+        });
+        await user.save();
+        res.status(200).json({ success: true, message: "User added successfully" });
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+    }
+};
+
+const getStatistics = async (req, res) => {
+    try {
+        const totalUsers = await User.countDocuments({});
+        const totalCompanies = await Company.countDocuments({});
+        const totalRegistrations = await CompanyRegistration.countDocuments({});
+        res.render("admin/statistics", { totalUsers, totalCompanies, totalRegistrations });
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+    }
+};
+
 module.exports = {
     getCompanyRegistrations,
     deleteCompanyRegistration,
@@ -81,4 +122,6 @@ module.exports = {
     addCompany,
     getUsers,
     deleteUser,
+    addUser,
+    getStatistics,
 };
