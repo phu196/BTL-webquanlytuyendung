@@ -33,7 +33,7 @@ const UserSchema = new mongoose.Schema(
         refreshToken: {
             type: String,
         },
-        phone: {
+        phoneNumber: {
             type: String,
         },
         address: {

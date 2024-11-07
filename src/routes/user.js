@@ -8,5 +8,4 @@ const passportJWT = passport.authenticate("jwt", {
 });
 
 router.get("/me", passportJWT, userController.getUserInfo);
-
 module.exports = router;

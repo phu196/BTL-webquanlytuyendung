@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+        <title>Admin Panel</title>
+        <style>
+            body {
+                font-family: "Poppins", sans-serif;
+                background-color: #f0f2f5;
+            }
+            .sidebar {
+                height: 100vh;
+                width: 250px;
+                position: fixed;
+                top: 0;
+                left: 0;
+                background-color: #343a40;
+                color: #fff;
+                padding-top: 20px;
+                box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+            }
+            .sidebar a {
+                display: block;
+                width: 90%;
+                padding: 15px;
+                margin: 10px auto;
+                text-decoration: none;
+                background-color: #495057;
+                border-radius: 5px;
+                text-align: left;
+                font-size: 16px;
+                color: #fff;
+                transition: all 0.3s;
+            }
+            .sidebar a:hover {
+                background-color: #17a2b8;
+                color: #fff;
+                transform: translateX(5px);
+            }
+            .sidebar a i {
+                margin-right: 10px;
+            }
+        </style>
+    </head>
+    <div class="sidebar">
+        <a href="/admin/statistics"><i class="fas fa-chart-bar"></i> Statistics</a>
+        <a href="/admin/registrations"><i class="fas fa-user-plus"></i> Registrations</a>
+        <a href="/admin/users"><i class="fas fa-users"></i> Users</a>
+        <a href="/admin/companies"><i class="fas fa-building"></i> Companies</a>
+        <!-- <a href="/admin/feedbacks"><i class="fas fa-comment-dots"></i> Feedbacks</a> -->
+    </div>
+</html>

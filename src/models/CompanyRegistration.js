@@ -29,10 +29,6 @@ const CompanyRegistrationSchema = new mongoose.Schema(
                 message: (props) => `${props.value} không phải là số điện thoại hợp lệ!`,
             },
         },
-        jobRequirement: {
-            type: String,
-            required: [true, "Description is not provided"],
-        },
         status: {
             type: String,
             default: "pending",

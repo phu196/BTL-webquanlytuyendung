@@ -8,11 +8,9 @@ const CompanySchema = new mongoose.Schema(
         },
         location: {
             type: String,
-            required: [true, "Location is not provided"],
         },
         company_description: {
             type: String,
-            required: [true, "Company description is not provided"],
         },
         company_logo: {
             type: String,
@@ -22,6 +20,10 @@ const CompanySchema = new mongoose.Schema(
         },
         company_email: {
             type: String,
+        },
+        password: {
+            type: String,
+            required: [true, "Password is not provided"],
         },
         company_phone: {
             type: String,

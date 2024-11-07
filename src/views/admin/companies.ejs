@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <%- include('../partials/admin-head', {title: "Companies Control - Admin Panel"}) %>
+        <title>Companies - Admin Panel</title>
+    </head>
+    <body>
+        <%- include('../partials/admin-sidebar') %>
+
+        <div class="main-content">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2>Companies</h2>
+                <a href="/admin/companies/add" class="btn btn-primary" style="margin-right: 150px">Add Company</a>
+            </div>
+            <p>List of registered companies:</p>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Company Name</th>
+                        <th>Email</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% for( let i = 0; i < companies.length; i++ ) { %>
+                    <tr>
+                        <td><%= i + 1 %></td>
+                        <td><%= companies[i]["company_name"] %></td>
+                        <td><%= companies[i]["company_email"] %></td>
+                        <td><button id="<%= companies[i]["_id"] %>" class="btn btn-danger btn-sm" onclick="handleDelete(this.id)">Delete</button></td>
+                    </tr>
+                    <% } %>
+                </tbody>
+            </table>
+        </div>
+        <script>
+            const handleDelete = (id) => {
+                agree = confirm("Are you sure you want to delete this company?");
+                if (agree) {
+                    fetch("/admin/companies/delete", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({ id }),
+                    })
+                        .then((response) => {
+                            return response.json();
+                        })
+                        .then((data) => {
+                            if (data.success) {
+                                alert("Company deleted successfully");
+                                window.location.reload();
+                            } else {
+                                alert("Failed to delete company");
+                            }
+                        });
+                }
+            }
+        </script>
+    </body>
+</html>
