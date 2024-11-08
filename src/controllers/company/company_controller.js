@@ -23,7 +23,7 @@ class CompanyController {
         }
     };
 
-    //[POST] /company/:id/edit
+    //[POST] /company/:id/update
     postEditCompany = async (req, res) => {
         try {
             const companyId = req.params.id;
