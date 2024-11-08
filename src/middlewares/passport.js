@@ -23,8 +23,8 @@ passport.use(
     "jwt-admin",
     new jwtStrategy(options, async (req, jwtPayload, done) => {
         try {
-            const { userId } = { ...jwtPayload };
-            const admin = await User.findById(userId);
+            const { id } = { ...jwtPayload };
+            const admin = await User.findById(id);
             if (!admin || !(admin.role === "admin")) {
                 return done(null, false);
             }
@@ -40,21 +40,21 @@ passport.use(
     "jwt",
     new jwtStrategy(options, async (req, jwtPayload, done) => {
         try {
-            const { userId, companyId } = { ...jwtPayload };
-            if (userId) {
-                const user = await User.findById(userId);
-                if (!user) {
-                    return done(null, false);
+            const { id, identify } = { ...jwtPayload };
+            if (id) {
+                if (identify === "user") {
+                    const user = await User.findById(id);
+                    if (user) {
+                        req.user = user;
+                        return done(null, user);
+                    }
+                } else if (identify === "company") {
+                    const company = await Company.findById(id);
+                    if (company) {
+                        req.user = company;
+                        return done(null, company);
+                    }
                 }
-                req.user = user;
-                return done(null, user);
-            } else if (companyId) {
-                const company = await Company.findById(companyId);
-                if (!company) {
-                    return done(null, false);
-                }
-                req.company = company;
-                return done(null, company);
             }
         } catch (error) {
             return done(error, false);

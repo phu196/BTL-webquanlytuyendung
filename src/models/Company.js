@@ -25,6 +25,9 @@ const CompanySchema = new mongoose.Schema(
             type: String,
             required: [true, "Password is not provided"],
         },
+        keywords: {
+            type: [String],
+        },
         company_phone: {
             type: String,
             required: true,

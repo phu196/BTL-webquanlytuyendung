@@ -51,14 +51,10 @@ const deleteCompany = async (req, res) => {
 
 const addCompany = async (req, res) => {
     try {
-        const { companyName, email, password, phoneNumber } = req.body;
-        const hashPassword = await bcrypt.hash(password, 10);
-        const company = new Company({
-            company_name: companyName,
-            company_email: email,
-            password: hashPassword,
-            company_phone: phoneNumber,
-        });
+        const companyInfo = req.body;
+        const hashPassword = await bcrypt.hash(companyInfo.password, 10);
+        companyInfo.password = hashPassword;
+        const company = new Company(companyInfo);
         await company.save();
         res.status(200).json({ success: true, message: "Company added successfully" });
     } catch (error) {

@@ -57,7 +57,7 @@ const login = async (req, res) => {
         if (!isPasswordValid) {
             return res.status(StatusCodes.BAD_REQUEST).json({ message: "Invalid credentials" });
         }
-        const payload = { userId: user._id };
+        const payload = { id: user._id, identify: "user" };
         const token = jwt.sign(payload, process.env.JWT_SECRET, {
             expiresIn: "3h",
         });
@@ -72,7 +72,7 @@ const login = async (req, res) => {
         if (!isPasswordValid) {
             return res.status(StatusCodes.UNAUTHORIZED).json({ success: false, message: "Invalid credentials" });
         }
-        const payload = { companyId: company._id };
+        const payload = { id: company._id, identify: "company" };
         const token = jwt.sign(payload, process.env.JWT_SECRET, {
             expiresIn: "3h",
         });
@@ -80,4 +80,29 @@ const login = async (req, res) => {
     }
 };
 
-module.exports = { register, login };
+const isLoggedIn = async (req, res) => {
+    const token = req.cookies.session;
+    if (!token) {
+        return res.status(StatusCodes.UNAUTHORIZED).json({ success: false, message: "Unauthorized" });
+    }
+    try {
+        const payload = jwt.verify(token, process.env.JWT_SECRET);
+        if (payload.id) {
+            if (payload.identify === "user") {
+                const user = await User.findById(payload.id).select("-password");
+                if (user) return res.status(StatusCodes.OK).json({ success: true, user, identify: "user" });
+                else return res.status(StatusCodes.UNAUTHORIZED).json({ success: false, message: "Unauthorized" });
+            } else if (payload.identify === "company") {
+                const company = await Company.findById(payload.id).select("-password");
+                if (company) return res.status(StatusCodes.OK).json({ success: true, company, identify: "company" });
+                else return res.status(StatusCodes.UNAUTHORIZED).json({ success: false, message: "Unauthorized" });
+            }
+        } else {
+            return res.status(StatusCodes.UNAUTHORIZED).json({ success: false, message: "Unauthorized" });
+        }
+    } catch (error) {
+        return res.status(StatusCodes.UNAUTHORIZED).json({ success: false, message: "Unauthorized" });
+    }
+};
+
+module.exports = { register, login, isLoggedIn };

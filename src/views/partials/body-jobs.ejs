@@ -1,162 +1,180 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.5.0/font/bootstrap-icons.min.css">
-    <style>
-        .company-card {
-            border: 1px solid #ddd;
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-        }
-        .company-logo {
-            max-width: 50px;
-            max-height: 50px;
-            object-fit: contain;
-        }
-        .company-card-title {
-            font-size: 1.2rem;
-            font-weight: bold;
-        }
-        .company-card-body {
-            min-height: 150px;
-        }
-        .company-card-footer {
-            margin-top: 15px;
-        }
-        .keyword-badge {
-            background-color: #f0f0f0;
-            color: #000;
-            border-radius: 10px;
-            padding: 5px 10px;
-            margin: 3px;
-            font-size: 0.9rem;
-        }
-        .carousel-control-prev,
-        .carousel-control-next {
-            filter: invert(1);
-            z-index: 1;
-        }
-        .carousel-control-prev {
-            left: -200px;
-        }
-        .carousel-control-next {
-            right: -200px;
-        }
-        .job-card {
-            border: 1px solid #ddd;
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-            background-color: #fff;
-        }
-        .job-logo {
-            max-width: 50px;
-            max-height: 50px;
-            object-fit: contain;
-        }
-        .job-card-title {
-            font-size: 1.1rem;
-            font-weight: bold;
-        }
-        .keyword-badge-job {
-            background-color: #f0f0f0;
-            color: #000;
-            border-radius: 10px;
-            padding: 5px 10px;
-            margin: 3px;
-            font-size: 0.9rem;
-        }
-    </style>
-</head>
-<body>
-    <div class="container mt-5">
-        <h3 class="fw-bold mb-4"><i class="bi bi-stars"></i> Các Công Ty Phổ Biến</h3>
-        <div id="companyCarousel" class="carousel slide" data-bs-ride="carousel">
-            <div class="carousel-inner">
-                <% for (let i = 0; i < companies.length; i += 3) { %>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.5.0/font/bootstrap-icons.min.css"
+        />
+        <style>
+            .company-card {
+                border: 1px solid #ddd;
+                border-radius: 10px;
+                padding: 20px;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            }
+            .company-logo {
+                max-width: 50px;
+                max-height: 50px;
+                object-fit: contain;
+            }
+            .company-card-title {
+                font-size: 1.2rem;
+                font-weight: bold;
+            }
+            .company-card-body {
+                min-height: 150px;
+            }
+            .company-card-footer {
+                margin-top: 15px;
+            }
+            .keyword-badge {
+                background-color: #f0f0f0;
+                color: #000;
+                border-radius: 10px;
+                padding: 5px 10px;
+                margin: 3px;
+                font-size: 0.9rem;
+            }
+            .carousel-control-prev,
+            .carousel-control-next {
+                filter: invert(1);
+                z-index: 1;
+            }
+            .carousel-control-prev {
+                left: -200px;
+            }
+            .carousel-control-next {
+                right: -200px;
+            }
+            .job-card {
+                border: 1px solid #ddd;
+                border-radius: 10px;
+                padding: 20px;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+                background-color: #fff;
+            }
+            .job-logo {
+                max-width: 50px;
+                max-height: 50px;
+                object-fit: contain;
+            }
+            .job-card-title {
+                font-size: 1.1rem;
+                font-weight: bold;
+            }
+            .keyword-badge-job {
+                background-color: #f0f0f0;
+                color: #000;
+                border-radius: 10px;
+                padding: 5px 10px;
+                margin: 3px;
+                font-size: 0.9rem;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container mt-5">
+            <h3 class="fw-bold mb-4"><i class="bi bi-stars"></i> Các Công Ty Phổ Biến</h3>
+            <div id="companyCarousel" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    <% for (let i = 0; i < companies.length; i += 3) { %>
                     <div class="carousel-item <%= i === 0 ? 'active' : '' %>">
                         <div class="row">
                             <% companies.slice(i, i + 3).forEach(company => { %>
-                                <div class="col-md-4 mb-4">
-                                    <div class="company-card">
-                                        <div class="d-flex align-items-center mb-3">
-                                            <img src="<%= company.logo %>" alt="Company Logo" class="company-logo me-3">
-                                            <h5 class="company-card-title mb-0"><%= company.title %></h5>
-                                        </div>
-                                        <div class="company-card-body">
-                                            <p><%= company.companyName %></p>
-                                            <p class="text-danger">Đăng nhập để xem mức lương</p>
-                                            <p><%= company.location %></p>
-                                        </div>
-                                        <div class="company-card-footer">
-                                            <% company.keywords.forEach(keyword => { %>
-                                                <span class="keyword-badge"><%= keyword %></span>
-                                            <% }); %>
-                                        </div>
+                            <div class="col-md-4 mb-4">
+                                <div class="company-card">
+                                    <div class="d-flex align-items-center mb-3">
+                                        <img
+                                            src="<%= company.company_logo %>"
+                                            alt="Company Logo"
+                                            class="company-logo me-3"
+                                        />
+                                        <h5 class="company-card-title mb-0"><%= company.company_name %></h5>
+                                    </div>
+                                    <div class="company-card-body">
+                                        <p><%= company.company_description %></p>
+                                        <% for (let i = 0; i < companies.jobNames; i++) { %>
+                                        <span class="keyword-button"><%= companies.jobNames[i] %></span>
+                                        <% } %>
+                                    </div>
+                                    <div class="company-card-footer">
+                                        <% company.keywords.forEach(keyword => { %>
+                                        <span class="keyword-badge"><%= keyword %></span>
+                                        <% }); %>
                                     </div>
                                 </div>
+                            </div>
                             <% }); %>
                         </div>
                     </div>
-                <% } %>
+                    <% } %>
+                </div>
+                <button
+                    class="carousel-control-prev"
+                    type="button"
+                    data-bs-target="#companyCarousel"
+                    data-bs-slide="prev"
+                >
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button
+                    class="carousel-control-next"
+                    type="button"
+                    data-bs-target="#companyCarousel"
+                    data-bs-slide="next"
+                >
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
             </div>
-            <button class="carousel-control-prev" type="button" data-bs-target="#companyCarousel" data-bs-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Previous</span>
-            </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#companyCarousel" data-bs-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Next</span>
-            </button>
         </div>
-    </div>
 
-    <div class="container mt-5">
-        <h3 class="fw-bold mb-4">Công Việc Mới Nhất</h3>
-        <div id="jobCarousel" class="carousel slide" data-bs-ride="carousel">
-            <div class="carousel-inner">
-                <% for (let i = 0; i < newestJobs.length; i += 3) { %>
+        <div class="container mt-5">
+            <h3 class="fw-bold mb-4">Công Việc Mới Nhất</h3>
+            <div id="jobCarousel" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    <% for (let i = 0; i < newestJobs.length; i += 3) { %>
                     <div class="carousel-item <%= i === 0 ? 'active' : '' %>">
                         <div class="row">
                             <% newestJobs.slice(i, i + 3).forEach(job => { %>
-                                <div class="col-md-4 mb-4">
-                                    <div class="job-card">
-                                        <div class="d-flex align-items-center mb-3">
-                                            <img src="<%= job.logo %>" alt="Job Logo" class="job-logo me-3">
-                                            <h5 class="job-card-title mb-0"><%= job.title %></h5>
-                                        </div>
-                                        <div class="job-card-body">
-                                            <p><%= job.companyName %></p>
-                                            <p class="text-danger">Đăng nhập để xem mức lương</p>
-                                            <p><%= job.location %></p>
-                                        </div>
-                                        <div class="job-card-footer">
-                                            <% job.keywords.forEach(keyword => { %>
-                                                <span class="keyword-badge-job"><%= keyword %></span>
-                                            <% }); %>
-                                        </div>
+                            <div class="col-md-4 mb-4">
+                                <div class="job-card">
+                                    <div class="d-flex align-items-center mb-3">
+                                        <img src="<%= job.logo %>" alt="Job Logo" class="job-logo me-3" />
+                                        <h5 class="job-card-title mb-0"><%= job.title %></h5>
+                                    </div>
+                                    <div class="job-card-body">
+                                        <p><%= job.companyName %></p>
+                                        <p class="text-danger">Đăng nhập để xem mức lương</p>
+                                        <p><%= job.location %></p>
+                                    </div>
+                                    <div class="job-card-footer">
+                                        <% job.keywords.forEach(keyword => { %>
+                                        <span class="keyword-badge-job"><%= keyword %></span>
+                                        <% }); %>
                                     </div>
                                 </div>
+                            </div>
                             <% }); %>
                         </div>
                     </div>
-                <% } %>
+                    <% } %>
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#jobCarousel" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#jobCarousel" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
             </div>
-            <button class="carousel-control-prev" type="button" data-bs-target="#jobCarousel" data-bs-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Previous</span>
-            </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#jobCarousel" data-bs-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Next</span>
-            </button>
         </div>
-    </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-</body>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    </body>
 </html>
