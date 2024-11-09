@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cài đặt thông tin cá nhân</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/path/to/your/css/styles.css"> <!-- Link to your custom CSS if needed -->
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="card">
+            <div class="card-body">
+                <h2 class="card-title text-center">Cài đặt thông tin cá nhân</h2>
+                <p class="text-muted text-center">(*) Các thông tin bắt buộc</p>
+
+                <!-- Thêm trường hidden cho id -->
+                <form action="/user/update" method="POST">
+                    <input type="hidden" name="id" value="<%= user._id %>">  <!-- Trường ID ẩn -->
+                    
+                    <div class="mb-3">
+                        <label for="fullname" class="form-label">Họ và tên <span class="text-danger">*</span></label>
+                        <input type="text" id="fullname" name="fullname" value="<%= user.fullname %>" class="form-control" required aria-required="true">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="phone" class="form-label">Số điện thoại</label>
+                        <input type="text" id="phone" name="phone" value="<%= user.phone %>" placeholder="Nhập số điện thoại" class="form-control">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" id="email" name="email" value="<%= user.email %>" class="form-control" readonly>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="gender" class="form-label">Giới tính</label>
+                        <select id="gender" name="gender" class="form-control">
+                            <option value="" disabled>Chọn giới tính</option>
+                            <option value="male" <%= user.gender === 'male' ? 'selected' : '' %>>Nam</option>
+                            <option value="female" <%= user.gender === 'female' ? 'selected' : '' %>>Nữ</option>
+                            <option value="other" <%= user.gender === 'other' ? 'selected' : '' %>>Khác</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="addressDetail" class="form-label">Địa chỉ chi tiết</label>
+                        <input type="text" id="addressDetail" name="address[detail]" value="<%= user.address.detail %>" placeholder="Chi tiết địa chỉ" class="form-control">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="addressWard" class="form-label">Xã/Phường</label>
+                        <input type="text" id="addressWard" name="address[ward]" value="<%= user.address.ward %>" placeholder="Nhập xã/phường" class="form-control">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="addressDistrict" class="form-label">Quận/Huyện</label>
+                        <input type="text" id="addressDistrict" name="address[district]" value="<%= user.address.district %>" placeholder="Nhập quận/huyện" class="form-control">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="addressProvince" class="form-label">Tỉnh/Thành phố</label>
+                        <input type="text" id="addressProvince" name="address[province]" value="<%= user.address.province %>" placeholder="Nhập tỉnh/thành phố" class="form-control">
+                    </div>
+
+                    <button type="submit" class="btn btn-success w-100">Lưu</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and dependencies (optional if you use Bootstrap’s interactive components) -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+</body>
+</html>
