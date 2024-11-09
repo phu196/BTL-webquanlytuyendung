@@ -93,10 +93,12 @@
                                             <p><%= company.location %></p>
                                         </div>
                                         <div class="company-card-footer">
-                                            <% company.keywords.forEach(keyword => { %>
-                                                <span class="keyword-badge"><%= keyword %></span>
-                                            <% }); %>
-                                        </div>
+                                            <% if (company.keywords && company.keywords.length > 0) { %>
+                                                <% company.keywords.forEach(keyword => { %>
+                                                    <span class="keyword-badge"><%= keyword %></span>
+                                                <% }); %>
+                                            <% } %>
+                                        </div>                                        
                                     </div>
                                 </div>
                             <% }); %>
