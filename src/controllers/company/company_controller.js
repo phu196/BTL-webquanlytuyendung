@@ -24,7 +24,7 @@ module.exports.index = async(req,res) =>{
 module.exports.companyDetail = async (req,res) =>{
     const id = req.params.id;
     try {
-        const company = await Company.findById(id).populate('company_job');
+        const company = await Company.findById(id).populate('company_jobs');
         console.log(company)
         res.render("company/layout/company_view", {
             company: company
