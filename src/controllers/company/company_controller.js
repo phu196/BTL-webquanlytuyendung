@@ -9,7 +9,8 @@ module.exports.index = async(req,res) =>{
     // console.log(req.params)
     const id = req.query.id;
     try {
-        const company = await Company.findById(id).populate('company_job');
+        const company = await Company.findById(id).populate('company_jobs');
+        console.log(company)
         res.render("company/layout/mainpage", {
             company: company
         });
@@ -24,6 +25,7 @@ module.exports.companyDetail = async (req,res) =>{
     const id = req.params.id;
     try {
         const company = await Company.findById(id).populate('company_job');
+        console.log(company)
         res.render("company/layout/company_view", {
             company: company
         });
@@ -118,10 +120,12 @@ module.exports.deleteJob = async (req,res) =>{
 module.exports.viewCandidates = async (req,res) =>{
     const id = req.params.id;
     const job_id = req.params.job_id;
+    console.log(job_id,id)
     try{
         const job = await Job.findById(job_id).populate('applicant')
-        res.render('./company//layout/view_candidates',{
-            job: job
+        const candidates = job.applicant;
+        res.render('./company/layout/view_candidates',{
+            candidates: candidates
         })
     }
     catch(error){

@@ -125,7 +125,7 @@
                     <a href="/company/<%= company._id %>/posts" class="btn btn-create-job">Create Job</a>
                 </div>
                 <div class="list-group">
-                    <% company.company_job.forEach(function(job) { %>
+                    <% company.company_jobs.forEach(function(job) { %>
                         <div class="job-item">
                             <div class="d-flex align-items-center">
                                 <img src="<%= company.company_logo %>" alt="Company Logo">
