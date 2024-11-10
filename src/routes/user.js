@@ -2,10 +2,16 @@ const router = require("express").Router();
 const passport = require("passport");
 const userController = require("../controllers/user");
 
+// Middleware cho JWT authentication (bỏ ra cho route update)
 const passportJWT = passport.authenticate("jwt", {
-    failureRedirect: "/auth/login",
-    session: false,
+    failureRedirect: "/auth/login", // Redirect đến login nếu không xác thực
+    session: false, // Không sử dụng session
 });
 
-router.get("/me", passportJWT, userController.getUserInfo);
+// Route lấy thông tin người dùng (có xác thực)
+router.get("/:id", userController.getUserInfo);
+
+// Route cập nhật thông tin người dùng (không cần xác thực JWT)
+router.post("/update", userController.updateUser);
+
 module.exports = router;

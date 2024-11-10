@@ -1,0 +1,28 @@
+.job-list {
+    margin: 20px;
+}
+
+.job-card {
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    margin-bottom: 20px; /* Khoảng cách giữa các công việc */
+    width: 100%; /* Công việc chiếm toàn bộ chiều rộng của vùng chứa */
+    display: block; /* Mỗi công việc là một block-level element */
+}
+
+.job-card h2 {
+    margin: 0;
+    font-size: 1.5em;
+}
+
+.job-card p {
+    margin: 10px 0;
+    font-size: 1em;
+}
+
+.job-card strong {
+    font-weight: bold;
+}
