@@ -146,7 +146,6 @@ const postCompanyJobs = async (req, res) => {
 const deleteJob = async (req, res) => {
     const id = req.params.id;
     const job_id = req.params.job_id;
-
     try {
         await Job.findByIdAndDelete(job_id);
         const company = await Company.findById(id);
