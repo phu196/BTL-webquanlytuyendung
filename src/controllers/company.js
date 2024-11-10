@@ -1,5 +1,5 @@
 const Company = require("../models/Company");
-const Job = require("../../models/Job");
+const Job = require("../models/Job");
 const bcrypt = require("bcrypt");
 
 const { StatusCodes } = require("http-status-codes");
