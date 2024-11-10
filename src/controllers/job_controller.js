@@ -51,6 +51,24 @@ class JobController {
             res.status(400).json({message: error.message});
         }
     };
+
+    showJob = async(req, res) =>{
+        try{
+            const jobId = req.params.id;
+            const job = await Job.findById(jobId).populate('company_id');
+
+            if (!job) {
+                return res.status(404).json({ message: 'Job not found' });
+            }
+
+            // Render view với thông tin job
+            res.render('job/show', { job });
+        }
+        catch(error){
+            console.log(error);
+            res.status(500).json({message: 'This id is not exist'});
+        }
+    };
 }
 
 module.exports = new JobController();

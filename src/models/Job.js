@@ -47,7 +47,7 @@ const JobSchema = new mongoose.Schema({
     },
     company_id:{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
+        ref: 'Company',
     },
     location:{
         type : String,

@@ -6,6 +6,9 @@ const JobController = require('../../controllers/job_controller');
 
 // thông tin job cụ thể của công ty
 router.get('/:id/edit', JobController.editJob);
-router.post('/:id/update', JobController.postEditJob); 
+router.post('/:id/update', JobController.postEditJob);
+
+// show cho bản thân công ty xem 
+router.get('/:id/show', JobController.showJob);
 
 module.exports = router;
