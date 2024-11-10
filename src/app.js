@@ -10,6 +10,8 @@ const app = express();
 
 // Load routes
 const router = require("./routes");
+const jobITRoutes = require("./routes/findJob/index")
+jobITRoutes(app)
 
 // Middleware
 app.use(morgan("dev"));
