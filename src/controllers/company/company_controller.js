@@ -86,7 +86,7 @@ if (jobSkill) {
     });
     try {
         await job.save();
-        company.company_job.push(job);
+        company.company_jobs.push(job);
         await company.save();
         res.redirect(`/company?id=${id}`);
     } catch (error) {
@@ -105,7 +105,7 @@ module.exports.deleteJob = async (req,res) =>{
         await Job.findByIdAndDelete(job_id);
         const company = await Company.findById(id);
         if (company) {
-            company.company_job.pull(job_id);
+            company.company_jobs.pull(job_id);
             await company.save(); 
         }
     
