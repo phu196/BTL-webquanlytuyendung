@@ -1,121 +1,199 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Job Information</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body>
-    <div class="container mt-4">
-        <h3 class="text-center mb-4">Edit Job Information</h3>
-        <form action="/company/my_job/<%= job._id %>/update" method="POST" class="border p-4 rounded bg-light">
-            <div class="mb-3">
-                <label for="title" class="form-label">Job Title</label>
-                <input type="text" class="form-control" id="title" name="title" value="<%= job.title %>" required>
-            </div>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Edit Job Information</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    </head>
+    <body>
+        <div class="container mt-4">
+            <h3 class="text-center mb-4">Edit Job Information</h3>
+            <form action="/company/jobs/<%= job._id %>/update" method="POST" class="border p-4 rounded bg-light">
+                <div class="mb-3">
+                    <label for="title" class="form-label">Job Title</label>
+                    <input type="text" class="form-control" id="title" name="title" value="<%= job.title %>" required />
+                </div>
 
-            <!-- Salary -->
-            <div class="mb-3">
-                <label for="salary" class="form-label">Salary</label>
-                <input type="text" class="form-control" id="salary" name="salary" value="<%= job.salary %>" required>
-            </div>
+                <!-- Salary -->
+                <div class="mb-3">
+                    <label for="salary" class="form-label">Salary</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="salary"
+                        name="salary"
+                        value="<%= job.salary %>"
+                        required
+                    />
+                </div>
 
-            <!-- Salary Negotiation -->
-            <div class="mb-3 form-check">
-                <input type="checkbox" class="form-check-input" id="salaryNegotiation" name="salary_negotiation" <%= job.salary_negotiation ? 'checked' : '' %>>
-                <label for="salaryNegotiation" class="form-check-label">Salary Negotiable</label>
-            </div>
+                <!-- Salary Negotiation -->
+                <div class="mb-3 form-check">
+                    <input type="checkbox" class="form-check-input" id="salaryNegotiation" name="salary_negotiation" <%=
+                    job.salary_negotiation ? 'checked' : '' %>>
+                    <label for="salaryNegotiation" class="form-check-label">Salary Negotiable</label>
+                </div>
 
-            <!-- Region -->
-            <div class="mb-3">
-                <label for="region" class="form-label">Region</label>
-                <input type="text" class="form-control" id="region" name="region" value="<%= job.region %>" required>
-            </div>
+                <!-- Region -->
+                <div class="mb-3">
+                    <label for="region" class="form-label">Region</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="region"
+                        name="region"
+                        value="<%= job.region %>"
+                        required
+                    />
+                </div>
 
-            <!-- Job Experience -->
-            <div class="mb-3">
-                <label for="jobExperience" class="form-label">Job Experience (years)</label>
-                <input type="number" class="form-control" id="jobExperience" name="job_experience" value="<%= job.job_experience %>" required>
-            </div>
+                <!-- Job Experience -->
+                <div class="mb-3">
+                    <label for="jobExperience" class="form-label">Job Experience (years)</label>
+                    <input
+                        type="number"
+                        class="form-control"
+                        id="jobExperience"
+                        name="job_experience"
+                        value="<%= job.job_experience %>"
+                        required
+                    />
+                </div>
 
-            <!-- Last Date -->
-            <div class="mb-3">
-                <label for="lastDate" class="form-label">Last Date to Apply</label>
-                <input type="date" class="form-control" id="lastDate" name="last_date" value="<%= job.last_date.toISOString().split('T')[0] %>" required>
-            </div>
+                <!-- Last Date -->
+                <div class="mb-3">
+                    <label for="lastDate" class="form-label">Last Date to Apply</label>
+                    <input
+                        type="date"
+                        class="form-control"
+                        id="lastDate"
+                        name="last_date"
+                        value="<%= job.last_date.toISOString().split('T')[0] %>"
+                        required
+                    />
+                </div>
 
-            <!-- Job Type -->
-            <div class="mb-3">
-                <label for="jobType" class="form-label">Job Type</label>
-                <input type="text" class="form-control" id="jobType" name="job_type" value="<%= job.job_type %>" required>
-            </div>
+                <!-- Job Type -->
+                <div class="mb-3">
+                    <label for="jobType" class="form-label">Job Type</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="jobType"
+                        name="job_type"
+                        value="<%= job.job_type %>"
+                        required
+                    />
+                </div>
 
-            <!-- Job Description -->
-            <div class="mb-3">
-                <label for="jobDescription" class="form-label">Job Description</label>
-                <textarea class="form-control" id="jobDescription" name="job_description" rows="3" required><%= job.job_description %></textarea>
-            </div>
+                <!-- Job Description -->
+                <div class="mb-3">
+                    <label for="jobDescription" class="form-label">Job Description</label>
+                    <textarea class="form-control" id="jobDescription" name="job_description" rows="3" required>
+<%= job.job_description %></textarea
+                    >
+                </div>
 
-            <!-- Job Requirement -->
-            <div class="mb-3">
-                <label for="jobRequirement" class="form-label">Job Requirement</label>
-                <textarea class="form-control" id="jobRequirement" name="job_requirement" rows="3" required><%= job.job_requirement %></textarea>
-            </div>
+                <!-- Job Requirement -->
+                <div class="mb-3">
+                    <label for="jobRequirement" class="form-label">Job Requirement</label>
+                    <textarea class="form-control" id="jobRequirement" name="job_requirement" rows="3" required>
+<%= job.job_requirement %></textarea
+                    >
+                </div>
 
-            <!-- Job Benefit -->
-            <div class="mb-3">
-                <label for="jobBenefit" class="form-label">Job Benefit</label>
-                <textarea class="form-control" id="jobBenefit" name="job_benefit" rows="3"><%= job.job_benefit %></textarea>
-            </div>
+                <!-- Job Benefit -->
+                <div class="mb-3">
+                    <label for="jobBenefit" class="form-label">Job Benefit</label>
+                    <textarea class="form-control" id="jobBenefit" name="job_benefit" rows="3">
+<%= job.job_benefit %></textarea
+                    >
+                </div>
 
-            <!-- Location -->
-            <div class="mb-3">
-                <label for="location" class="form-label">Location</label>
-                <input type="text" class="form-control" id="location" name="location" value="<%= job.location %>" required>
-            </div>
+                <!-- Location -->
+                <div class="mb-3">
+                    <label for="location" class="form-label">Location</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="location"
+                        name="location"
+                        value="<%= job.location %>"
+                        required
+                    />
+                </div>
 
-            <!-- Job Time -->
-            <div class="mb-3">
-                <label for="jobTime" class="form-label">Job Time</label>
-                <input type="text" class="form-control" id="jobTime" name="job_time" value="<%= job.job_time %>" required>
-            </div>
+                <!-- Job Time -->
+                <div class="mb-3">
+                    <label for="jobTime" class="form-label">Job Time</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="jobTime"
+                        name="job_time"
+                        value="<%= job.job_time %>"
+                        required
+                    />
+                </div>
 
-            <!-- Level -->
-            <div class="mb-3">
-                <label for="level" class="form-label">Level</label>
-                <input type="text" class="form-control" id="level" name="level" value="<%= job.level %>" required>
-            </div>
+                <!-- Level -->
+                <div class="mb-3">
+                    <label for="level" class="form-label">Level</label>
+                    <input type="text" class="form-control" id="level" name="level" value="<%= job.level %>" required />
+                </div>
 
-            <!-- Number of Recruitment -->
-            <div class="mb-3">
-                <label for="numberOfRecruitment" class="form-label">Number of Recruitment</label>
-                <input type="number" class="form-control" id="numberOfRecruitment" name="number_of_recruitment" value="<%= job.number_of_recruitment %>" required>
-            </div>
+                <!-- Number of Recruitment -->
+                <div class="mb-3">
+                    <label for="numberOfRecruitment" class="form-label">Number of Recruitment</label>
+                    <input
+                        type="number"
+                        class="form-control"
+                        id="numberOfRecruitment"
+                        name="number_of_recruitment"
+                        value="<%= job.number_of_recruitment %>"
+                        required
+                    />
+                </div>
 
-            <!-- Job Status -->
-            <div class="mb-3 form-check">
-                <input type="checkbox" class="form-check-input" id="jobStatus" name="job_status" <%= job.job_status ? 'checked' : '' %>>
-                <label for="jobStatus" class="form-check-label">Job Active</label>
-            </div>
+                <!-- Job Status -->
+                <div class="mb-3 form-check">
+                    <input type="checkbox" class="form-check-input" id="jobStatus" name="job_status" <%= job.job_status
+                    ? 'checked' : '' %>>
+                    <label for="jobStatus" class="form-check-label">Job Active</label>
+                </div>
 
-            <!-- Type of Work -->
-            <div class="mb-3">
-                <label for="typeOfWork" class="form-label">Type of Work</label>
-                <input type="text" class="form-control" id="typeOfWork" name="type_of_work" value="<%= job.type_of_work %>" required>
-            </div>
+                <!-- Type of Work -->
+                <div class="mb-3">
+                    <label for="typeOfWork" class="form-label">Type of Work</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="typeOfWork"
+                        name="type_of_work"
+                        value="<%= job.type_of_work %>"
+                        required
+                    />
+                </div>
 
-            <!-- Skills -->
-            <div class="mb-3">
-                <label for="skill" class="form-label">Skills</label>
-                <input type="text" class="form-control" id="skill" name="skill" value="<%= job.skill.join(', ') %>" placeholder="Separate skills with commas">
-            </div>
+                <!-- Skills -->
+                <div class="mb-3">
+                    <label for="skill" class="form-label">Skills</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="skill"
+                        name="skill"
+                        value="<%= job.skill.join(', ') %>"
+                        placeholder="Separate skills with commas"
+                    />
+                </div>
 
-            <!-- Submit Button -->
-            <button type="submit" class="btn btn-primary w-100">Update Job</button>
-        </form>
-    </div>
+                <!-- Submit Button -->
+                <button type="submit" class="btn btn-primary w-100">Update Job</button>
+            </form>
+        </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-</body>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    </body>
 </html>
