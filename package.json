@@ -20,16 +20,17 @@
     },
     "homepage": "https://github.com/huynambka/BTL-NMCNPM-154020#readme",
     "dependencies": {
+        "bcrypt": "5.1.1",
+        "cookie-parser": "1.4.5",
         "dotenv": "^16.4.5",
         "ejs": "^3.1.10",
         "express": "^4.21.0",
-        "mongoose": "^8.7.0",
+        "http-status-codes": "2.1.4",
         "jsonwebtoken": "9.0.2",
-        "bcrypt": "5.1.1",
+        "mongoose": "^8.7.0",
         "passport": "0.7.0",
         "passport-jwt": "4.0.0",
-        "http-status-codes": "2.1.4",
-        "cookie-parser": "1.4.5"
+        "tinymce": "^7.4.1"
     },
     "devDependencies": {
         "body-parser": "^1.20.3",
