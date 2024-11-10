@@ -1,7 +1,6 @@
 const router = require("express").Router();
 const passport = require("passport");
 const companyController = require("../controllers/company");
-const jobController = require("../controllers/job");
 
 const passportJWT = passport.authenticate("jwt", {
     failureRedirect: "/auth/login",
@@ -32,10 +31,10 @@ router.get("/:id/edit", companyController.edit);
 router.post("/:id/update", companyController.postEditCompany);
 
 // thông tin job cụ thể của công ty
-router.get("/jobs/:id/edit", jobController.editJob);
-router.post("/jobs/:id/update", jobController.postEditJob);
+router.get("/jobs/:id/edit", companyController.editJob);
+router.post("/jobs/:id/update", companyController.postEditJob);
 
 // show cho bản thân công ty xem
-router.get("/jobs/:id/show", jobController.showJob);
+router.get("/jobs/:id/show", companyController.showJob);
 
 module.exports = router;
