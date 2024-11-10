@@ -23,7 +23,6 @@ const getUserInfo = async (req, res) => {
     }
 };
 
-
 const updateUser = async (req, res) => {
     try {
         // Lấy userId từ req.body hoặc req.params (nếu không có xác thực JWT)
@@ -34,9 +33,9 @@ const updateUser = async (req, res) => {
         }
 
         // Kiểm tra và lọc các trường hợp được phép cập nhật
-        const allowedFields = ['fullname', 'gender', 'phone', 'address'];
+        const allowedFields = ["fullname", "gender", "phoneNumber", "address"];
         const updateData = Object.keys(req.body)
-            .filter(key => allowedFields.includes(key))
+            .filter((key) => allowedFields.includes(key))
             .reduce((obj, key) => {
                 obj[key] = req.body[key];
                 return obj;
@@ -56,10 +55,12 @@ const updateUser = async (req, res) => {
             user: safeUser,
         });
     } catch (error) {
-        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: "Error updating user information", error: error.message });
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+            message: "Error updating user information",
+            error: error.message,
+        });
     }
 };
-
 
 module.exports = {
     getUserInfo,
