@@ -25,7 +25,7 @@ router.get("/:id/view-candidates/:job_id", companyController.viewCandidates);
 // router.get("/:id/posts/:job_id",companyController.jobDetail);
 // router.get("/:id/posts/:job_id/edit",companyController.editJobDetail);
 // router.post("/:id/posts/:job_id/edit",companyController.postJobDetail);
-router.get("/", companyController.index);
+router.get("/:id", companyController.index);
 
 router.get("/:id/edit", companyController.edit);
 router.post("/:id/update", companyController.postEditCompany);

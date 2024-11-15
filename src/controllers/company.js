@@ -40,10 +40,9 @@ const register = async (req, res) => {
 };
 // [GET] /company/:id
 const index = async (req, res) => {
-    //const id = "6720a18f8213b3da13ecb3a1"
-    // const id = req.params.id;
-    // console.log(req.params)
-    const id = req.query.id;
+    
+     const id = req.params.id;
+    
     try {
         const company = await Company.findById(id).populate("company_jobs");
 
@@ -268,7 +267,7 @@ const postEditJob = async (req, res) => {
             skill: req.body.skill ? req.body.skill.split(",").map((s) => s.trim()) : [],
         });
 
-        res.redirect("/"); // tạm thời về trang ban đầu
+        res.redirect(`/`); // tạm thời về trang ban đầu
     } catch (error) {
         console.log(error);
         res.status(400).json({ message: error.message });
