@@ -12,29 +12,24 @@ router.get("/register", (req, res) => {
     res.render("register-company");
 });
 
-// router.get("/setup",companyController.changeInfo);
-// router.post("/setup",companyController.postChangeInfo);
-// router.get("/:id",companyController.companyDetail);
-// router.get("/:id/edit",companyController.editCompany);
-// router.post("/:id/edit",companyController.postEditCompany);
 router.get("/:id/posts", companyController.companyJobs);
-router.post("/:id/posts", companyController.postCompanyJobs);
-router.get("/:id/company_page", companyController.companyDetail);
-router.post("/:id/delete-job/:job_id", companyController.deleteJob);
-router.get("/:id/view-candidates/:job_id", companyController.viewCandidates);
-// router.get("/:id/posts/:job_id",companyController.jobDetail);
-// router.get("/:id/posts/:job_id/edit",companyController.editJobDetail);
-// router.post("/:id/posts/:job_id/edit",companyController.postJobDetail);
-router.get("/:id", companyController.index);
 
-router.get("/:id/edit", companyController.edit);
-router.post("/:id/update", companyController.postEditCompany);
+router.get("/profile", passportJWT, companyController.index);
+// Edit company profile
+router.get("/edit", passportJWT, companyController.edit);
 
+router.get("/:id", companyController.companyDetail);
+
+router.post("/update", passportJWT, companyController.updateCompany);
+
+router.post("/jobs/create", passportJWT, companyController.createJob);
+router.delete("/jobs/:job_id/delete", passportJWT, companyController.deleteJob);
 // thông tin job cụ thể của công ty
-router.get("/jobs/:id/edit", companyController.editJob);
-router.post("/jobs/:id/update", companyController.postEditJob);
+router.get("/jobs/:job_id/edit", passportJWT, companyController.editJob);
+router.post("/jobs/:job_id/update", passportJWT, companyController.postEditJob);
 
 // show cho bản thân công ty xem
-router.get("/jobs/:id/show", companyController.showJob);
+router.get("/jobs/:job_id/show", passportJWT, companyController.showJob);
+router.get("/jobs/:job_id/view-candidates", passportJWT, companyController.viewCandidates);
 
 module.exports = router;

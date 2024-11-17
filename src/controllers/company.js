@@ -133,7 +133,7 @@ const postCompanyJobs = async (req, res) => {
             await job.save();
             company.company_jobs.push(job);
             await company.save();
-            res.redirect(`/company?id=${id}`);
+            res.redirect(`/company/profile`);
         } catch (error) {
             console.error(error);
             res.status(500).send("Internal Server Error");
