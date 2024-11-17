@@ -1,7 +1,0 @@
-
-GET  http://localhost:3000/user/update
-  //Content-Type: application/json
-
-  {
-    "fullname": "Sample Name"
-}

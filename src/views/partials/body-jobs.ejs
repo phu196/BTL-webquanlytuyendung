@@ -95,7 +95,7 @@
                             <% companies.slice(i, i + 3).forEach(company => { %>
 
                             <div class="col-md-4 mb-4">
-                                <div class="company-card">
+                                <div class="company-card" style="min-height: 250px">
                                     <div class="d-flex align-items-center mb-3">
                                         <a
                                             href="/company/<%= company.id %>"
@@ -158,7 +158,7 @@
                             <% newestJobs.slice(i, i + 3).forEach(job => { %>
 
                             <div class="col-md-4 mb-4">
-                                <div class="job-card">
+                                <div class="job-card" style="min-height: 250px">
                                     <div class="d-flex align-items-center mb-3">
                                         <a href="/job/<%= job.id %>" class="link d-flex align-items-center mb-3">
                                             <img src="<%= job.logo %>" alt="Job Logo" class="job-logo me-3" />
