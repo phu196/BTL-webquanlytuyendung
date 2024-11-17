@@ -86,14 +86,14 @@
                 const password = document.getElementById("reg-password").value;
                 const email = document.getElementById("reg-email").value;
                 const fullname = document.getElementById("reg-fullname").value;
-                const telephone = document.getElementById("reg-phone").value;
+                const phoneNumber = document.getElementById("reg-phone").value;
                 const userType = document.getElementById("user-type").value;
                 const data = {
                     username: username,
                     password: password,
                     email: email,
                     fullname: fullname,
-                    telephone: telephone,
+                    phoneNumber: phoneNumber,
                     userType: userType,
                 };
                 fetch("/auth/register", {

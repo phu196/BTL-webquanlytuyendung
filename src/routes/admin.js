@@ -1,4 +1,4 @@
-const router = require("express").Router();
+const  router = require("express").Router();
 const passport = require("passport");
 
 const adminController = require("../controllers/admin");
