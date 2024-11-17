@@ -39,7 +39,7 @@ const register = async (req, res) => {
     });
 };
 // [GET] /company/profile
-const index = async (req, res) => {
+const profile = async (req, res) => {
     try {
         if (req.company) {
             const id = req.company._id;
@@ -336,7 +336,7 @@ const showJob = async (req, res) => {
 module.exports = {
     getCompanyInfo,
     register,
-    index,
+    profile,
     companyDetail,
     companyJobs,
     createJob,

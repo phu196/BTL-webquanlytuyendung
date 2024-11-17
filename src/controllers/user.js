@@ -3,8 +3,7 @@ const mongoose = require("mongoose");
 const { StatusCodes } = require("http-status-codes");
 
 // Lấy thông tin người dùng
-// Lấy thông tin người dùng
-const getUserInfo = async (req, res) => {
+const getUpdate = async (req, res) => {
     try {
         // Kiểm tra ID người dùng từ token
         const userId = req.user ? req.user.id : req.params.id; // Sử dụng req.params.id nếu không có req.user
@@ -17,7 +16,7 @@ const getUserInfo = async (req, res) => {
         if (!user) {
             return res.status(StatusCodes.NOT_FOUND).json({ message: "User not found" });
         }
-        res.render("profile", { user });
+        res.render("updateProfile", { user });
     } catch (error) {
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: "Server error", error: error.message });
     }
@@ -63,6 +62,6 @@ const updateUser = async (req, res) => {
 };
 
 module.exports = {
-    getUserInfo,
+    getUpdate,
     updateUser,
 };
