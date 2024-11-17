@@ -6,7 +6,7 @@ const { StatusCodes } = require("http-status-codes");
 const getUserInfo = async (req, res) => {
     try {
         // Kiểm tra ID người dùng từ token
-        const userId = req.params.id; // Sử dụng req.params.id nếu không có req.user
+        const userId = req.user._id; // Sử dụng req.params.id nếu không có req.user
 
         if (!userId) {
             return res.status(StatusCodes.BAD_REQUEST).json({ message: "User ID is not provided" });
@@ -64,7 +64,28 @@ const updateUser = async (req, res) => {
     }
 };
 
+const getAppliedJobs = async (req, res) => {
+    try {
+        const userId = req.user._id;
+        if (!userId) {
+            return res.status(StatusCodes.BAD_REQUEST).json({ message: "User ID is not provided" });
+        }
+        const user = await User.findById(userId).populate("appliedJobs");
+        if (!user) {
+            return res.status(StatusCodes.NOT_FOUND).json({ message: "User not found" });
+        }
+        res.render("user/appliedJob.ejs", { jobs: user.appliedJobs, user : user });
+    }
+    catch (error) {
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+            message: "Error getting applied jobs",
+            error: error.message,
+        });
+}
+}
+
 module.exports = {
     getUserInfo,
     updateUser,
+    getAppliedJobs,
 };

@@ -45,6 +45,9 @@ const JobSchema = new mongoose.Schema({
         type: String,
         require: [true, "Company name is not provided"],
     },
+    company_logo:{
+        type: String
+    },
     company_id: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Company",

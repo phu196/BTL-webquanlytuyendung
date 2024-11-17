@@ -42,6 +42,12 @@ const UserSchema = new mongoose.Schema(
             district: String,
             province: String,
         },
+        appliedJobs:[
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: "Job",
+            }
+        ]
     },
     { timestamps: true }
 );
