@@ -14,7 +14,7 @@ router.get("/register", (req, res) => {
 
 router.get("/:id/posts", companyController.companyJobs);
 
-router.get("/profile", passportJWT, companyController.index);
+router.get("/profile", passportJWT, companyController.profile);
 // Edit company profile
 router.get("/edit", passportJWT, companyController.edit);
 

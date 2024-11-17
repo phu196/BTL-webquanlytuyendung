@@ -9,7 +9,11 @@ const passportJWT = passport.authenticate("jwt", {
 });
 
 // Route lấy thông tin người dùng (có xác thực)
+<<<<<<< HEAD
 router.get("/information",passportJWT, userController.getUserInfo);
+=======
+router.get("/update", passportJWT, userController.getUpdate);
+>>>>>>> ceb915ddea66b6ee22f28282b03fc3c6aa132986
 
 // Route cập nhật thông tin người dùng (không cần xác thực JWT)
 router.post("/update", passportJWT, userController.updateUser);
