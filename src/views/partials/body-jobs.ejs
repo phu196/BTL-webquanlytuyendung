@@ -73,6 +73,15 @@
                 margin: 3px;
                 font-size: 0.9rem;
             }
+            /* Loại bỏ màu xanh và gạch chân của thẻ a */
+            .link {
+                text-decoration: none; /* Bỏ gạch chân */
+                color: inherit; /* Sử dụng màu của phần tử bên trong, không mặc định là màu xanh */
+            }
+
+            .link:hover {
+                text-decoration: none; /* Bỏ gạch chân khi hover */
+            }
         </style>
     </head>
     <body>
@@ -84,15 +93,21 @@
                     <div class="carousel-item <%= i === 0 ? 'active' : '' %>">
                         <div class="row">
                             <% companies.slice(i, i + 3).forEach(company => { %>
+
                             <div class="col-md-4 mb-4">
                                 <div class="company-card">
                                     <div class="d-flex align-items-center mb-3">
-                                        <img
-                                            src="<%= company.company_logo %>"
-                                            alt="Company Logo"
-                                            class="company-logo me-3"
-                                        />
-                                        <h5 class="company-card-title mb-0"><%= company.company_name %></h5>
+                                        <a
+                                            href="/company/<%= company.id %>"
+                                            class="link d-flex align-items-center mb-3"
+                                        >
+                                            <img
+                                                src="<%= company.company_logo %>"
+                                                alt="Company Logo"
+                                                class="company-logo me-3"
+                                            />
+                                            <h5 class="company-card-title mb-0"><%= company.company_name %></h5>
+                                        </a>
                                     </div>
                                     <div class="company-card-body">
                                         <p><%= company.company_description %></p>
@@ -141,15 +156,18 @@
                     <div class="carousel-item <%= i === 0 ? 'active' : '' %>">
                         <div class="row">
                             <% newestJobs.slice(i, i + 3).forEach(job => { %>
+
                             <div class="col-md-4 mb-4">
                                 <div class="job-card">
                                     <div class="d-flex align-items-center mb-3">
-                                        <img src="<%= job.logo %>" alt="Job Logo" class="job-logo me-3" />
-                                        <h5 class="job-card-title mb-0"><%= job.title %></h5>
+                                        <a href="/job/<%= job.id %>" class="link d-flex align-items-center mb-3">
+                                            <img src="<%= job.logo %>" alt="Job Logo" class="job-logo me-3" />
+                                            <h5 class="job-card-title mb-0"><%= job.title %></h5>
+                                        </a>
                                     </div>
                                     <div class="job-card-body">
                                         <p><%= job.companyName %></p>
-                                        <p class="text-danger">Đăng nhập để xem mức lương</p>
+                                        <p><%= job.salary %></p>
                                         <p><%= job.location %></p>
                                     </div>
                                     <div class="job-card-footer">
@@ -159,6 +177,7 @@
                                     </div>
                                 </div>
                             </div>
+
                             <% }); %>
                         </div>
                     </div>

@@ -38,17 +38,21 @@ const register = async (req, res) => {
         message: "Your information was send to administrator. We'll contact you as soon as possible!",
     });
 };
-// [GET] /company/:id
-const index = async (req, res) => {
-    
-     const id = req.params.id;
-    
+// [GET] /company/profile
+const profile = async (req, res) => {
     try {
-        const company = await Company.findById(id).populate("company_jobs");
+        if (req.company) {
+            const id = req.company._id;
+            console.log("Company ID: " + id);
 
-        res.render("company/layout/mainpage", {
-            company: company,
-        });
+            const company = await Company.findById(id).populate("company_jobs");
+
+            res.render("company/layout/mainpage", {
+                company: company,
+            });
+        } else {
+            res.status(401).send("Unauthorized");
+        }
     } catch (error) {
         console.error(error);
         res.status(500).send("Internal Server Error");
@@ -70,173 +74,207 @@ const companyDetail = async (req, res) => {
     }
 };
 
-// [GET] /company/:id/post
+// [GET] /company/:id/posts
 const companyJobs = async (req, res) => {
     res.render("./company/layout/job_post");
 };
 
-// [POST] /company/:id/post
-const postCompanyJobs = async (req, res) => {
-    // console.log(req.body)
-    const id = req.params.id;
-    const {
-        jobTitle,
-        jobDescription,
-        jobRequirement,
-        jobBenefit,
-        jobLocation,
-        jobDeadline,
-        jobQuantity,
-        jobType,
-        jobTime,
-        jobExperience,
-        jobSkill,
-        jobSalary,
-    } = req.body;
-    const company = await Company.findById(id);
-    const isExit = await Job.findOne({ title: jobTitle });
-    if (isExit) {
-        return res.status(400).send("Job already exists");
-    } else {
-        const salary_negotiation = false;
-        let skill = [];
-        if (jobSkill) {
-            skill = jobSkill.split(",");
+// [POST] /company/jobs/create
+const createJob = async (req, res) => {
+    try {
+        if (req.company) {
+            const id = req.company._id;
+            const {
+                jobTitle,
+                jobDescription,
+                jobRequirement,
+                jobBenefit,
+                jobLocation,
+                jobDeadline,
+                jobQuantity,
+                jobType,
+                jobTime,
+                jobExperience,
+                jobSkill,
+                jobSalary,
+            } = req.body;
+            const company = await Company.findById(id);
+            const isExit = await Job.findOne({ title: jobTitle });
+            if (isExit) {
+                return res.status(400).send("Job already exists");
+            } else {
+                const salary_negotiation = false;
+                let skill = [];
+                if (jobSkill) {
+                    skill = jobSkill.split(",");
+                } else {
+                    console.error("jobSkill is undefined or null");
+                }
+                if (jobSalary != "Thoả thuận") {
+                    const salary_negotiation = false;
+                } else {
+                    const salary_negotiation = true;
+                }
+                const job = new Job({
+                    title: jobTitle,
+                    job_description: jobDescription,
+                    job_requirement: jobRequirement,
+                    job_benefit: jobBenefit,
+                    company_name: company.company_name,
+                    company_id: company._id,
+                    region: jobLocation,
+                    job_experience: jobExperience,
+                    number_of_recruitment: jobQuantity,
+                    job_status: true,
+                    job_time: jobTime,
+                    type_of_work: jobType,
+                    skill: skill,
+                    salary: jobSalary,
+                    salary_negotiation: salary_negotiation,
+                    last_date: jobDeadline,
+                    level: "",
+                });
+                try {
+                    await job.save();
+                    company.company_jobs.push(job);
+                    await company.save();
+                    res.redirect(`/company/profile`);
+                } catch (error) {
+                    console.error(error);
+                    res.status(500).send("Internal Server Error");
+                }
+            }
         } else {
-            console.error("jobSkill is undefined or null");
+            res.status(401).send("Unauthorized");
         }
-        if (jobSalary != "Thoả thuận") {
-            const salary_negotiation = false;
-        } else {
-            const salary_negotiation = true;
-        }
-        const job = new Job({
-            title: jobTitle,
-            job_description: jobDescription,
-            job_requirement: jobRequirement,
-            job_benefit: jobBenefit,
-            company_name: company.company_name,
-            company_id: company._id,
-            region: jobLocation,
-            job_experience: jobExperience,
-            number_of_recruitment: jobQuantity,
-            job_status: true,
-            job_time: jobTime,
-            type_of_work: jobType,
-            skill: skill,
-            salary: jobSalary,
-            salary_negotiation: salary_negotiation,
-            last_date: jobDeadline,
-            level: "",
-        });
-        try {
-            await job.save();
-            company.company_jobs.push(job);
-            await company.save();
-            res.redirect(`/company/profile`);
-        } catch (error) {
-            console.error(error);
-            res.status(500).send("Internal Server Error");
-        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("Internal Server Error");
     }
 };
 
-// [DELETE] /company/:id/delete-job/:job_id
+// [DELETE] /company/jobs/delete/:job_id
 const deleteJob = async (req, res) => {
-    const id = req.params.id;
-    const job_id = req.params.job_id;
     try {
-        await Job.findByIdAndDelete(job_id);
-        const company = await Company.findById(id);
-        if (company) {
+        if (req.company) {
+            const id = req.company._id;
+            const job_id = req.params.job_id;
+            const company = await Company.findById(id);
+            if (!company.company_jobs.includes(job_id)) {
+                return res.status(404).send("Job not found or this job is not belong to your company");
+            }
+            await Job.findByIdAndDelete(job_id);
             company.company_jobs.pull(job_id);
             await company.save();
+
+            res.redirect(`/company/profile`);
+        } else {
+            res.status(401).send("Unauthorized");
         }
-
-        res.redirect(`/company?id=${id}`);
     } catch (error) {
         console.error(error);
         res.status(500).send("Internal Server Error");
     }
 };
-// [GET] /company/:id/view-candidates/:job_id
+// [GET] /company/jobs/:job_id/view-candidates
 const viewCandidates = async (req, res) => {
-    const id = req.params.id;
-    const job_id = req.params.job_id;
-    console.log(job_id, id);
     try {
-        const job = await Job.findById(job_id).populate("applicant");
-        const candidates = job.applicant;
-        res.render("./company/layout/view_candidates", {
-            candidates: candidates,
-        });
+        if (req.company) {
+            const id = req.company._id;
+            const job_id = req.params.job_id;
+            const companyJobs = await Company.findById(id).select("company_jobs");
+            if (!companyJobs.company_jobs.includes(job_id)) {
+                return res.status(404).send("Job not found or this job is not belong to your company");
+            }
+            const job = await Job.findById(job_id).populate("applicant");
+            const candidates = job.applicant;
+            res.render("./company/layout/view_candidates", {
+                candidates: candidates,
+            });
+        } else {
+            res.status(401).send("Unauthorized");
+        }
     } catch (error) {
         console.error(error);
         res.status(500).send("Internal Server Error");
     }
 };
-//[POST] /company/:id/update
-const postEditCompany = async (req, res) => {
+//[POST] /company/update
+const updateCompany = async (req, res) => {
     try {
-        const companyId = req.params.id;
+        if (req.company) {
+            const companyId = req.company._id;
+            // Cập nhật thông tin công ty
+            await Company.findByIdAndUpdate(companyId, {
+                company_name: req.body.company_name,
+                location: req.body.location,
+                company_description: req.body.company_description,
+                company_website: req.body.company_website,
+                company_email: req.body.company_email,
+                company_phone: req.body.company_phone,
+                company_address: {
+                    detail: req.body.addressDetail,
+                    ward: req.body.ward,
+                    district: req.body.district,
+                    province: req.body.province,
+                    country: req.body.country,
+                },
+            });
 
-        // Cập nhật thông tin công ty
-        await Company.findByIdAndUpdate(companyId, {
-            company_name: req.body.company_name,
-            location: req.body.location,
-            company_description: req.body.company_description,
-            company_TIN: req.body.company_TIN,
-            company_website: req.body.company_website,
-            company_email: req.body.company_email,
-            company_phone: req.body.company_phone,
-            company_address: {
-                detail: req.body.addressDetail,
-                ward: req.body.ward,
-                district: req.body.district,
-                province: req.body.province,
-                country: req.body.country,
-            },
-        });
-
-        // Tạm thời chuyển hướng về trang ban đầu, sau này có profile của công ty thì trả về trang chủ công ty
-        res.redirect("/");
+            res.redirect("/company/profile");
+        } else {
+            res.status(401).send("Unauthorized");
+        }
     } catch (error) {
         console.log(error);
         res.status(400).json({ message: error.message });
     }
 };
-//[GET] /company/:id/edit
+//[GET] /company/edit
 const edit = async (req, res) => {
     try {
-        // Lấy ID từ URL
-        const companyId = req.params.id;
+        if (req.company) {
+            // Lấy ID từ URL
+            const companyId = req.company._id;
 
-        // Tìm công ty theo ID
-        const company = await Company.findById(companyId);
+            // Tìm công ty theo ID
+            const company = await Company.findById(companyId);
 
-        // Kiểm tra xem có tìm thấy công ty không
-        if (!company) {
-            return res.status(404).json({ message: "Company not found" });
+            // Kiểm tra xem có tìm thấy công ty không
+            if (!company) {
+                return res.status(404).json({ message: "Company not found" });
+            }
+
+            res.render("company/edit", { company });
+        } else {
+            res.status(401).send("Unauthorized");
         }
-
-        res.render("company/edit", { company });
     } catch (error) {
         console.log(error);
         res.status(500).json({ message: "This id is not exist" });
     }
 };
 
-//[GET] /company/my_job/:id/edit
+//[GET] /company/jobs/:job_id/edit
 const editJob = async (req, res) => {
     try {
-        const jobId = req.params.id;
-        const job = await Job.findById(jobId);
+        if (req.company) {
+            const comapnyId = req.company._id;
+            const jobId = req.params.job_id;
+            const companyJobs = await Company.findById(comapnyId).select("company_jobs");
+            if (!companyJobs.company_jobs.includes(jobId)) {
+                return res.status(404).send("Job not found or this job is not belong to your company");
+            }
+            const job = await Job.findById(jobId);
 
-        if (!job) {
-            return res.status(404).json({ message: "Not Found" });
+            if (!job) {
+                return res.status(404).json({ message: "Not Found" });
+            }
+
+            res.render("job/edit", { job });
+        } else {
+            res.status(401).send("Unauthorized");
         }
-
-        res.render("job/edit", { job });
     } catch (error) {
         console.log(error);
         res.status(500).json({ message: "This id is not exist" });
@@ -245,29 +283,33 @@ const editJob = async (req, res) => {
 
 const postEditJob = async (req, res) => {
     try {
-        const jobId = req.params.id;
+        if (req.company) {
+            const jobId = req.params.job_id;
 
-        await Job.findByIdAndUpdate(jobId, {
-            title: req.body.title,
-            salary: req.body.salary,
-            salary_negotiation: req.body.salary_negotiation === "on",
-            region: req.body.region,
-            job_experience: req.body.job_experience,
-            last_date: new Date(req.body.last_date),
-            job_type: req.body.job_type,
-            job_description: req.body.job_description,
-            job_requirement: req.body.job_requirement,
-            job_benefit: req.body.job_benefit,
-            location: req.body.location,
-            job_time: req.body.job_time,
-            level: req.body.level,
-            number_of_recruitment: req.body.number_of_recruitment,
-            job_status: req.body.job_status === "on",
-            type_of_work: req.body.type_of_work,
-            skill: req.body.skill ? req.body.skill.split(",").map((s) => s.trim()) : [],
-        });
+            await Job.findByIdAndUpdate(jobId, {
+                title: req.body.title,
+                salary: req.body.salary,
+                salary_negotiation: req.body.salary_negotiation === "on",
+                region: req.body.region,
+                job_experience: req.body.job_experience,
+                last_date: new Date(req.body.last_date),
+                job_type: req.body.job_type,
+                job_description: req.body.job_description,
+                job_requirement: req.body.job_requirement,
+                job_benefit: req.body.job_benefit,
+                location: req.body.location,
+                job_time: req.body.job_time,
+                level: req.body.level,
+                number_of_recruitment: req.body.number_of_recruitment,
+                job_status: req.body.job_status === "on",
+                type_of_work: req.body.type_of_work,
+                skill: req.body.skill ? req.body.skill.split(",").map((s) => s.trim()) : [],
+            });
 
-        res.redirect(`/`); // tạm thời về trang ban đầu
+            res.redirect(`/jobs/${jobId}/show`);
+        } else {
+            res.status(401).send("Unauthorized");
+        }
     } catch (error) {
         console.log(error);
         res.status(400).json({ message: error.message });
@@ -276,7 +318,7 @@ const postEditJob = async (req, res) => {
 
 const showJob = async (req, res) => {
     try {
-        const jobId = req.params.id;
+        const jobId = req.params.job_id;
         const job = await Job.findById(jobId).populate("company_id");
 
         if (!job) {
@@ -294,13 +336,13 @@ const showJob = async (req, res) => {
 module.exports = {
     getCompanyInfo,
     register,
-    index,
+    profile,
     companyDetail,
     companyJobs,
-    postCompanyJobs,
+    createJob,
     deleteJob,
     viewCandidates,
-    postEditCompany,
+    updateCompany,
     edit,
     editJob,
     postEditJob,

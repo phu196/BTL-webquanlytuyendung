@@ -48,6 +48,7 @@ const JobSchema = new mongoose.Schema({
     company_id: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Company",
+        require: [true, "Company id is not provided"],
     },
     location: {
         type: String,
