@@ -1,6 +1,7 @@
 const Company = require("../models/Company");
 const Job = require("../models/Job");
 const bcrypt = require("bcrypt");
+const axios = require("axios");
 
 const { StatusCodes } = require("http-status-codes");
 const CompanyRegistration = require("../models/CompanyRegistration");
@@ -76,7 +77,15 @@ const companyDetail = async (req, res) => {
 
 // [GET] /company/new-job
 const companyJobs = async (req, res) => {
-    res.render("./company/layout/job_post");
+    try{
+        const response = await axios.get("https://provinces.open-api.vn/api/?depth=1 ")
+        const provinces = response.data;
+        res.render("./company/layout/job_post",{provinces: provinces});
+    }
+    catch (error) {
+        console.error(error);
+        res.status(500).send("Internal Server Error");
+    }
 };
 
 // [POST] /company/new-job
@@ -85,7 +94,6 @@ const createJob = async (req, res) => {
         if (req.company) {
             const id = req.company._id;
             const company = await Company.findById(id);
-            
                 let salary_negotiation = false;
                 let skill = [];
                 if (req.body.jobSkill) {
@@ -252,12 +260,13 @@ const editJob = async (req, res) => {
                 return res.status(404).send("Job not found or this job is not belong to your company");
             }
             const job = await Job.findById(jobId);
-
+            const response = await axios.get("https://provinces.open-api.vn/api/?depth=1 ")
+            const provinces = response.data;
             if (!job) {
                 return res.status(404).json({ message: "Not Found" });
             }
 
-            res.render("job/edit", { job });
+            res.render("job/edit", { job: job, provinces: provinces });
         } else {
             res.status(401).send("Unauthorized");
         }

@@ -7,7 +7,6 @@ const passportJWT = passport.authenticate("jwt", {
     failureRedirect: "/auth/login", // Redirect đến login nếu không xác thực
     session: false, // Không sử dụng session
 });
-
 // Route lấy thông tin người dùng (có xác thực)
 router.get("/update", passportJWT, userController.getUpdate);
 

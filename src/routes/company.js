@@ -23,6 +23,7 @@ router.get("/:id", companyController.companyDetail);
 
 // router.post("/update", passportJWT, companyController.updateCompany);
 
+// Xoa job trong cty
 router.post("/jobs/:job_id/delete", passportJWT, companyController.deleteJob);
 // thông tin job cụ thể của công ty
 router.get("/jobs/:job_id/edit", passportJWT, companyController.editJob);

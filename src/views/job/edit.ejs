@@ -3,22 +3,22 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Edit Job Information</title>
+        <title>Chỉnh sửa thông tin công việc</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
         <script src="/tinymce/tinymce.min.js" referrerpolicy="origin"></script>
     </head>
     <body>
         <div class="container mt-4">
-            <h3 class="text-center mb-4">Edit Job Information</h3>
+            <h3 class="text-center mb-4">Chỉnh sửa thông tin công việc</h3>
             <form action="/company/jobs/<%= job._id %>/update" method="POST" class="border p-4 rounded bg-light">
                 <div class="mb-3">
-                    <label for="title" class="form-label">Job Title</label>
+                    <label for="title" class="form-label">Tên công việc</label>
                     <input type="text" class="form-control" id="title" name="title" value="<%= job.title %>" required />
                 </div>
 
                 <!-- Salary -->
                 <div class="mb-3">
-                    <label for="salary" class="form-label">Salary</label>
+                    <label for="salary" class="form-label">Lương</label>
                     <input
                         type="text"
                         class="form-control"
@@ -33,25 +33,24 @@
                 <div class="mb-3 form-check">
                     <input type="checkbox" class="form-check-input" id="salaryNegotiation" name="salary_negotiation" <%=
                     job.salary_negotiation ? 'checked' : '' %>>
-                    <label for="salaryNegotiation" class="form-check-label">Salary Negotiable</label>
+                    <label for="salaryNegotiation" class="form-check-label">Lương thoả thuận</label>
                 </div>
 
                 <!-- Region -->
                 <div class="mb-3">
-                    <label for="region" class="form-label">Region</label>
-                    <input
-                        type="text"
-                        class="form-control"
-                        id="region"
-                        name="region"
-                        value="<%= job.region %>"
-                        required
-                    />
-                </div>
+                    <label for="jobRegion" class="form-label">Khu vực làm việc</label>
+                    <select class="form-select" id="jobRegion" name="jobRegion" required>
+                      <% provinces.forEach(province => { %>
+                        <option value="<%= province.name %>" <%= province.name === job.region ? 'selected' : '' %> >
+                          <%= province.name %>
+                        </option>
+                      <% }) %>
+                    </select>
+                  </div>
 
                 <!-- Job Experience -->
                 <div class="mb-3">
-                    <label for="jobExperience" class="form-label">Job Experience (years)</label>
+                    <label for="jobExperience" class="form-label">Kinh nghiệm làm việc (năm)</label>
                     <input
                         type="number"
                         class="form-control"
@@ -64,7 +63,7 @@
 
                 <!-- Last Date -->
                 <div class="mb-3">
-                    <label for="lastDate" class="form-label">Last Date to Apply</label>
+                    <label for="lastDate" class="form-label">Hạn cuối ứng tuyển</label>
                     <input
                         type="date"
                         class="form-control"
@@ -79,7 +78,7 @@
 
                  <!-- Job Description -->
             <div class="mb-3">
-                <label for="jobDescription" class="form-label">Job Description</label>
+                <label for="jobDescription" class="form-label">Mô tả công việc</label>
                 <textarea class="form-control" id="jobDescription" name="job_description" >
 <%- job.job_description %>
                 </textarea>
@@ -87,7 +86,7 @@
 
             <!-- Job Requirement -->
             <div class="mb-3">
-                <label for="jobRequirement" class="form-label">Job Requirement</label>
+                <label for="jobRequirement" class="form-label">Yêu cầu công việc</label>
                 <textarea class="form-control" id="jobRequirement" name="job_requirement" >
 <%- job.job_requirement %>
                 </textarea>
@@ -95,7 +94,7 @@
 
             <!-- Job Benefit -->
             <div class="mb-3">
-                <label for="jobBenefit" class="form-label">Job Benefit</label>
+                <label for="jobBenefit" class="form-label">Phúc lợi</label>
                 <textarea class="form-control" id="jobBenefit" name="job_benefit" >
 <%- job.job_benefit %>
                 </textarea>
@@ -103,7 +102,7 @@
 
                 <!-- Location -->
                 <div class="mb-3">
-                    <label for="location" class="form-label">Location</label>
+                    <label for="location" class="form-label">Địa điểm làm việc</label>
                     <input
                         type="text"
                         class="form-control"
@@ -116,7 +115,7 @@
 
                 <!-- Job Time -->
                 <div class="mb-3">
-                    <label for="jobTime" class="form-label">Job Time</label>
+                    <label for="jobTime" class="form-label">Thời gian làm việc</label>
                     <input
                         type="text"
                         class="form-control"
@@ -129,13 +128,13 @@
 
                 <!-- Level -->
                 <div class="mb-3">
-                    <label for="level" class="form-label">Level</label>
+                    <label for="level" class="form-label">Cấp độ</label>
                     <input type="text" class="form-control" id="level" name="level" value="<%= job.level %>" required />
                 </div>
 
                 <!-- Number of Recruitment -->
                 <div class="mb-3">
-                    <label for="numberOfRecruitment" class="form-label">Number of Recruitment</label>
+                    <label for="numberOfRecruitment" class="form-label">Số lượng ứng tuyển</label>
                     <input
                         type="number"
                         class="form-control"
@@ -150,12 +149,12 @@
                 <div class="mb-3 form-check">
                     <input type="checkbox" class="form-check-input" id="jobStatus" name="job_status" <%= job.job_status
                     ? 'checked' : '' %>>
-                    <label for="jobStatus" class="form-check-label">Job Active</label>
+                    <label for="jobStatus" class="form-check-label">Công việc còn tuyển</label>
                 </div>
 
                 <!-- Type of Work -->
                 <div class="mb-3">
-                    <label for="typeOfWork" class="form-label">Type of Work</label>
+                    <label for="typeOfWork" class="form-label">Loại hình làm việc</label>
                     <input
                         type="text"
                         class="form-control"
@@ -168,7 +167,7 @@
 
                 <!-- Skills -->
                 <div class="mb-3">
-                    <label for="skill" class="form-label">Skills</label>
+                    <label for="skill" class="form-label">Kỹ năng liên quan</label>
                     <input
                         type="text"
                         class="form-control"
@@ -180,7 +179,7 @@
                 </div>
 
                 <!-- Submit Button -->
-                <button type="submit" class="btn btn-primary w-100">Update Job</button>
+                <button type="submit" class="btn btn-primary w-100">Lưu chỉnh sửa</button>
             </form>
         </div>
 
