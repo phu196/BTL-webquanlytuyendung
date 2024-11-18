@@ -11,19 +11,19 @@ router.post("/register", companyController.register);
 router.get("/register", (req, res) => {
     res.render("register-company");
 });
-
-router.get("/:id/posts", companyController.companyJobs);
-
+// Tạo job mới
+router.get("/new-job",passportJWT, companyController.companyJobs);
+router.post("/new-job",passportJWT, companyController.createJob);
+// Trang thông tin công ty phía công ty
 router.get("/profile", passportJWT, companyController.profile);
 // Edit company profile
 router.get("/edit", passportJWT, companyController.edit);
-
+// Trang thông tin công ty phía user
 router.get("/:id", companyController.companyDetail);
 
 // router.post("/update", passportJWT, companyController.updateCompany);
 
-// router.post("/jobs/create", passportJWT, companyController.createJob);
-router.delete("/jobs/:job_id/delete", passportJWT, companyController.deleteJob);
+router.post("/jobs/:job_id/delete", passportJWT, companyController.deleteJob);
 // thông tin job cụ thể của công ty
 router.get("/jobs/:job_id/edit", passportJWT, companyController.editJob);
 router.post("/jobs/:job_id/update", passportJWT, companyController.postEditJob);

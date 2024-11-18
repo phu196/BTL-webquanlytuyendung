@@ -74,12 +74,12 @@ const companyDetail = async (req, res) => {
     }
 };
 
-// [GET] /company/:id/posts
+// [GET] /company/new-job
 const companyJobs = async (req, res) => {
     res.render("./company/layout/job_post");
 };
 
-// [POST] /company/jobs/create
+// [POST] /company/new-job
 const createJob = async (req, res) => {
     try {
         if (req.company) {
@@ -99,10 +99,7 @@ const createJob = async (req, res) => {
                 jobSalary,
             } = req.body;
             const company = await Company.findById(id);
-            const isExit = await Job.findOne({ title: jobTitle });
-            if (isExit) {
-                return res.status(400).send("Job already exists");
-            } else {
+            
                 const salary_negotiation = false;
                 let skill = [];
                 if (jobSkill) {
@@ -143,7 +140,7 @@ const createJob = async (req, res) => {
                     console.error(error);
                     res.status(500).send("Internal Server Error");
                 }
-            }
+            
         } else {
             res.status(401).send("Unauthorized");
         }
@@ -153,12 +150,14 @@ const createJob = async (req, res) => {
     }
 };
 
-// [DELETE] /company/jobs/delete/:job_id
+// [DELETE] /company/jobs/:job_id/delete
 const deleteJob = async (req, res) => {
     try {
+        console.log(req.company);
+        console.log(req.body)
         if (req.company) {
             const id = req.company._id;
-            const job_id = req.params.job_id;
+            const job_id = req.body.jobId;
             const company = await Company.findById(id);
             if (!company.company_jobs.includes(job_id)) {
                 return res.status(404).send("Job not found or this job is not belong to your company");
@@ -166,8 +165,8 @@ const deleteJob = async (req, res) => {
             await Job.findByIdAndDelete(job_id);
             company.company_jobs.pull(job_id);
             await company.save();
-
-            res.redirect(`/company/profile`);
+            res.status(200).json({ success: true, message: 'Job deleted successfully' });
+            
         } else {
             res.status(401).send("Unauthorized");
         }
