@@ -25,10 +25,6 @@ const JobSchema = new mongoose.Schema({
         type: Date,
         require: [true, "Last date is not provided"],
     },
-    job_type: {
-        type: String,
-        require: [true, "Job type is not provided"],
-    },
     job_description: {
         type: String,
         require: [true, "Job description is not provided"],
