@@ -24,7 +24,7 @@ app.use(
 
 // TinyMCE
 //app.use('/tinymce', express.static(path.join(__dirname, 'node_modules', 'tinymce')));
-app.use("/tinymce", express.static("node_modules/tinymce"));
+app.use('/tinymce', express.static(path.join(__dirname, '..', 'node_modules', 'tinymce')));
 
 const passport = require("./middlewares/passport");
 app.use(passport.initialize());

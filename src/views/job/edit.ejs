@@ -5,6 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Edit Job Information</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+        <script src="/tinymce/tinymce.min.js" referrerpolicy="origin"></script>
     </head>
     <body>
         <div class="container mt-4">
@@ -74,42 +75,31 @@
                     />
                 </div>
 
-                <!-- Job Type -->
-                <div class="mb-3">
-                    <label for="jobType" class="form-label">Job Type</label>
-                    <input
-                        type="text"
-                        class="form-control"
-                        id="jobType"
-                        name="job_type"
-                        value="<%= job.job_type %>"
-                        required
-                    />
-                </div>
+                
 
-                <!-- Job Description -->
-                <div class="mb-3">
-                    <label for="jobDescription" class="form-label">Job Description</label>
-                    <textarea class="form-control" id="jobDescription" name="job_description" rows="3" required>
-<%= job.job_description %></textarea
-                    >
-                </div>
+                 <!-- Job Description -->
+            <div class="mb-3">
+                <label for="jobDescription" class="form-label">Job Description</label>
+                <textarea class="form-control" id="jobDescription" name="job_description" >
+<%- job.job_description %>
+                </textarea>
+            </div>
 
-                <!-- Job Requirement -->
-                <div class="mb-3">
-                    <label for="jobRequirement" class="form-label">Job Requirement</label>
-                    <textarea class="form-control" id="jobRequirement" name="job_requirement" rows="3" required>
-<%= job.job_requirement %></textarea
-                    >
-                </div>
+            <!-- Job Requirement -->
+            <div class="mb-3">
+                <label for="jobRequirement" class="form-label">Job Requirement</label>
+                <textarea class="form-control" id="jobRequirement" name="job_requirement" >
+<%- job.job_requirement %>
+                </textarea>
+            </div>
 
-                <!-- Job Benefit -->
-                <div class="mb-3">
-                    <label for="jobBenefit" class="form-label">Job Benefit</label>
-                    <textarea class="form-control" id="jobBenefit" name="job_benefit" rows="3">
-<%= job.job_benefit %></textarea
-                    >
-                </div>
+            <!-- Job Benefit -->
+            <div class="mb-3">
+                <label for="jobBenefit" class="form-label">Job Benefit</label>
+                <textarea class="form-control" id="jobBenefit" name="job_benefit" >
+<%- job.job_benefit %>
+                </textarea>
+            </div>
 
                 <!-- Location -->
                 <div class="mb-3">
@@ -195,5 +185,14 @@
         </div>
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        <script>
+            // Khởi tạo TinyMCE
+            tinymce.init({
+                selector: '#jobDescription, #jobRequirement, #jobBenefit',
+                plugins: 'lists link table image code',
+                toolbar: 'undo redo | formatselect | bold italic | alignleft aligncenter alignright | bullist numlist outdent indent | link image code',
+                height: 300,
+            });
+        </script>
     </body>
 </html>

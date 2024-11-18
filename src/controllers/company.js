@@ -84,52 +84,39 @@ const createJob = async (req, res) => {
     try {
         if (req.company) {
             const id = req.company._id;
-            const {
-                jobTitle,
-                jobDescription,
-                jobRequirement,
-                jobBenefit,
-                jobLocation,
-                jobDeadline,
-                jobQuantity,
-                jobType,
-                jobTime,
-                jobExperience,
-                jobSkill,
-                jobSalary,
-            } = req.body;
             const company = await Company.findById(id);
             
-                const salary_negotiation = false;
+                let salary_negotiation = false;
                 let skill = [];
-                if (jobSkill) {
-                    skill = jobSkill.split(",");
+                if (req.body.jobSkill) {
+                    skill = req.body.jobSkill.split(",");
                 } else {
                     console.error("jobSkill is undefined or null");
                 }
-                if (jobSalary != "Thoả thuận") {
-                    const salary_negotiation = false;
+                if (req.body.jobSalary != "Thoả thuận") {
+                     salary_negotiation = false;
                 } else {
-                    const salary_negotiation = true;
+                     salary_negotiation = true;
                 }
                 const job = new Job({
-                    title: jobTitle,
-                    job_description: jobDescription,
-                    job_requirement: jobRequirement,
-                    job_benefit: jobBenefit,
+                    title: req.body.jobTitle,
+                    job_description: req.body.jobDescription,
+                    job_requirement: req.body.jobRequirements,
+                    job_benefit: req.body.jobBenefits,
                     company_name: company.company_name,
                     company_id: company._id,
-                    region: jobLocation,
-                    job_experience: jobExperience,
-                    number_of_recruitment: jobQuantity,
+                    region: req.body.jobRegion,
+                    location: req.body.jobLocation,
+                    job_experience: req.body.jobExperience,
+                    number_of_recruitment: req.body.jobQuantity,
                     job_status: true,
-                    job_time: jobTime,
-                    type_of_work: jobType,
+                    job_time: req.body.jobTime,
+                    type_of_work: req.body.jobType,
                     skill: skill,
-                    salary: jobSalary,
+                    salary: req.body.jobSalary,
                     salary_negotiation: salary_negotiation,
-                    last_date: jobDeadline,
-                    level: "",
+                    last_date: req.body.jobDeadline,
+                    level: req.body.jobLevel,
                 });
                 try {
                     await job.save();
@@ -292,7 +279,6 @@ const postEditJob = async (req, res) => {
                 region: req.body.region,
                 job_experience: req.body.job_experience,
                 last_date: new Date(req.body.last_date),
-                job_type: req.body.job_type,
                 job_description: req.body.job_description,
                 job_requirement: req.body.job_requirement,
                 job_benefit: req.body.job_benefit,
@@ -305,7 +291,7 @@ const postEditJob = async (req, res) => {
                 skill: req.body.skill ? req.body.skill.split(",").map((s) => s.trim()) : [],
             });
 
-            res.redirect(`/jobs/${jobId}/show`);
+            res.redirect(`/company/jobs/${jobId}/show`);
         } else {
             res.status(401).send("Unauthorized");
         }
