@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Custom styling for TopDev-like theme */
+        body {
+            background-color: #fcefe9; /* Light peach background */
+            font-family: Arial, sans-serif;
+        }
+
+        .joblist-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .search-bar {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .search-bar input[type="text"] {
+            width: 60%;
+            padding: 10px;
+            border-radius: 20px 0 0 20px;
+            border: 1px solid #ccc;
+        }
+
+        .search-bar button {
+            padding: 10px 20px;
+            border-radius: 0 20px 20px 0;
+            background-color: #ff6243;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        .tags {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+
+        .tag {
+            background-color: #f4f4f4;
+            padding: 8px 15px;
+            border-radius: 15px;
+            font-size: 0.9rem;
+        }
+
+        .job-card {
+            background-color: white;
+            padding: 20px;
+            margin: 15px;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s;
+        }
+
+        .job-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .view-details-btn {
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Section -->
+    <div class="header text-center mb-4">
+        <h1>Tìm kiếm</h1>
+        <div class="search-bar">
+            <input type="text" class="form-control" placeholder="Tìm kiếm theo các Kỹ năng, Vị trí, Công ty...">
+            <button class="btn btn-danger mt-2">Tìm kiếm</button>
+        </div>
+    </div>
+
+    <!-- Job Cards Section -->
+    <div class="joblist-container">
+        <!-- Tag Filters -->
+        <div class="tags mb-4">
+            <div class="tag">Java</div>
+            <div class="tag">C++</div>
+            <div class="tag">JavaScript</div>
+            <!-- Add more tags as needed -->
+        </div>
+
+        <!-- Job Cards -->
+        <div class="row">
+            <div class="col-md-4">
+                <div class="job-card">
+                    <h3>Job Title</h3>
+                    <p>Company Name</p>
+                    <p>Description or job summary here</p>
+                    <!-- View Details Button -->
+                    <a href="/job-details/1" class="btn btn-primary view-details-btn">Xem chi tiết</a>
+                </div>
+            </div>
+
+            <!-- Repeat job-card div for more job listings -->
+            <div class="col-md-4">
+                <div class="job-card">
+                    <h3>Job Title</h3>
+                    <p>Company Name</p>
+                    <p>Description or job summary here</p>
+                    <!-- View Details Button -->
+                    <a href="/job-details/2" class="btn btn-primary view-details-btn">Xem chi tiết</a>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="job-card">
+                    <h3>Job Title</h3>
+                    <p>Company Name</p>
+                    <p>Description or job summary here</p>
+                    <!-- View Details Button -->
+                    <a href="/job-details/3" class="btn btn-primary view-details-btn">Xem chi tiết</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

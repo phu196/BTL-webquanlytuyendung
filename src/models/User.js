@@ -1,16 +1,17 @@
 "use strict";
 const mongoose = require("mongoose");
+const Schema = mongoose.Schema;  // Add this line
 
-const UserSchema = new mongoose.Schema(
+const UserSchema = new Schema(
     {
         username: {
             type: String,
-            require: [true, "Username is not provided"],
+            required: [true, "Username is not provided"],
             unique: true,
         },
         fullname: {
             type: String,
-            require: [true, "Fullname is not provided"],
+            required: [true, "Fullname is not provided"],
         },
         role: {
             type: String,
@@ -23,12 +24,12 @@ const UserSchema = new mongoose.Schema(
         },
         email: {
             type: String,
-            require: [true, "Email is not provided"],
+            required: [true, "Email is not provided"],
             unique: true,
         },
         password: {
             type: String,
-            require: [true, "Password is not provided"],
+            required: [true, "Password is not provided"],
         },
         refreshToken: {
             type: String,
@@ -42,6 +43,7 @@ const UserSchema = new mongoose.Schema(
             district: String,
             province: String,
         },
+        appliedJobs: [{ type: Schema.Types.ObjectId, ref: 'Job' }]  // Reference to the Job model
     },
     { timestamps: true }
 );

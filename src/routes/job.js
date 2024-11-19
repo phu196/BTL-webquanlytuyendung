@@ -3,6 +3,6 @@ const router = express.Router();
 
 const jobController = require("../controllers/job");
 
-router.get("/viec-lam-it", jobController.searchJob);
-
+router.get("/", jobController.searchJob);
+router.post('/apply/:jobId', jobController.applyToJob);
 module.exports = router;
