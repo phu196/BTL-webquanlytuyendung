@@ -5,12 +5,13 @@ const UserSchema = new mongoose.Schema(
     {
         username: {
             type: String,
-            require: [true, "Username is not provided"],
+            required: [true, "Username is not provided"],
             unique: true,
+            index: true,
         },
         fullname: {
             type: String,
-            require: [true, "Fullname is not provided"],
+            required: [true, "Fullname is not provided"],
         },
         role: {
             type: String,
@@ -23,25 +24,33 @@ const UserSchema = new mongoose.Schema(
         },
         email: {
             type: String,
-            require: [true, "Email is not provided"],
+            required: [true, "Email is not provided"],
             unique: true,
+            index: true,
         },
         password: {
             type: String,
-            require: [true, "Password is not provided"],
+            required: [true, "Password is not provided"],
         },
-        refreshToken: {
-            type: String,
-        },
-        phoneNumber: {
-            type: String,
-        },
+        phoneNumber: String,
         address: {
             detail: String,
             ward: String,
             district: String,
             province: String,
         },
+        CV: [
+            {
+                title: String,
+                path: String, // path on server
+            },
+        ],
+        jobs: [
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: "Job",
+            },
+        ],
     },
     { timestamps: true }
 );

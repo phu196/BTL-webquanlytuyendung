@@ -31,12 +31,13 @@
                 margin-top: 15px;
             }
             .keyword-badge {
-                background-color: #f0f0f0;
-                color: #000;
-                border-radius: 10px;
-                padding: 5px 10px;
-                margin: 3px;
-                font-size: 0.9rem;
+                display: inline-block; /* Đảm bảo các từ khóa nằm ngang */
+                margin: 5px 5px 0 0; /* Tạo khoảng cách giữa các từ khóa */
+                padding: 5px 10px; /* Khoảng cách bên trong thẻ */
+                background-color: #f0f0f0; /* Màu nền */
+                color: #333; /* Màu chữ */
+                border-radius: 5px; /* Bo góc */
+                font-size: 14px; /* Kích thước chữ */
             }
             .carousel-control-prev,
             .carousel-control-next {
@@ -66,12 +67,13 @@
                 font-weight: bold;
             }
             .keyword-badge-job {
-                background-color: #f0f0f0;
-                color: #000;
-                border-radius: 10px;
-                padding: 5px 10px;
-                margin: 3px;
-                font-size: 0.9rem;
+                display: inline-block; /* Đảm bảo các từ khóa nằm ngang */
+                margin: 5px 5px 0 0; /* Tạo khoảng cách giữa các từ khóa */
+                padding: 5px 10px; /* Khoảng cách bên trong thẻ */
+                background-color: #f0f0f0; /* Màu nền */
+                color: #333; /* Màu chữ */
+                border-radius: 5px; /* Bo góc */
+                font-size: 14px; /* Kích thước chữ */
             }
             /* Loại bỏ màu xanh và gạch chân của thẻ a */
             .link {
@@ -95,22 +97,22 @@
                             <% companies.slice(i, i + 3).forEach(company => { %>
 
                             <div class="col-md-4 mb-4">
-                                <div class="company-card" style="min-height: 250px">
+                                <div class="company-card">
                                     <div class="d-flex align-items-center mb-3">
                                         <a
                                             href="/company/<%= company.id %>"
                                             class="link d-flex align-items-center mb-3"
                                         >
                                             <img
-                                                src="<%= company.company_logo %>"
+                                                src="<%= company.logoPath %>"
                                                 alt="Company Logo"
                                                 class="company-logo me-3"
                                             />
-                                            <h5 class="company-card-title mb-0"><%= company.company_name %></h5>
+                                            <h5 class="company-card-title mb-0"><%= company.companyName %></h5>
                                         </a>
                                     </div>
                                     <div class="company-card-body">
-                                        <p><%= company.company_description %></p>
+                                        <p><%= company.description %></p>
                                         <% for (let i = 0; i < companies.jobNames; i++) { %>
                                         <span class="keyword-button"><%= companies.jobNames[i] %></span>
                                         <% } %>
@@ -158,7 +160,7 @@
                             <% newestJobs.slice(i, i + 3).forEach(job => { %>
 
                             <div class="col-md-4 mb-4">
-                                <div class="job-card" style="min-height: 250px">
+                                <div class="job-card" style="min-height: 300px">
                                     <div class="d-flex align-items-center mb-3">
                                         <a href="/job/<%= job.id %>" class="link d-flex align-items-center mb-3">
                                             <img src="<%= job.logo %>" alt="Job Logo" class="job-logo me-3" />

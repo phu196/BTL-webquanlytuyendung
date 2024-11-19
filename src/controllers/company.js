@@ -45,7 +45,7 @@ const profile = async (req, res) => {
             const id = req.company._id;
             console.log("Company ID: " + id);
 
-            const company = await Company.findById(id).populate("company_jobs");
+            const company = await Company.findById(id).populate("jobs");
 
             res.render("company/layout/mainpage", {
                 company: company,
@@ -63,7 +63,7 @@ const profile = async (req, res) => {
 const companyDetail = async (req, res) => {
     const id = req.params.id;
     try {
-        const company = await Company.findById(id).populate("company_jobs");
+        const company = await Company.findById(id).populate("jobs");
 
         res.render("company/layout/company_view", {
             company: company,
@@ -103,7 +103,7 @@ const createJob = async (req, res) => {
             if (isExit) {
                 return res.status(400).send("Job already exists");
             } else {
-                const salary_negotiation = false;
+                const isSalaryNegotiation = false;
                 let skill = [];
                 if (jobSkill) {
                     skill = jobSkill.split(",");
@@ -111,32 +111,32 @@ const createJob = async (req, res) => {
                     console.error("jobSkill is undefined or null");
                 }
                 if (jobSalary != "Thoả thuận") {
-                    const salary_negotiation = false;
+                    const isSalaryNegotiation = false;
                 } else {
-                    const salary_negotiation = true;
+                    const isSalaryNegotiation = true;
                 }
                 const job = new Job({
                     title: jobTitle,
-                    job_description: jobDescription,
-                    job_requirement: jobRequirement,
-                    job_benefit: jobBenefit,
-                    company_name: company.company_name,
-                    company_id: company._id,
+                    description: jobDescription,
+                    requirement: jobRequirement,
+                    benefit: jobBenefit,
+                    companyName: company.companyName,
+                    companyId: company._id,
                     region: jobLocation,
-                    job_experience: jobExperience,
-                    number_of_recruitment: jobQuantity,
-                    job_status: true,
-                    job_time: jobTime,
-                    type_of_work: jobType,
+                    experienceYears: jobExperience,
+                    numberOfRecruitment: jobQuantity,
+                    status: true,
+                    time: jobTime,
+                    typeOfWork: jobType,
                     skill: skill,
                     salary: jobSalary,
-                    salary_negotiation: salary_negotiation,
-                    last_date: jobDeadline,
+                    isSalaryNegotiation: isSalaryNegotiation,
+                    deadline: jobDeadline,
                     level: "",
                 });
                 try {
                     await job.save();
-                    company.company_jobs.push(job);
+                    company.jobs.push(job);
                     await company.save();
                     res.redirect(`/company/profile`);
                 } catch (error) {
@@ -160,11 +160,11 @@ const deleteJob = async (req, res) => {
             const id = req.company._id;
             const job_id = req.params.job_id;
             const company = await Company.findById(id);
-            if (!company.company_jobs.includes(job_id)) {
+            if (!company.jobs.includes(job_id)) {
                 return res.status(404).send("Job not found or this job is not belong to your company");
             }
             await Job.findByIdAndDelete(job_id);
-            company.company_jobs.pull(job_id);
+            company.jobs.pull(job_id);
             await company.save();
 
             res.redirect(`/company/profile`);
@@ -182,8 +182,8 @@ const viewCandidates = async (req, res) => {
         if (req.company) {
             const id = req.company._id;
             const job_id = req.params.job_id;
-            const companyJobs = await Company.findById(id).select("company_jobs");
-            if (!companyJobs.company_jobs.includes(job_id)) {
+            const companyJobs = await Company.findById(id).select("jobs");
+            if (!companyJobs.jobs.includes(job_id)) {
                 return res.status(404).send("Job not found or this job is not belong to your company");
             }
             const job = await Job.findById(job_id).populate("applicant");
@@ -206,13 +206,13 @@ const updateCompany = async (req, res) => {
             const companyId = req.company._id;
             // Cập nhật thông tin công ty
             await Company.findByIdAndUpdate(companyId, {
-                company_name: req.body.company_name,
+                companyName: req.body.companyName,
                 location: req.body.location,
-                company_description: req.body.company_description,
-                company_website: req.body.company_website,
-                company_email: req.body.company_email,
-                company_phone: req.body.company_phone,
-                company_address: {
+                description: req.body.description,
+                website: req.body.website,
+                email: req.body.email,
+                phoneNumber: req.body.phoneNumber,
+                address: {
                     detail: req.body.addressDetail,
                     ward: req.body.ward,
                     district: req.body.district,
@@ -261,8 +261,8 @@ const editJob = async (req, res) => {
         if (req.company) {
             const comapnyId = req.company._id;
             const jobId = req.params.job_id;
-            const companyJobs = await Company.findById(comapnyId).select("company_jobs");
-            if (!companyJobs.company_jobs.includes(jobId)) {
+            const companyJobs = await Company.findById(comapnyId).select("jobs");
+            if (!companyJobs.jobs.includes(jobId)) {
                 return res.status(404).send("Job not found or this job is not belong to your company");
             }
             const job = await Job.findById(jobId);
@@ -289,20 +289,20 @@ const postEditJob = async (req, res) => {
             await Job.findByIdAndUpdate(jobId, {
                 title: req.body.title,
                 salary: req.body.salary,
-                salary_negotiation: req.body.salary_negotiation === "on",
+                isSalaryNegotiation: req.body.isSalaryNegotiation === "on",
                 region: req.body.region,
-                job_experience: req.body.job_experience,
-                last_date: new Date(req.body.last_date),
-                job_type: req.body.job_type,
-                job_description: req.body.job_description,
-                job_requirement: req.body.job_requirement,
-                job_benefit: req.body.job_benefit,
+                experienceYears: req.body.experienceYears,
+                deadline: new Date(req.body.deadline),
+                type: req.body.type,
+                description: req.body.description,
+                requirement: req.body.requirement,
+                benefit: req.body.benefit,
                 location: req.body.location,
-                job_time: req.body.job_time,
+                time: req.body.time,
                 level: req.body.level,
-                number_of_recruitment: req.body.number_of_recruitment,
-                job_status: req.body.job_status === "on",
-                type_of_work: req.body.type_of_work,
+                numberOfRecruitment: req.body.numberOfRecruitment,
+                status: req.body.status === "on",
+                typeOfWork: req.body.typeOfWork,
                 skill: req.body.skill ? req.body.skill.split(",").map((s) => s.trim()) : [],
             });
 
@@ -319,7 +319,7 @@ const postEditJob = async (req, res) => {
 const showJob = async (req, res) => {
     try {
         const jobId = req.params.job_id;
-        const job = await Job.findById(jobId).populate("company_id");
+        const job = await Job.findById(jobId).populate("companyId");
 
         if (!job) {
             return res.status(404).json({ message: "Job not found" });

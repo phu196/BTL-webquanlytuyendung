@@ -3,7 +3,7 @@ const Job = require("../models/Job");
 const index = async (req, res) => {
     const companies = await Company.find().limit(9).sort({ createdAt: -1 });
     companies.forEach((company) => {
-        const jobIds = company.company_jobs;
+        const jobIds = company.jobs;
         const jobNames = [];
         jobIds.forEach(async (jobId) => {
             const job = await Job.findById(jobId);
@@ -15,22 +15,22 @@ const index = async (req, res) => {
     });
 
     const jobs = await Job.find()
-        .limit(3)
+        .limit(9)
         .sort({ createdAt: -1 })
-        .select("title company_id company_name location skill salary");
+        .select("title companyId companyName location skills salary");
     var newestJobs = [];
     await Promise.all(
         jobs.map(async (job) => {
-            const company = await Company.findById(job.company_id).select("company_logo");
+            const company = await Company.findById(job.companyId).select("logoPath");
             if (company) {
                 newestJobs.push({
                     id: job._id,
-                    logo: company.company_logo,
+                    logo: company.logoPath,
                     title: job.title,
-                    companyName: job.company_name,
+                    companyName: job.companyName,
                     salary: job.salary,
                     location: job.location,
-                    keywords: job.skill,
+                    keywords: job.skills,
                 });
             }
         })

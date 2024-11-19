@@ -61,10 +61,10 @@
                         "Content-Type": "application/json",
                     },
                     body: JSON.stringify({
-                        company_name: companyName,
-                        company_email: email,
+                        companyName: companyName,
+                        email: email,
                         password,
-                        company_phone: phoneNumber,
+                        phoneNumber: phoneNumber,
                     }),
                 })
                     .then((response) => {

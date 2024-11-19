@@ -30,8 +30,8 @@
 
                 <!-- Salary Negotiation -->
                 <div class="mb-3 form-check">
-                    <input type="checkbox" class="form-check-input" id="salaryNegotiation" name="salary_negotiation" <%=
-                    job.salary_negotiation ? 'checked' : '' %>>
+                    <input type="checkbox" class="form-check-input" id="salaryNegotiation" name="isSalaryNegotiation"
+                    <%= job.isSalaryNegotiation ? 'checked' : '' %>>
                     <label for="salaryNegotiation" class="form-check-label">Salary Negotiable</label>
                 </div>
 
@@ -55,8 +55,8 @@
                         type="number"
                         class="form-control"
                         id="jobExperience"
-                        name="job_experience"
-                        value="<%= job.job_experience %>"
+                        name="experienceYears"
+                        value="<%= job.experienceYears %>"
                         required
                     />
                 </div>
@@ -68,8 +68,8 @@
                         type="date"
                         class="form-control"
                         id="lastDate"
-                        name="last_date"
-                        value="<%= job.last_date.toISOString().split('T')[0] %>"
+                        name="deadline"
+                        value="<%= job.deadline.toISOString().split('T')[0] %>"
                         required
                     />
                 </div>
@@ -77,38 +77,29 @@
                 <!-- Job Type -->
                 <div class="mb-3">
                     <label for="jobType" class="form-label">Job Type</label>
-                    <input
-                        type="text"
-                        class="form-control"
-                        id="jobType"
-                        name="job_type"
-                        value="<%= job.job_type %>"
-                        required
-                    />
+                    <input type="text" class="form-control" id="jobType" name="type" value="<%= job.type %>" required />
                 </div>
 
                 <!-- Job Description -->
                 <div class="mb-3">
                     <label for="jobDescription" class="form-label">Job Description</label>
-                    <textarea class="form-control" id="jobDescription" name="job_description" rows="3" required>
-<%= job.job_description %></textarea
+                    <textarea class="form-control" id="jobDescription" name="description" rows="3" required>
+<%= job.description %></textarea
                     >
                 </div>
 
                 <!-- Job Requirement -->
                 <div class="mb-3">
                     <label for="jobRequirement" class="form-label">Job Requirement</label>
-                    <textarea class="form-control" id="jobRequirement" name="job_requirement" rows="3" required>
-<%= job.job_requirement %></textarea
+                    <textarea class="form-control" id="jobRequirement" name="requirement" rows="3" required>
+<%= job.requirement %></textarea
                     >
                 </div>
 
                 <!-- Job Benefit -->
                 <div class="mb-3">
                     <label for="jobBenefit" class="form-label">Job Benefit</label>
-                    <textarea class="form-control" id="jobBenefit" name="job_benefit" rows="3">
-<%= job.job_benefit %></textarea
-                    >
+                    <textarea class="form-control" id="jobBenefit" name="benefit" rows="3"><%= job.benefit %></textarea>
                 </div>
 
                 <!-- Location -->
@@ -127,14 +118,7 @@
                 <!-- Job Time -->
                 <div class="mb-3">
                     <label for="jobTime" class="form-label">Job Time</label>
-                    <input
-                        type="text"
-                        class="form-control"
-                        id="jobTime"
-                        name="job_time"
-                        value="<%= job.job_time %>"
-                        required
-                    />
+                    <input type="text" class="form-control" id="jobTime" name="time" value="<%= job.time %>" required />
                 </div>
 
                 <!-- Level -->
@@ -150,16 +134,16 @@
                         type="number"
                         class="form-control"
                         id="numberOfRecruitment"
-                        name="number_of_recruitment"
-                        value="<%= job.number_of_recruitment %>"
+                        name="numberOfRecruitment"
+                        value="<%= job.numberOfRecruitment %>"
                         required
                     />
                 </div>
 
                 <!-- Job Status -->
                 <div class="mb-3 form-check">
-                    <input type="checkbox" class="form-check-input" id="jobStatus" name="job_status" <%= job.job_status
-                    ? 'checked' : '' %>>
+                    <input type="checkbox" class="form-check-input" id="jobStatus" name="status" <%= job.status ?
+                    'checked' : '' %>>
                     <label for="jobStatus" class="form-check-label">Job Active</label>
                 </div>
 
@@ -170,8 +154,8 @@
                         type="text"
                         class="form-control"
                         id="typeOfWork"
-                        name="type_of_work"
-                        value="<%= job.type_of_work %>"
+                        name="typeOfWork"
+                        value="<%= job.typeOfWork %>"
                         required
                     />
                 </div>

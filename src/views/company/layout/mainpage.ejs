@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title><%= company.company_name %> - Company Profile</title>
+        <title><%= company.companyName %> - Company Profile</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
         <style>
             /* Styling for the Company Banner */
@@ -105,12 +105,10 @@
         <div class="container mt-5">
             <!-- Company Banner -->
             <div class="company-banner">
-                <img src="<%= company.company_logo %>" alt="Company Logo" class="logo-circle" />
+                <img src="<%= company.logoPath %>" alt="Company Logo" class="logo-circle" />
                 <div>
-                    <h3 class="mb-1"><%= company.company_name %></h3>
-                    <a href="<%= company.company_website %>" class="btn btn-light btn-sm mt-2" target="_blank"
-                        >Visit Website</a
-                    >
+                    <h3 class="mb-1"><%= company.companyName %></h3>
+                    <a href="<%= company.website %>" class="btn btn-light btn-sm mt-2" target="_blank">Visit Website</a>
                 </div>
             </div>
 
@@ -119,7 +117,7 @@
                 <div class="col-md-8">
                     <div class="company-info">
                         <h5>About Company</h5>
-                        <p><%= company.company_description %></p>
+                        <p><%= company.description %></p>
                     </div>
 
                     <!-- Job Listings -->
@@ -128,15 +126,15 @@
                         <a href="/company/<%= company._id %>/posts" class="btn btn-create-job">Create Job</a>
                     </div>
                     <div class="list-group">
-                        <% company.company_jobs.forEach(function(job) { %>
+                        <% company.jobs.forEach(function(job) { %>
                         <div class="job-item">
                             <div class="d-flex align-items-center">
-                                <img src="<%= company.company_logo %>" alt="Company Logo" />
+                                <img src="<%= company.logoPath %>" alt="Company Logo" />
                                 <div>
                                     <h6><%= job.title %></h6>
                                     <p class="mb-1 text-muted"><strong>Salary:</strong> <%= job.salary %></p>
                                     <p class="mb-1 text-muted"><strong>Location:</strong> <%= job.region %></p>
-                                    <p class="mb-1 text-muted"><strong>Last Date:</strong> <%= job.last_date %></p>
+                                    <p class="mb-1 text-muted"><strong>Last Date:</strong> <%= job.deadline %></p>
                                 </div>
                             </div>
                             <!-- Action Buttons -->
@@ -163,19 +161,18 @@
                     <div class="contact-info">
                         <h5>Contact Information</h5>
                         <p>
-                            <strong>Address:</strong> <%= company.company_address.detail %>, <%=
-                            company.company_address.ward %>, <%= company.company_address.district %>, <%=
-                            company.company_address.province %>
+                            <strong>Address:</strong> <%= company.address.detail %>, <%= company.address.ward %>, <%=
+                            company.address.district %>, <%= company.address.province %>
                         </p>
-                        <p><strong>Phone:</strong> <%= company.company_phone %></p>
-                        <p><strong>Email:</strong> <%= company.company_email %></p>
+                        <p><strong>Phone:</strong> <%= company.phoneNumber %></p>
+                        <p><strong>Email:</strong> <%= company.email %></p>
                     </div>
 
                     <!-- Map Placeholder -->
                     <div class="contact-info">
                         <h5>Location Map</h5>
                         <iframe
-                            src="https://www.google.com/maps?q=<%= encodeURIComponent(company.company_address.detail + ', ' + company.company_address.district + ', ' + company.company_address.province) %>&output=embed"
+                            src="https://www.google.com/maps?q=<%= encodeURIComponent(company.address.detail + ', ' + company.address.district + ', ' + company.address.province) %>&output=embed"
                             width="100%"
                             height="250"
                             style="border: 0"

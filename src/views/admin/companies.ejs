@@ -26,8 +26,8 @@
                     <% for( let i = 0; i < companies.length; i++ ) { %>
                     <tr>
                         <td><%= i + 1 %></td>
-                        <td><%= companies[i]["company_name"] %></td>
-                        <td><%= companies[i]["company_email"] %></td>
+                        <td><%= companies[i]["companyName"] %></td>
+                        <td><%= companies[i]["email"] %></td>
                         <td><button id="<%= companies[i]["_id"] %>" class="btn btn-danger btn-sm" onclick="handleDelete(this.id)">Delete</button></td>
                     </tr>
                     <% } %>

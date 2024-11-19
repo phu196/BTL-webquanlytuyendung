@@ -63,7 +63,7 @@ const login = async (req, res) => {
         });
         res.status(StatusCodes.OK).cookie("session", token).json({ success: true });
     } else if (loginAs == "company") {
-        const company = await Company.findOne({ company_email: username });
+        const company = await Company.findOne({ email: username });
         if (!company) {
             return res.status(StatusCodes.UNAUTHORIZED).json({ success: false, message: "Invalid credentials" });
         }

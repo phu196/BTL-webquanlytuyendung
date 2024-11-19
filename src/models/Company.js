@@ -2,33 +2,25 @@ const mongoose = require("mongoose");
 
 const CompanySchema = new mongoose.Schema(
     {
-        company_name: {
+        companyName: {
             type: String,
             required: [true, "Company name is not provided"],
+            index: true,
         },
-        location: {
+        location: String,
+        description: String,
+        logoPath: String,
+        website: String,
+        email: {
             type: String,
-        },
-        company_description: {
-            type: String,
-        },
-        company_logo: {
-            type: String,
-        },
-        company_website: {
-            type: String,
-        },
-        company_email: {
-            type: String,
+            index: true,
         },
         password: {
             type: String,
             required: [true, "Password is not provided"],
         },
-        keywords: {
-            type: [String],
-        },
-        company_phone: {
+        keywords: [String],
+        phoneNumber: {
             type: String,
             required: true,
             validate: {
@@ -39,13 +31,13 @@ const CompanySchema = new mongoose.Schema(
                 message: (props) => `${props.value} không phải là số điện thoại hợp lệ!`,
             },
         },
-        company_address: {
+        address: {
             detail: String,
             ward: String,
             district: String,
             province: String,
         },
-        company_jobs: [
+        jobs: [
             {
                 type: mongoose.Schema.Types.ObjectId,
                 ref: "Job",

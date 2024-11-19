@@ -1,190 +1,235 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thông tin nhà tuyển dụng</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        body {
-            background-color: #f8f9fa;
-            padding: 20px;
-        }
-        .form-container {
-            max-width: 600px;
-            margin: auto;
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-        .form-container h5 {
-            font-weight: bold;
-            margin-bottom: 20px;
-        }
-        .form-label {
-            font-weight: bold;
-        }
-        .icon {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            color: #6c757d;
-        }
-        .input-with-icon {
-            padding-left: 40px;
-        }
-        .radio-label {
-            font-weight: bold;
-        }
-        .form-check-label {
-            color: #dc3545;
-        }
-        .btn-complete {
-            background-color: #28a745;
-            color: white;
-        }
-        .btn-complete:hover {
-            background-color: #218838;
-        }
-    </style>
-</head>
-<body>
-    <div class="form-container">
-        <h5>Thông tin nhà tuyển dụng</h5>
-        <form action="/company/setup" method="POST">
-            <!-- Tên công ty -->
-            <div class="mb-3 position-relative">
-                <label for="name" class="form-label">Tên công ty *</label>
-                <i class="bi bi-person icon"></i>
-                <input type="text" class="form-control input-with-icon" id="company_name" name="company_name" placeholder="Tên công ty">
-            </div>
-
-            <!-- Số điện thoại công ty -->
-            <div class="mb-3 position-relative">
-                <label for="phone" class="form-label">Số điện thoại công ty *</label>
-                <i class="bi bi-telephone icon"></i>
-                <input type="text" class="form-control input-with-icon" id="phone" name="phone" placeholder="Số điện thoại công ty">
-            </div>
-
-            <!-- Địa điểm làm việc -->
-            <!-- Dropdown chọn tỉnh/thành phố -->
-<!-- Dropdown chọn tỉnh/thành phố -->
-<div class="mb-3 row">
-    <div class="col">
-        <label for="city" class="form-label">Địa điểm làm việc *</label>
-        <i class="bi bi-geo-alt icon"></i>
-        <select class="form-select input-with-icon" id="city" name="city">
-            <option selected>Chọn tỉnh/thành phố</option>
-        </select>
-    </div>
-</div>
-
-<!-- Hidden input để lưu tên thành phố -->
-<input type="hidden" id="city_name" name="city_name">
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
-<script>
-    var citis = document.getElementById("city");
-    var districts = document.getElementById("district");
-    var wards = document.getElementById("ward");
-    var cityNameInput = document.getElementById("city_name"); // Trường input hidden để lưu tên thành phố
-
-    var Parameter = {
-        url: "https://raw.githubusercontent.com/kenzouno1/DiaGioiHanhChinhVN/master/data.json", 
-        method: "GET", 
-        responseType: "application/json", 
-    };
-    var promise = axios(Parameter);
-    promise.then(function (result) {
-        renderCity(result.data);
-    });
-
-    function renderCity(data) {
-        for (const x of data) {
-            citis.options[citis.options.length] = new Option(x.Name, x.Id);
-        }
-        citis.onchange = function () {
-            //districts.length = 1;
-            //wards.length = 1;
-            if (this.value != "") {
-                // Tìm city dựa trên Id đã chọn
-                const selectedCity = data.find(n => n.Id === this.value);
-                if (selectedCity) {
-                    cityNameInput.value = selectedCity.Name; // Cập nhật tên của city vào input hidden
-                } else {
-                    console.log("Không tìm thấy thành phố với ID:", this.value);
-                }
-
-                // Load danh sách quận/huyện
-                const result = data.filter(n => n.Id === this.value);
-                for (const k of result[0].Districts) {
-                    districts.options[districts.options.length] = new Option(k.Name, k.Id);
-                }
-            } else {
-                console.log("Chưa chọn thành phố");
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Thông tin nhà tuyển dụng</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+        <style>
+            body {
+                background-color: #f8f9fa;
+                padding: 20px;
             }
-        };
-        districts.onchange = function () {
-            wards.length = 1;
-            const dataCity = data.filter((n) => n.Id === citis.value);
-            if (this.value != "") {
-                const dataWards = dataCity[0].Districts.filter(n => n.Id === this.value)[0].Wards;
-                for (const w of dataWards) {
-                    wards.options[wards.options.length] = new Option(w.Name, w.Id);
-                }
+            .form-container {
+                max-width: 600px;
+                margin: auto;
+                background-color: #fff;
+                padding: 20px;
+                border-radius: 8px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             }
-        };
-    }
-</script>
+            .form-container h5 {
+                font-weight: bold;
+                margin-bottom: 20px;
+            }
+            .form-label {
+                font-weight: bold;
+            }
+            .icon {
+                position: absolute;
+                top: 10px;
+                left: 10px;
+                color: #6c757d;
+            }
+            .input-with-icon {
+                padding-left: 40px;
+            }
+            .radio-label {
+                font-weight: bold;
+            }
+            .form-check-label {
+                color: #dc3545;
+            }
+            .btn-complete {
+                background-color: #28a745;
+                color: white;
+            }
+            .btn-complete:hover {
+                background-color: #218838;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="form-container">
+            <h5>Thông tin nhà tuyển dụng</h5>
+            <form action="/company/setup" method="POST">
+                <!-- Tên công ty -->
+                <div class="mb-3 position-relative">
+                    <label for="name" class="form-label">Tên công ty *</label>
+                    <i class="bi bi-person icon"></i>
+                    <input
+                        type="text"
+                        class="form-control input-with-icon"
+                        id="companyName"
+                        name="companyName"
+                        placeholder="Tên công ty"
+                    />
+                </div>
 
-            <!-- Địa chỉ công ty -->
-            <div class="mb-3 position-relative">
-                <label for="address" class="form-label">Địa chỉ công ty (số nhà, tên đường, quận/huyện) *</label>
-                <i class="bi bi-geo-alt icon"></i>
-                <input type="text" class="form-control input-with-icon" id="address" name="address" placeholder="Địa chỉ công ty">
-            </div>
-            <!--Mã số thuế-->
-            <div class="mb-3 position-relative">
-                <label for="tax_code" class="form-label">Mã số thuế *</label>
-                <i class="bi bi-credit-card-2-front icon"></i>
-                <input type="text" class="form-control input-with-icon" id="tax_code" name="tax_code" placeholder="Mã số thuế" required> 
-            </div>
-            <!-- Website công ty -->
-            <div class="mb-3 position-relative">
-                <label for="website" class="form-label">Website công ty *</label>
-                <i class="bi bi-globe icon"></i>
-                <input type="text" class="form-control input-with-icon" id="website" name="website" placeholder="Website công ty">
-            </div>
+                <!-- Số điện thoại công ty -->
+                <div class="mb-3 position-relative">
+                    <label for="phone" class="form-label">Số điện thoại công ty *</label>
+                    <i class="bi bi-telephone icon"></i>
+                    <input
+                        type="text"
+                        class="form-control input-with-icon"
+                        id="phone"
+                        name="phone"
+                        placeholder="Số điện thoại công ty"
+                    />
+                </div>
 
-            <!-- Email công ty -->
-            <div class="mb-3 position-relative">
-                <label for="email" class="form-label">Email công ty *</label>
-                <i class="bi bi-envelope icon"></i>
-                <input type="email" class="form-control input-with-icon" id="email" name="email" placeholder="Email công ty" required>
-            </div>
+                <!-- Địa điểm làm việc -->
+                <!-- Dropdown chọn tỉnh/thành phố -->
+                <!-- Dropdown chọn tỉnh/thành phố -->
+                <div class="mb-3 row">
+                    <div class="col">
+                        <label for="city" class="form-label">Địa điểm làm việc *</label>
+                        <i class="bi bi-geo-alt icon"></i>
+                        <select class="form-select input-with-icon" id="city" name="city">
+                            <option selected>Chọn tỉnh/thành phố</option>
+                        </select>
+                    </div>
+                </div>
 
-            <!-- Mô tả công ty -->
-            <div class="mb-3">
-                <label for="description" class="form-label">Mô tả công ty *</label>
-                <textarea class="form-control" id="description" rows="3"  name="description" placeholder="Mô tả công ty"></textarea>
-            </div>
-            <!-- Điều khoản dịch vụ -->
-            <div class="mb-3 form-check">
-                <input type="checkbox" class="form-check-input" id="terms">
-                <label class="form-check-label text-muted" for="terms">
-                    Tôi đã đọc và đồng ý với <a href="#" class="text-decoration-none">Điều khoản dịch vụ</a> và <a href="#" class="text-decoration-none">Chính sách bảo mật</a>
-                </label>
-            </div>
+                <!-- Hidden input để lưu tên thành phố -->
+                <input type="hidden" id="city_name" name="city_name" />
 
-            <!-- Hoàn tất Button -->
-            <button type="submit" class="btn btn-complete w-100">Hoàn tất</button>
-        </form>
-    </div>
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+                <script>
+                    var citis = document.getElementById("city");
+                    var districts = document.getElementById("district");
+                    var wards = document.getElementById("ward");
+                    var cityNameInput = document.getElementById("city_name"); // Trường input hidden để lưu tên thành phố
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/tinymce@5.10.2/tinymce.min.js"></script>
-    <script src="/js/my-tinymce-config.js"></script>
-</body>
+                    var Parameter = {
+                        url: "https://raw.githubusercontent.com/kenzouno1/DiaGioiHanhChinhVN/master/data.json",
+                        method: "GET",
+                        responseType: "application/json",
+                    };
+                    var promise = axios(Parameter);
+                    promise.then(function (result) {
+                        renderCity(result.data);
+                    });
+
+                    function renderCity(data) {
+                        for (const x of data) {
+                            citis.options[citis.options.length] = new Option(x.Name, x.Id);
+                        }
+                        citis.onchange = function () {
+                            //districts.length = 1;
+                            //wards.length = 1;
+                            if (this.value != "") {
+                                // Tìm city dựa trên Id đã chọn
+                                const selectedCity = data.find((n) => n.Id === this.value);
+                                if (selectedCity) {
+                                    cityNameInput.value = selectedCity.Name; // Cập nhật tên của city vào input hidden
+                                } else {
+                                    console.log("Không tìm thấy thành phố với ID:", this.value);
+                                }
+
+                                // Load danh sách quận/huyện
+                                const result = data.filter((n) => n.Id === this.value);
+                                for (const k of result[0].Districts) {
+                                    districts.options[districts.options.length] = new Option(k.Name, k.Id);
+                                }
+                            } else {
+                                console.log("Chưa chọn thành phố");
+                            }
+                        };
+                        districts.onchange = function () {
+                            wards.length = 1;
+                            const dataCity = data.filter((n) => n.Id === citis.value);
+                            if (this.value != "") {
+                                const dataWards = dataCity[0].Districts.filter((n) => n.Id === this.value)[0].Wards;
+                                for (const w of dataWards) {
+                                    wards.options[wards.options.length] = new Option(w.Name, w.Id);
+                                }
+                            }
+                        };
+                    }
+                </script>
+
+                <!-- Địa chỉ công ty -->
+                <div class="mb-3 position-relative">
+                    <label for="address" class="form-label">Địa chỉ công ty (số nhà, tên đường, quận/huyện) *</label>
+                    <i class="bi bi-geo-alt icon"></i>
+                    <input
+                        type="text"
+                        class="form-control input-with-icon"
+                        id="address"
+                        name="address"
+                        placeholder="Địa chỉ công ty"
+                    />
+                </div>
+                <!--Mã số thuế-->
+                <div class="mb-3 position-relative">
+                    <label for="tax_code" class="form-label">Mã số thuế *</label>
+                    <i class="bi bi-credit-card-2-front icon"></i>
+                    <input
+                        type="text"
+                        class="form-control input-with-icon"
+                        id="tax_code"
+                        name="tax_code"
+                        placeholder="Mã số thuế"
+                        required
+                    />
+                </div>
+                <!-- Website công ty -->
+                <div class="mb-3 position-relative">
+                    <label for="website" class="form-label">Website công ty *</label>
+                    <i class="bi bi-globe icon"></i>
+                    <input
+                        type="text"
+                        class="form-control input-with-icon"
+                        id="website"
+                        name="website"
+                        placeholder="Website công ty"
+                    />
+                </div>
+
+                <!-- Email công ty -->
+                <div class="mb-3 position-relative">
+                    <label for="email" class="form-label">Email công ty *</label>
+                    <i class="bi bi-envelope icon"></i>
+                    <input
+                        type="email"
+                        class="form-control input-with-icon"
+                        id="email"
+                        name="email"
+                        placeholder="Email công ty"
+                        required
+                    />
+                </div>
+
+                <!-- Mô tả công ty -->
+                <div class="mb-3">
+                    <label for="description" class="form-label">Mô tả công ty *</label>
+                    <textarea
+                        class="form-control"
+                        id="description"
+                        rows="3"
+                        name="description"
+                        placeholder="Mô tả công ty"
+                    ></textarea>
+                </div>
+                <!-- Điều khoản dịch vụ -->
+                <div class="mb-3 form-check">
+                    <input type="checkbox" class="form-check-input" id="terms" />
+                    <label class="form-check-label text-muted" for="terms">
+                        Tôi đã đọc và đồng ý với <a href="#" class="text-decoration-none">Điều khoản dịch vụ</a> và
+                        <a href="#" class="text-decoration-none">Chính sách bảo mật</a>
+                    </label>
+                </div>
+
+                <!-- Hoàn tất Button -->
+                <button type="submit" class="btn btn-complete w-100">Hoàn tất</button>
+            </form>
+        </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/tinymce@5.10.2/tinymce.min.js"></script>
+        <script src="/js/my-tinymce-config.js"></script>
+    </body>
 </html>
