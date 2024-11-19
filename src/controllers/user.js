@@ -2,19 +2,20 @@ const User = require("../models/User");
 const crypto = require("crypto");
 const path = require("path");
 const fs = require("fs");
+const bcrypt = require("bcrypt");
 const { StatusCodes } = require("http-status-codes");
 const { listeners } = require("../models/Company");
 // Lấy thông tin người dùng
 const getUpdate = async (req, res) => {
     try {
         // Kiểm tra ID người dùng từ token
-        const userId = req.user ? req.user.id : req.params.id; // Sử dụng req.params.id nếu không có req.user
+        const userId = req.user._id;
 
         if (!userId) {
             return res.status(StatusCodes.BAD_REQUEST).json({ message: "User ID is not provided" });
         }
 
-        const user = await User.findById(userId);
+        const user = await User.findById(userId).select("-password");
         if (!user) {
             return res.status(StatusCodes.NOT_FOUND).json({ message: "User not found" });
         }
@@ -27,29 +28,24 @@ const getUpdate = async (req, res) => {
 const updateUser = async (req, res) => {
     try {
         // Lấy userId từ req.body hoặc req.params (nếu không có xác thực JWT)
-        const userId = req.body.id || req.params.id;
+        const userId = req.user._id;
 
-        if (!userId) {
-            return res.status(StatusCodes.BAD_REQUEST).json({ message: "User ID is not provided" });
-        }
+        const user = await User.findById(userId);
 
-        // Kiểm tra và lọc các trường hợp được phép cập nhật
-        const allowedFields = ["fullname", "gender", "phoneNumber", "address"];
-        const updateData = Object.keys(req.body)
-            .filter((key) => allowedFields.includes(key))
-            .reduce((obj, key) => {
-                obj[key] = req.body[key];
-                return obj;
-            }, {});
-
-        // Cập nhật người dùng trong cơ sở dữ liệu
-        const updatedUser = await User.findByIdAndUpdate(userId, updateData, { new: true, runValidators: true });
-
-        if (!updatedUser) {
+        if (!user) {
             return res.status(StatusCodes.NOT_FOUND).json({ message: "User not found" });
         }
 
-        const { password, refreshToken, ...safeUser } = updatedUser._doc;
+        if (req.body.password) {
+            const hashedPassword = await bcrypt.hash(req.body.password, 10);
+            req.body.password = hashedPassword;
+        }
+
+        // Cập nhật thông tin người dùng
+        const updatedUser = await User.findByIdAndUpdate(userId, req.body, { new: true });
+        if (!updatedUser) {
+            return res.status(StatusCodes.NOT_FOUND).json({ message: "User not found" });
+        }
 
         res.status(StatusCodes.OK).json({
             message: "User updated successfully",
