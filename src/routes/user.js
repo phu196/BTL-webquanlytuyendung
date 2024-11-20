@@ -15,4 +15,7 @@ router.post("/update", passportJWT, userController.updateUser);
 
 // Route xem job đang applied
 router.get("/applied-jobs", passportJWT, userController.getAppliedJobs);
+
+// Apply job
+router.post("/apply/:id", passportJWT, userController.applyJob);
 module.exports = router;
