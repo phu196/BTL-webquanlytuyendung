@@ -58,17 +58,16 @@
             <div class="container">
                 <div class="d-flex justify-content-between align-items-center">
                     <div class="logo">
-                        <a href="http://localhost:3000">
-                            <img src="/images/logo.png" alt="Logo" height="30">
-                        </a>
+                        <img src="/images/logo.png" alt="Logo" height="30" />
                     </div>
                     <nav class="d-none d-md-flex">
                         <div class="dropdown">
                             <a
                                 class="nav-link dropdown-toggle"
-                                href="http://localhost:3000/viec-lam-it"
+                                href="#"
                                 role="button"
                                 id="jobsDropdown"
+                                data-bs-toggle="dropdown"
                                 aria-expanded="false"
                             >
                                 Việc Làm IT
@@ -115,7 +114,7 @@
                                 </li>
                                 <li><a class="dropdown-item" href="#">TopDev</a></li>
                             </ul>
-                        </div>                        
+                        </div>
                         <a href="#" class="nav-link">Công Ty IT</a>
                         <a href="#" class="nav-link">Blog IT</a>
                     </nav>
@@ -143,7 +142,7 @@
                             document.getElementById("navigation-button").innerHTML = `
                                 <div class="dropdown">
                                     <button class="btn btn-light d-flex align-items-center" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <img src="${data.user.avatarPath}" alt="Avatar" class="rounded-circle me-3" style="width: 30px; height: 30px;">
+                                        <img src=${data.user.avatarPath} alt="Avatar" class="rounded-circle me-3" style="width: 30px; height: 30px;">
                                         <span class="ml-2">${data.user.fullname}</span>
                                         <i class="fas fa-chevron-down ml-2"></i>
                                     </button>

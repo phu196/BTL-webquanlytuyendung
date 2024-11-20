@@ -42,6 +42,9 @@ const UserSchema = new mongoose.Schema(
             district: String,
             province: String,
         },
+        avatarPath: {
+            type: String, 
+        },
     },
     { timestamps: true }
 );

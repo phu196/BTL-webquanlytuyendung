@@ -140,7 +140,7 @@
                 </div>
 
                 <!-- Edit Button -->
-                <a href="/company/my_job/<%= job._id %>/edit" class="edit-btn">
+                <a href="/company/jobs/<%= job._id %>/edit" class="edit-btn">
                     Chỉnh sửa
                 </a>
             </div>
@@ -192,9 +192,9 @@
                 <p><i class="bi bi-telephone-fill"></i> Số điện thoại: <%= job.company_id.company_phone %></p>
                 <p><i class="bi bi-envelope-fill"></i> Email: <%= job.company_id.company_email %></p>
                 <p><i class="bi bi-geo-alt-fill"></i> Địa chỉ: <%= job.company_id.location %></p>
-
+                <!-- /:id/company_page -->
                 <!-- Company Link -->
-                <a href="/company/<%= job.company_id._id %>" class="company-link" target="_blank">
+                <a href="/company/<%= job.company_id._id %>/company_page" class="company-link" target="_blank">
                     Xem trang công ty <i class="bi bi-box-arrow-up-right"></i>
                 </a>
             </div>
