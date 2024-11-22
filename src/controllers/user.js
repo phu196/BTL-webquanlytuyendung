@@ -4,7 +4,8 @@ const { StatusCodes } = require("http-status-codes");
 
 const getUserInfo = async (req, res) => {
     try {
-        const userId = req.params.id; // Lấy id từ URL
+        const userId = req.user._id; // Lấy id từ token
+        console.log(userId);
         const user = await User.findById(userId);
         if (!user) {
             return res.status(404).send('User not found');
@@ -19,7 +20,7 @@ const getUserInfo = async (req, res) => {
 // Hiển thị trang cập nhật thông tin
 const updateUser = async (req, res) => {
     const method = req.method; // Kiểm tra HTTP method
-    const userId = req.params.id;
+    const userId = req.user._id;
 
     if (method === 'GET') {
         // GET: Render trang cập nhật
@@ -52,7 +53,7 @@ const updateUser = async (req, res) => {
                 },
                 { new: true, runValidators: true }
             );
-            res.redirect(`/user/${userId}`); // Quay lại trang profile sau khi cập nhật
+            res.redirect('/user/profile'); // Quay lại trang profile sau khi cập nhật
         } catch (error) {
             console.error(error);
             res.status(500).send('Update failed');
@@ -72,8 +73,8 @@ const getAppliedJobs = async (req, res) => {
 };
 const getUserProfileForCompany = async (req, res) => {
     try {
-        const userId = req.params.userId; // Lấy userId từ URL
-        const user = await User.findById(userId).populate('appliedJobs'); // Populate các công việc đã ứng tuyển
+        const userId = req.user._id; // Lấy userId từ token
+                const user = await User.findById(userId).populate('appliedJobs'); // Populate các công việc đã ứng tuyển
         if (!user) {
             return res.status(404).send('User not found');
         }
