@@ -48,6 +48,7 @@ app.use("/user", router.userRoutes);
 app.use("/company", router.companyRoutes);
 app.use("/job", router.jobRoutes);
 app.use("/admin", router.adminRoutes);
+app.use("/api", router.apiRoutes);
 app.get("/", router.dashboardRoutes);
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
