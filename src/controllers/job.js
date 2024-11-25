@@ -33,9 +33,7 @@ const showJob = async (req, res) => {
         if (!job) {
             return res.status(404).json({ message: "Job not found" });
         }
-        if (!job.company_id) {
-            return res.status(404).json({ message: "Company not found" });
-        }
+
         res.render("job/show-job-user.ejs", { job });
     } catch (error) {
         console.log(error);
