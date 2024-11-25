@@ -21,6 +21,8 @@
                 <p><strong>Salary:</strong> <%= job.salary %></p>
                 <p><strong>Experience:</strong> <%= job.job_experience %> years</p>
                 <p><strong>Last date:</strong> <%= job.last_date.toLocaleDateString() %></p>
+                <!-- Nút Xem chi tiết -->
+                <a href="/job/<%= job._id %>" class="btn btn-primary">Xem</a>
             </div>
         <% }) %>
     </div>
