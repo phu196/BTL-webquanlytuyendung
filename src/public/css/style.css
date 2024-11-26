@@ -26,3 +26,25 @@
 .job-card strong {
     font-weight: bold;
 }
+
+.btn {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 1em;
+    text-align: center;
+    text-decoration: none;
+    color: #fff;
+    background-color: #007bff; /* Màu xanh Bootstrap */
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn:hover {
+    background-color: #0056b3; /* Màu xanh đậm hơn khi hover */
+}
+
+.btn-primary {
+    margin-top: 15px; /* Tạo khoảng cách giữa nút và nội dung phía trên */
+}

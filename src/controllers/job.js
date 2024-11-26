@@ -2,6 +2,9 @@ const Job = require("../models/Job");
 const User = require("../models/User");
 const Company = require("../models/Company");
 const { search } = require("../routes/auth");
+const User = require("../models/User");
+const Company = require("../models/Company");
+const { search } = require("../routes/auth");
 
 const searchJob = async (req, res) => {
     const keyword = req.query.q || ""; // Nhận từ khóa từ URL
@@ -39,6 +42,26 @@ const searchJob = async (req, res) => {
     });
 };
 
+const showJob = async (req, res) => {
+    try {
+        const jobId = req.params.jobId;
+
+        const job = await Job.findById(jobId).populate({
+            path: "company_id",
+            select: "company_name company_logo location company_phone company_email",
+        });
+
+        if (!job) {
+            return res.status(404).json({ message: "Job not found" });
+        }
+
+        res.render("job/show-job-user.ejs", { job });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: "This id is not exist" });
+    }
+};
+
 const applyJob = async (req, res) => {
     try {
         const jobId = req.params.jobId; // Lấy id công việc từ URL
@@ -66,5 +89,4 @@ const applyJob = async (req, res) => {
         return res.status(500).json({ success: false, message: "Error" });
     }
 };
-
-module.exports = { searchJob, applyJob };
+module.exports = { searchJob, showJob, applyJob };
