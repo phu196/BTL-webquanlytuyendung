@@ -20,9 +20,9 @@ router.get("/edit", passportJWT, companyController.edit);
 
 router.get("/:id", companyController.companyDetail);
 
-router.post("/update", passportJWT, companyController.updateCompany);
+// router.post("/update", passportJWT, companyController.updateCompany);
 
-router.post("/jobs/create", passportJWT, companyController.createJob);
+// router.post("/jobs/create", passportJWT, companyController.createJob);
 router.delete("/jobs/:job_id/delete", passportJWT, companyController.deleteJob);
 // thông tin job cụ thể của công ty
 router.get("/jobs/:job_id/edit", passportJWT, companyController.editJob);

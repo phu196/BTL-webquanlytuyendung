@@ -49,6 +49,9 @@ const JobSchema = new mongoose.Schema(
             type: String,
             required: [true, "Company name is not provided"],
         },
+        logoPath: {
+            type: String,
+        },
         companyId: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "Company",

@@ -4,7 +4,6 @@ const path = require("path");
 const fs = require("fs");
 const bcrypt = require("bcrypt");
 const { StatusCodes } = require("http-status-codes");
-const { listeners } = require("../models/Company");
 // Lấy thông tin người dùng
 const getUpdate = async (req, res) => {
     try {
@@ -58,6 +57,26 @@ const updateUser = async (req, res) => {
         });
     }
 };
+
+const getAppliedJobs = async (req, res) => {
+    try {
+        const userId = req.user._id;
+        if (!userId) {
+            return res.status(StatusCodes.UNAUTHORIZED).json({ success: false, message: "Unauthorized" });
+        }
+        const user = await User.findById(userId).populate("jobs");
+        if (!user) {
+            return res.status(StatusCodes.UNAUTHORIZED).json({ success: false, message: "Unauthorized" });
+        }
+        res.render("user/appliedJob.ejs", { jobs: user.jobs, user: user });
+    }
+    catch (error) {
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+            success: false,
+            message: error.message,
+        });
+    }
+}
 const generateUniqueTitle = (title, existingTitles) => {
     let baseTitle = title.replace(/(\(\d+\))?(\.pdf)$/i, ""); // Loại bỏ phần (x) nếu có
     let extension = ".pdf";
@@ -133,8 +152,17 @@ const uploadCV = async (req, res) => {
     }
 };
 
+const getUserInfo = async (req, res) => {
+    return res.status(StatusCodes.OK).json({
+        success: true,
+        user: req.user,
+    });
+}
+
 module.exports = {
     getUpdate,
     updateUser,
+    getAppliedJobs,
     uploadCV,
+    getUserInfo
 };
