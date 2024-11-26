@@ -107,11 +107,11 @@
                     <div class="list-group" data-aos="fade-up">
                         <% company.jobs.forEach(function(job) { %>
                         <div class="job-item">
-                            <% let lastDate = new Date(job.last_date); // Chuyển chuỗi thành đối tượng Date let
+                            <% let lastDate = new Date(job.deadline); // Chuyển chuỗi thành đối tượng Date let
                             formattedDate = `${lastDate.getDate().toString().padStart(2, '0')}/${(lastDate.getMonth() +
                             1).toString().padStart(2, '0')}/${lastDate.getFullYear()}`; %>
                             <div class="d-flex align-items-center mb-3">
-                                <img src="<%= company.company_logo %>" alt="Company Logo" class="job-logo" />
+                                <img src="<%= company.logoPath %>" alt="Company Logo" class="job-logo" />
                                 <div class="job-info">
                                     <h6><%= job.title %></h6>
                                     <p class="text-muted mb-1"><strong>Lương:</strong> <%= job.salary %></p>
@@ -141,19 +141,18 @@
                     <div class="contact-info" data-aos="fade-up">
                         <h5>Thông tin liên hệ</h5>
                         <p>
-                            <strong>Địa chỉ:</strong> <%= company.company_address.detail %>, <%=
-                            company.company_address.ward %>, <%= company.company_address.district %>, <%=
-                            company.company_address.province %>
+                            <strong>Địa chỉ:</strong> <%= company.address.detail %>, <%= company.address.ward %>, <%=
+                            company.address.district %>, <%= company.address.province %>
                         </p>
-                        <p><strong>SĐT:</strong> <%= company.company_phone %></p>
-                        <p><strong>Email:</strong> <%= company.company_email %></p>
+                        <p><strong>SĐT:</strong> <%= company.phoneNumber %></p>
+                        <p><strong>Email:</strong> <%= company.email %></p>
                     </div>
 
                     <!-- Map -->
                     <div class="contact-info" data-aos="fade-up">
                         <h5>Địa điểm</h5>
                         <iframe
-                            src="https://www.google.com/maps?q=<%= encodeURIComponent(company.company_address.detail + ', ' + company.company_address.district + ', ' + company.company_address.province) %>&output=embed"
+                            src="https://www.google.com/maps?q=<%= encodeURIComponent(company.address.detail + ', ' + company.address.district + ', ' + company.address.province) %>&output=embed"
                             width="100%"
                             height="250"
                             allowfullscreen=""
