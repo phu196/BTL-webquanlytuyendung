@@ -32,55 +32,104 @@
                 margin-bottom: 20px;
             }
 
-            /* Styling for Job Listings */
             .job-item {
-                border: 1px solid #dee2e6;
-                border-radius: 8px;
+                background-color: #ffffff;
+                border: 1px solid #e0e0e0;
+                border-radius: 10px;
                 padding: 15px;
                 margin-bottom: 15px;
                 display: flex;
-                align-items: center;
+                flex-direction: column;
             }
-            .job-item img {
+
+            .job-logo {
                 width: 60px;
                 height: 60px;
                 object-fit: cover;
-                border-radius: 10px; /* Rounded corners for job logos */
+                border-radius: 50%;
                 margin-right: 15px;
+            }
+
+            .job-info {
+                flex-grow: 1;
+                margin-left: 10px;
+            }
+
+            .job-actions {
+                display: flex;
+                flex-wrap: nowrap;
+                justify-content: flex-start;
+                gap: 10px;
+            }
+
+            .job-actions .btn {
+                min-width: 100px;
+            }
+
+            .job-actions .btn:hover {
+                opacity: 0.9;
+            }
+
+            .iframe {
+                border-radius: 12px;
+                border: 1px solid #ddd;
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
             }
         </style>
     </head>
     <body>
         <div class="container mt-5">
             <!-- Company Banner -->
-            <div class="company-banner">
+            <div class="company-banner" data-aos="fade-up">
                 <img src="<%= company.logoPath %>" alt="Company Logo" class="logo-circle" />
                 <div>
-                    <h3 class="mb-1"><%= company.companyName %></h3>
-                    <a href="<%= company.website %>" class="btn btn-primary" target="_blank">Visit Website</a>
+                    <h3 class="mb-2"><%= company.companyName %></h3>
+                    <a href="<%= company.website %>" class="btn btn-light btn-sm" target="_blank">
+                        <i class="fa fa-globe"></i> Xem website công ty
+                    </a>
                 </div>
             </div>
 
             <div class="row">
                 <!-- Company Information -->
                 <div class="col-md-8">
-                    <div class="company-info">
-                        <h5>About Company</h5>
+                    <div class="company-info" data-aos="fade-up">
+                        <h5>Thông tin chung</h5>
                         <p><%= company.description %></p>
                     </div>
 
                     <!-- Job Listings -->
-                    <h5 class="mb-3">Job Openings</h5>
-                    <div class="list-group">
+                    <div class="d-flex justify-content-between align-items-center mb-3" data-aos="fade-up">
+                        <h5>Vị trí tuyển dụng</h5>
+                        <a href="/company/new-job" class="btn btn-create-job">+ Thêm vị trí mới</a>
+                    </div>
+
+                    <div class="list-group" data-aos="fade-up">
                         <% company.jobs.forEach(function(job) { %>
                         <div class="job-item">
-                            <img src="<%= company.logoPath %>" alt="Company Logo" />
-                            <div>
-                                <h6><%= job.title %></h6>
-                                <p class="mb-1 text-muted"><strong>Salary:</strong> <%= job.salary %></p>
-                                <p class="mb-1 text-muted"><strong>Location:</strong> <%= job.region %></p>
-                                <p class="mb-1 text-muted"><strong>Last Date:</strong> <%= job.deadline %></p>
-                                <a href="#" class="btn btn-outline-primary btn-sm mt-2">Apply Now</a>
+                            <% let lastDate = new Date(job.last_date); // Chuyển chuỗi thành đối tượng Date let
+                            formattedDate = `${lastDate.getDate().toString().padStart(2, '0')}/${(lastDate.getMonth() +
+                            1).toString().padStart(2, '0')}/${lastDate.getFullYear()}`; %>
+                            <div class="d-flex align-items-center mb-3">
+                                <img src="<%= company.company_logo %>" alt="Company Logo" class="job-logo" />
+                                <div class="job-info">
+                                    <h6><%= job.title %></h6>
+                                    <p class="text-muted mb-1"><strong>Lương:</strong> <%= job.salary %></p>
+                                    <p class="text-muted mb-1"><strong>Địa điểm:</strong> <%= job.location %></p>
+                                    <p class="text-muted mb-1"><strong>Hạn ứng tuyển:</strong> <%= formattedDate %></p>
+                                </div>
+                            </div>
+
+                            <div class="d-flex job-actions">
+                                <!-- <a href="/user/apply/<%= job._id %>" class="btn btn-outline-primary btn-sm">
+                                <i class="fa fa-paper-plane"></i> Ứng tuyển
+                            </a> -->
+                                <button class="btn btn-outline-primary btn-sm" onclick="apply('<%=job._id%>')">
+                                    <i class="fa fa-paper-plane"></i> Ứng tuyển
+                                </button>
+                                <a href="/company/jobs/<%= job._id %>/show" class="btn btn-outline-secondary btn-sm">
+                                    <i class="fa fa-eye"></i> Xem
+                                </a>
                             </div>
                         </div>
                         <% }); %>
@@ -89,24 +138,24 @@
 
                 <!-- Contact Information -->
                 <div class="col-md-4">
-                    <div class="contact-info">
-                        <h5>Contact Information</h5>
+                    <div class="contact-info" data-aos="fade-up">
+                        <h5>Thông tin liên hệ</h5>
                         <p>
-                            <strong>Address:</strong> <%= company.address.detail %>, <%= company.address.ward %>, <%=
-                            company.address.district %>, <%= company.address.province %>
+                            <strong>Địa chỉ:</strong> <%= company.company_address.detail %>, <%=
+                            company.company_address.ward %>, <%= company.company_address.district %>, <%=
+                            company.company_address.province %>
                         </p>
-                        <p><strong>Phone:</strong> <%= company.phoneNumber %></p>
-                        <p><strong>Email:</strong> <%= company.email %></p>
+                        <p><strong>SĐT:</strong> <%= company.company_phone %></p>
+                        <p><strong>Email:</strong> <%= company.company_email %></p>
                     </div>
 
-                    <!-- Map Placeholder -->
-                    <div class="contact-info">
-                        <h5>Location Map</h5>
+                    <!-- Map -->
+                    <div class="contact-info" data-aos="fade-up">
+                        <h5>Địa điểm</h5>
                         <iframe
-                            src="https://www.google.com/maps?q=<%= encodeURIComponent(company.address.detail + ', ' + company.address.district + ', ' + company.address.province) %>&output=embed"
+                            src="https://www.google.com/maps?q=<%= encodeURIComponent(company.company_address.detail + ', ' + company.company_address.district + ', ' + company.company_address.province) %>&output=embed"
                             width="100%"
                             height="250"
-                            style="border: 0"
                             allowfullscreen=""
                             loading="lazy"
                         ></iframe>
@@ -115,6 +164,44 @@
             </div>
         </div>
 
+        <!-- JS Libraries -->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+
+        <script>
+            AOS.init();
+        </script>
+        <script>
+            function apply(job_id) {
+                if (confirm("Bạn có chắc chắn muốn ứng tuyển công việc này?")) {
+                    fetch(`/user/apply/${job_id}`, {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({ job_id }),
+                    })
+                        .then((response) => {
+                            if (!response.ok) {
+                                throw new Error("Network response was not ok");
+                            }
+                            return response.json();
+                        })
+                        .then((data) => {
+                            if (data.success) {
+                                alert("Ứng tuyển thành công!");
+                            } else {
+                                alert(data.message || "Đã xảy ra lỗi. Vui lòng thử lại.");
+                            }
+                        })
+                        .catch((error) => {
+                            console.error("Error applying for job:", error);
+                            alert("Đã xảy ra lỗi trong quá trình ứng tuyển. Vui lòng thử lại sau.");
+                        });
+                } else {
+                    return;
+                }
+            }
+        </script>
     </body>
 </html>

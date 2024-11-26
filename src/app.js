@@ -5,6 +5,7 @@ const morgan = require("morgan");
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const path = require("path");
+const axios = require('axios');
 
 const app = express();
 
@@ -24,7 +25,7 @@ app.use(
 
 // TinyMCE
 //app.use('/tinymce', express.static(path.join(__dirname, 'node_modules', 'tinymce')));
-app.use("/tinymce", express.static("node_modules/tinymce"));
+app.use('/tinymce', express.static(path.join(__dirname, '..', 'node_modules', 'tinymce')));
 
 const passport = require("./middlewares/passport");
 app.use(passport.initialize());

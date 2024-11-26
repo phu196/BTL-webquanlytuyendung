@@ -21,6 +21,7 @@
     "homepage": "https://github.com/huynambka/BTL-NMCNPM-154020#readme",
     "dependencies": {
         "cookie-parser": "1.4.5",
+        "axios": "^1.7.7",
         "bcrypt": "5.1.1",
         "dotenv": "^16.4.5",
         "ejs": "^3.1.10",

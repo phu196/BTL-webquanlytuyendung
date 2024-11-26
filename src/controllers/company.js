@@ -1,6 +1,7 @@
 const Company = require("../models/Company");
 const Job = require("../models/Job");
 const bcrypt = require("bcrypt");
+const axios = require("axios");
 
 const { StatusCodes } = require("http-status-codes");
 const CompanyRegistration = require("../models/CompanyRegistration");
@@ -74,30 +75,24 @@ const companyDetail = async (req, res) => {
     }
 };
 
-// [GET] /company/:id/posts
+// [GET] /company/new-job
 const companyJobs = async (req, res) => {
-    res.render("./company/layout/job_post");
+    try {
+        const response = await axios.get("https://provinces.open-api.vn/api/?depth=1 ")
+        const provinces = response.data;
+        res.render("./company/layout/job_post", { provinces: provinces });
+    }
+    catch (error) {
+        console.error(error);
+        res.status(500).send("Internal Server Error");
+    }
 };
 
-// [POST] /company/jobs/create
+// [POST] /company/new-job
 const createJob = async (req, res) => {
     try {
         if (req.company) {
             const id = req.company._id;
-            const {
-                jobTitle,
-                jobDescription,
-                jobRequirement,
-                jobBenefit,
-                jobLocation,
-                jobDeadline,
-                jobQuantity,
-                jobType,
-                jobTime,
-                jobExperience,
-                jobSkill,
-                jobSalary,
-            } = req.body;
             const company = await Company.findById(id);
             const isExit = await Job.findOne({ title: jobTitle });
             if (isExit) {
@@ -105,8 +100,8 @@ const createJob = async (req, res) => {
             } else {
                 const isSalaryNegotiation = false;
                 let skill = [];
-                if (jobSkill) {
-                    skill = jobSkill.split(",");
+                if (req.body.jobSkill) {
+                    skill = req.body.jobSkill.split(",");
                 } else {
                     console.error("jobSkill is undefined or null");
                 }
@@ -153,12 +148,14 @@ const createJob = async (req, res) => {
     }
 };
 
-// [DELETE] /company/jobs/delete/:job_id
+// [DELETE] /company/jobs/:job_id/delete
 const deleteJob = async (req, res) => {
     try {
+        console.log(req.company);
+        console.log(req.body)
         if (req.company) {
             const id = req.company._id;
-            const job_id = req.params.job_id;
+            const job_id = req.body.jobId;
             const company = await Company.findById(id);
             if (!company.jobs.includes(job_id)) {
                 return res.status(404).send("Job not found or this job is not belong to your company");
@@ -166,8 +163,8 @@ const deleteJob = async (req, res) => {
             await Job.findByIdAndDelete(job_id);
             company.jobs.pull(job_id);
             await company.save();
+            res.status(200).json({ success: true, message: 'Job deleted successfully' });
 
-            res.redirect(`/company/profile`);
         } else {
             res.status(401).send("Unauthorized");
         }
@@ -266,12 +263,13 @@ const editJob = async (req, res) => {
                 return res.status(404).send("Job not found or this job is not belong to your company");
             }
             const job = await Job.findById(jobId);
-
+            const response = await axios.get("https://provinces.open-api.vn/api/?depth=1 ")
+            const provinces = response.data;
             if (!job) {
                 return res.status(404).json({ message: "Not Found" });
             }
 
-            res.render("job/edit", { job });
+            res.render("job/edit", { job: job, provinces: provinces });
         } else {
             res.status(401).send("Unauthorized");
         }
@@ -306,7 +304,7 @@ const postEditJob = async (req, res) => {
                 skill: req.body.skill ? req.body.skill.split(",").map((s) => s.trim()) : [],
             });
 
-            res.redirect(`/jobs/${jobId}/show`);
+            res.redirect(`/company/jobs/${jobId}/show`);
         } else {
             res.status(401).send("Unauthorized");
         }

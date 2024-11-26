@@ -1,4 +1,5 @@
 const User = require("../models/User");
+const Job = require("../models/Job");
 const crypto = require("crypto");
 const path = require("path");
 const fs = require("fs");
@@ -244,6 +245,53 @@ const createdInfo = async (req, res) => {
         res.status(400).json({ success: false, message: error.message });
     }
 };
+const applyJob = async (req, res) => {
+    try {
+        const { job_id: jobId } = req.body;
+        const userId = req.user?._id;
+
+        if (!userId) {
+            return res.status(StatusCodes.BAD_REQUEST).json({ message: "User ID is not provided" });
+        }
+
+        if (!jobId) {
+            return res.status(StatusCodes.BAD_REQUEST).json({ message: "Job ID is not provided" });
+        }
+
+        // Find user and job in parallel
+        const [user, job] = await Promise.all([
+            User.findById(userId),
+            Job.findById(jobId),
+        ]);
+
+        if (!user) {
+            return res.status(StatusCodes.NOT_FOUND).json({ message: "User not found" });
+        }
+
+        if (!job) {
+            return res.status(StatusCodes.NOT_FOUND).json({ message: "Job not found" });
+        }
+
+        // Check if the job has already been applied
+        if (user.appliedJobs.includes(jobId) || job.applicant.includes(userId)) {
+            return res.status(StatusCodes.BAD_REQUEST).json({ message: "Job already applied" });
+        }
+
+        // Update user's applied jobs and job's applicants
+        user.appliedJobs.push(jobId);
+        job.applicant.push(userId);
+
+        await Promise.all([user.save(), job.save()]);
+
+        res.status(StatusCodes.OK).json({ message: "Job applied successfully" });
+    } catch (error) {
+        console.error('Error applying for job:', error);
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+            message: "Error applying job",
+            error: error.message,
+        });
+    }
+};
 
 module.exports = {
     getUpdate,
@@ -253,4 +301,5 @@ module.exports = {
     getUserInfo,
     createInfo,
     createdInfo,
+    applyJob,
 };
