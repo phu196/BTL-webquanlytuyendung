@@ -12,7 +12,7 @@ const storage = multer.diskStorage({
 });
 
 // Middleware Multer
-const upload = multer({
+const uploadAvatar = multer({
     storage,
     limits: { fileSize: 5 * 1024 * 1024 }, // Giới hạn file 5MB
     fileFilter: (req, file, cb) => {
@@ -27,7 +27,7 @@ const upload = multer({
 });
 
 // Xử lý lỗi của multer
-const uploadErrorHandler = (err, req, res, next) => {
+const uploadAvatarErrorHandler = (err, req, res, next) => {
     if (err instanceof multer.MulterError) {
         // Lỗi từ multer
         return res.status(400).json({
@@ -44,4 +44,4 @@ const uploadErrorHandler = (err, req, res, next) => {
     next();
 };
 
-module.exports = { upload, uploadErrorHandler };
+module.exports = { uploadAvatar, uploadAvatarErrorHandler };
