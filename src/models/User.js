@@ -1,16 +1,19 @@
 "use strict";
 const mongoose = require("mongoose");
+const Schema = mongoose.Schema;  // Add this line
 
-const UserSchema = new mongoose.Schema(
+const UserSchema = new Schema(
     {
         username: {
             type: String,
+            required: [true, "Username is not provided"],
             required: [true, "Username is not provided"],
             unique: true,
             index: true,
         },
         fullname: {
             type: String,
+            required: [true, "Fullname is not provided"],
             required: [true, "Fullname is not provided"],
         },
         role: {
@@ -24,6 +27,7 @@ const UserSchema = new mongoose.Schema(
         },
         email: {
             type: String,
+            required: [true, "Email is not provided"],
             required: [true, "Email is not provided"],
             unique: true,
             index: true,

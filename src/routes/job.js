@@ -1,7 +1,6 @@
 const express = require("express");
 const router = express.Router();
 const passport = require("passport");
-const passport = require("passport");
 
 const jobController = require("../controllers/job");
 
@@ -10,10 +9,6 @@ const passportJWT = passport.authenticate("jwt", {
     session: false,
 });
 
-const passportJWT = passport.authenticate("jwt", {
-    failureRedirect: "/auth/login",
-    session: false,
-});
 
 router.get("/viec-lam-it", jobController.searchJob);
 

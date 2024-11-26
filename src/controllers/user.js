@@ -17,14 +17,16 @@ const getUpdate = async (req, res) => {
 
         const user = await User.findById(userId).select("-password");
         if (!user) {
-            return res.status(StatusCodes.NOT_FOUND).json({ message: "User not found" });
+            return res.status(404).send('User not found');
         }
         res.render("updateProfile", { user });
     } catch (error) {
-        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: "Server error", error: error.message });
+        console.error(error);
+        res.status(500).send('Server Error');
     }
 };
 
+// Hiển thị trang cập nhật thông tin
 const updateUser = async (req, res) => {
     try {
         // Lấy userId từ req.body hoặc req.params (nếu không có xác thực JWT)
@@ -52,10 +54,8 @@ const updateUser = async (req, res) => {
             user: safeUser,
         });
     } catch (error) {
-        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-            message: "Error updating user information",
-            error: error.message,
-        });
+        console.error(error);
+        res.status(500).send('Server Error');
     }
 };
 
@@ -293,13 +293,30 @@ const applyJob = async (req, res) => {
     }
 };
 
+const getUserProfileForCompany = async (req, res) => {
+    try {
+        const userId = req.user._id; // Lấy userId từ token
+        const user = await User.findById(userId).populate('appliedJobs'); // Populate các công việc đã ứng tuyển
+        if (!user) {
+            return res.status(404).send('User not found');
+        }
+        res.render('profileUser', { user });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Server Error');
+    }
+};
+
 module.exports = {
     getUpdate,
     updateUser,
     getAppliedJobs,
     uploadCV,
     getUserInfo,
+    getUserProfileForCompany,
+    // getUpdateForm,  // Export hàm render form cập nhật
     createInfo,
     createdInfo,
     applyJob,
+    getAppliedJobs,
 };

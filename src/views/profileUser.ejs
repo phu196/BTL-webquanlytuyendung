@@ -21,6 +21,8 @@
                 box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
                 padding: 20px;
                 margin-top: 20px;
+                position: relative;
+                text-align: center;
             }
 
             /* Header */
@@ -30,19 +32,26 @@
                 color: white;
                 padding: 20px;
                 border-radius: 15px 15px 0 0;
+                position: relative;
+            }
+            .profile-details {
+                text-align: left; /* Căn lề trái */
+                padding: 10px 20px; /* Tạo khoảng cách dễ nhìn */
+                line-height: 1.6; /* Tăng khoảng cách giữa các dòng */
             }
 
             .profile-header img {
                 width: 120px;
                 height: 120px;
                 border-radius: 50%;
-                margin-bottom: 15px;
+                margin-bottom: 15px; /* Thêm khoảng cách giữa avatar và tên */
                 border: 5px solid #fff;
             }
 
             .profile-header h2 {
                 font-size: 1.8rem;
                 font-weight: bold;
+                margin-top: 10px; /* Đảm bảo khoảng cách hợp lý với avatar */
             }
 
             /* Button */
@@ -53,6 +62,13 @@
 
             .btn-update:hover {
                 background-color: #218838;
+            }
+
+            .btn-back {
+                margin: 20px auto;
+                display: flex;
+                justify-content: center;
+                align-items: center;
             }
 
             /* Footer */
@@ -83,13 +99,13 @@
         <div class="container">
             <div class="profile-card">
                 <div class="profile-header">
+                    <!-- Avatar -->
                     <img src="<%= user.avatarPath || '/images/default-avatar.png' %>" alt="Avatar" />
+                    <!-- Full Name -->
                     <h2><%= user.fullname %></h2>
-                    <!-- <p>@<%= user.username %></p> -->
                 </div>
-                <div class="mt-3">
+                <div class="profile-details">
                     <h5><strong>Thông tin chi tiết:</strong></h5>
-                    <!-- <p><strong>ID:</strong> <%= user._id %></p> -->
                     <p><strong>Email:</strong> <%= user.email %></p>
                     <p><strong>Giới tính:</strong> <%= user.gender || 'Chưa cập nhật' %></p>
                     <p><strong>Số điện thoại:</strong> <%= user.phoneNumber || 'Chưa cập nhật' %></p>
@@ -99,7 +115,11 @@
                     <p><strong>Quận:</strong> <%= user.address.district || 'Chưa cập nhật' %></p>
                     <p><strong>Thành phố:</strong> <%= user.address.province || 'Chưa cập nhật' %></p>
                 </div>
-                <a href="/user/update" class="btn btn-update w-100 mt-3">Cập nhật thông tin</a>
+            </div>
+
+            <!-- Back to Dashboard Button -->
+            <div class="btn-back">
+                <a href="/company/dashboard" class="btn btn-secondary w-50">Back to Dashboard</a>
             </div>
         </div>
 

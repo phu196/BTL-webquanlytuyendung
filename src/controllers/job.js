@@ -1,10 +1,6 @@
 const Job = require("../models/Job");
 const User = require("../models/User");
 const Company = require("../models/Company");
-const { search } = require("../routes/auth");
-const User = require("../models/User");
-const Company = require("../models/Company");
-const { search } = require("../routes/auth");
 
 const searchJob = async (req, res) => {
     const keyword = req.query.q || ""; // Nhận từ khóa từ URL

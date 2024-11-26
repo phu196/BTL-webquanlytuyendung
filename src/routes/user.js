@@ -1,4 +1,5 @@
-const router = require("express").Router();
+const express = require('express');
+const router = express.Router();
 const passport = require("passport");
 const userController = require("../controllers/user");
 const { uploadAvatar, uploadAvatarErrorHandler } = require("../middlewares/uploadAvatar");
@@ -11,12 +12,15 @@ const passportJWT = passport.authenticate("jwt", {
     failureRedirect: "/auth/login", // Redirect đến login nếu không xác thực
     session: false,
 });
-// Route lấy thông tin người dùng (có xác thực)
-router.get("/edit", passportJWT, userController.getUserInfo);
 
 router.get("/update", passportJWT, userController.getUpdate);
 
 router.post("/update", passportJWT, userController.updateUser);
+
+// Hiển thị thông tin User từ góc nhìn Company
+router.get('/company/profile', passportJWT, userController.getUserProfileForCompany);
+// Get Profile Page
+router.get('/profile', passportJWT, userController.getUserInfo);
 
 // Route upload CV
 router.post(
