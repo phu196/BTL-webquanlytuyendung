@@ -1,6 +1,8 @@
 const router = require("express").Router();
 const passport = require("passport");
 const userController = require("../controllers/user");
+const { uploadAvatar, uploadAvatarErrorHandler } = require("../middlewares/uploadAvatar");
+
 
 const { upload, uploadErrorHandler } = require("../middlewares/upload");
 
@@ -11,6 +13,7 @@ const passportJWT = passport.authenticate("jwt", {
 });
 
 // Route lấy thông tin người dùng (có xác thực)
+router.get("/edit", passport, userController.getUserInfo);
 
 router.get("/update", passportJWT, userController.getUpdate);
 
@@ -28,5 +31,9 @@ router.post(
 );
 // Route xem job đang applied
 router.get("/applied-jobs", passportJWT, userController.getAppliedJobs);
+
+// Route create thông tin người dùng 
+router.get("/create", passportJWT, userController.createInfo);
+router.post("/created", passportJWT, uploadAvatar.single("avatar"), uploadAvatarErrorHandler, userController.createdInfo);
 
 module.exports = router;

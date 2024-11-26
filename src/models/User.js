@@ -51,6 +51,9 @@ const UserSchema = new mongoose.Schema(
                 ref: "Job",
             },
         ],
+        avatarPath: {
+            type: String,
+        },
     },
     { timestamps: true }
 );

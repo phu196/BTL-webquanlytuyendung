@@ -79,13 +79,13 @@
                 const password = document.getElementById("reg-password").value;
                 const email = document.getElementById("reg-email").value;
                 const fullname = document.getElementById("reg-fullname").value;
-                const telephone = document.getElementById("reg-phone").value;
+                const phoneNumber = document.getElementById("reg-phone").value;
                 const data = {
                     username: username,
                     password: password,
                     email: email,
                     fullname: fullname,
-                    phoneNumber: telephone,
+                    phoneNumber: phoneNumber,
                 };
                 fetch("/auth/register", {
                     method: "POST",

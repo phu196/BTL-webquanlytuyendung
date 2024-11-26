@@ -69,6 +69,7 @@
                                 href="/job/viec-lam-it"
                                 role="button"
                                 id="jobsDropdown"
+                                data-bs-toggle="dropdown"
                                 aria-expanded="false"
                             >
                                 Việc Làm IT
@@ -138,7 +139,7 @@
                             document.getElementById("navigation-button").innerHTML = `
                                 <div class="dropdown">
                                     <button class="btn btn-light d-flex align-items-center" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <img src="${data.user.avatarPath}" alt="Avatar" class="rounded-circle me-3" style="width: 30px; height: 30px;">
+                                        <img src=${data.user.avatarPath} alt="Avatar" class="rounded-circle me-3" style="width: 30px; height: 30px;">
                                         <span class="ml-2">${data.user.fullname}</span>
                                         <i class="fas fa-chevron-down ml-2"></i>
                                     </button>
