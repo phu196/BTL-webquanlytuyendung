@@ -127,7 +127,7 @@ const createJob = async (req, res) => {
                     time: req.body.jobTime,
                     type: req.body.jobType,
                     typeOfWork: req.body.jobTypeOfWork,
-                    skill: skill,
+                    skills: skill,
                     salary: req.body.jobSalary,
                     isSalaryNegotiation: isSalaryNegotiation,
                     deadline: req.body.jobDeadline,
@@ -187,8 +187,8 @@ const viewCandidates = async (req, res) => {
             if (!companyJobs.jobs.includes(job_id)) {
                 return res.status(404).send("Job not found or this job is not belong to your company");
             }
-            const job = await Job.findById(job_id).populate("applicant");
-            const candidates = job.applicant;
+            const job = await Job.findById(job_id).populate("applicants");
+            const candidates = job.applicants;
             res.render("./company/layout/view_candidates", {
                 candidates: candidates,
             });
