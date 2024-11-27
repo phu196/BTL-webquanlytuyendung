@@ -109,7 +109,7 @@
     </head>
 
     <body>
-        <%- include('../partials/header') %> <%- include('../partials/search') %>  
+        <%- include('../partials/header') %> <%- include('../partials/search') %>
         <div class="container mt-4">
             <div class="row">
                 <!-- Job Summary and Details Section (6/10 width) -->
@@ -142,12 +142,119 @@
                             <i class="bi bi-clock"></i> Hạn nộp hồ sơ: <%= job.deadline.toLocaleDateString('vi-VN') %>
                         </div>
 
-
                         <!-- Apply Now Button -->
                         <form id="applyForm" action="/job/apply/<%= job._id %>" method="POST">
-                            <button type="button" onclick="applyToJob('<%= job._id %>')" class="apply-btn">Apply Now</button>
+                            <!-- Button to trigger modal -->
+                            <button
+                                type="button"
+                                class="apply-btn"
+                                data-bs-toggle="modal"
+                                data-bs-target="#applyJobModal"
+                            >
+                                Ứng tuyển ngay
+                            </button>
+
+                            <!-- Modal -->
+                            <div
+                                class="modal fade"
+                                id="applyJobModal"
+                                tabindex="-1"
+                                aria-labelledby="applyJobModalLabel"
+                                aria-hidden="true"
+                            >
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="applyJobModalLabel">
+                                                Bạn đang ứng tuyển vị trí
+                                            </h5>
+                                            <button
+                                                type="button"
+                                                class="btn-close"
+                                                data-bs-dismiss="modal"
+                                                aria-label="Close"
+                                            ></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <h6><%= job.title %></h6>
+                                            <form>
+                                                <!-- Thông tin cơ bản -->
+                                                <div class="mb-3">
+                                                    <label for="name" class="form-label">Họ và tên</label>
+                                                    <input
+                                                        type="text"
+                                                        class="form-control"
+                                                        id="name"
+                                                        value="<%= user.fullname %>"
+                                                    />
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="phone" class="form-label">Số điện thoại</label>
+                                                    <input
+                                                        type="text"
+                                                        class="form-control"
+                                                        id="phone"
+                                                        value="<%= user.phoneNumber %>"
+                                                    />
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="email" class="form-label">Email</label>
+                                                    <input
+                                                        type="email"
+                                                        class="form-control"
+                                                        id="email"
+                                                        value="<%= user.email %>"
+                                                    />
+                                                </div>
+
+                                                <!-- Chọn CV -->
+                                                <div class="mb-3">
+                                                    <label for="cv" class="form-label">Chọn CV</label>
+                                                    <select class="form-select" id="cv">
+                                                        <% if (user.CV) { %> <% user.CV.forEach(cv => { %>
+                                                        <option><%= cv.title %></option>
+                                                        <% }) %> <% } %>
+                                                    </select>
+                                                    <small class="text-muted">CV ứng tuyển gần nhất</small>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="coverLetter" class="form-label">Thư giới thiệu</label>
+                                                    <textarea
+                                                        class="form-control"
+                                                        id="coverLetter"
+                                                        rows="3"
+                                                        placeholder="Nhập đoạn giới thiệu bản thân hoặc đường link portfolio của bạn"
+                                                    ></textarea>
+                                                </div>
+
+                                                <!-- File upload -->
+                                                <div class="mb-3">
+                                                    <label for="fileUpload" class="form-label">Tải lên CV mới</label>
+                                                    <input class="form-control" type="file" id="fileUpload" />
+                                                    <small class="text-muted"
+                                                        >Hỗ trợ định dạng: .doc, .docx, .pdf, .xls. Dung lượng <
+                                                        5MB</small
+                                                    >
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                                Hủy
+                                            </button>
+                                            <button
+                                                type="button"
+                                                class="apply-btn"
+                                                onclick="applyToJob('<%= job._id %>')"
+                                            >
+                                                Ứng tuyển
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </form>
-                        <div id="applyMessage" style="display: none; color: green; margin-top: 10px;">
+                        <div id="applyMessage" style="display: none; color: green; margin-top: 10px">
                             Job application successful!
                         </div>
                     </div>
@@ -252,32 +359,84 @@
 
         <!-- JavaScript for Applying to Job -->
         <script>
-            function applyToJob(jobId) {
-                fetch(`/job/apply/${jobId}`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    credentials: 'same-origin' // Include cookies if needed for authentication
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.message === 'Job application successful') {
-                        // Show the success message
-                        const messageDiv = document.getElementById('applyMessage');
-                        messageDiv.style.display = 'block';
+            document.getElementById("fileUpload").addEventListener("change", function () {
+                const file = this.files[0];
+                if (file.size > 5 * 1024 * 1024) {
+                    alert("File size must be less than 5MB");
+                    this.value = "";
+                }
+                document.getElementById("cv").value = file.name;
+                document.getElementById("cv").disabled = true;
+            });
+            async function applyToJob(jobId) {
+                const name = document.getElementById("name").value;
+                const phoneNumber = document.getElementById("phone").value;
+                const email = document.getElementById("email").value;
+                const cvTitle = document.getElementById("cv").value;
+                const coverLetter = document.getElementById("coverLetter").value;
+                const file = document.getElementById("fileUpload").files[0];
+                let isFileUploaded = false;
+                let fileUpload = {};
 
-                        // Hide the message after 3 seconds
-                        setTimeout(() => {
-                            messageDiv.style.display = 'none';
-                        }, 3000);
-                    } else {
-                        alert('There was an error applying for the job. Please try again.');
-                    }
+                if (!name || !phoneNumber || !email) {
+                    alert("Please fill in all fields");
+                    return;
+                }
+                if (!cvTitle && !file) {
+                    alert("Please select a CV file or upload a new one");
+                    return;
+                }
+
+                if (file) {
+                    isFileUploaded = true;
+                    fileUpload = {
+                        name: file.name,
+                        type: file.type,
+                        size: file.size,
+                        data: await convertFileToBase64(file),
+                    };
+                }
+
+                fetch(`/job/${jobId}/apply`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        name,
+                        phoneNumber,
+                        email,
+                        cvTitle,
+                        coverLetter,
+                        isFileUploaded,
+                        fileUpload,
+                    }),
                 })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert('An error occurred. Please try again.');
+                    .then((response) => response.json())
+                    .then((data) => {
+                        if (data.success) {
+                            const messageDiv = document.getElementById("applyMessage");
+                            messageDiv.style.display = "block";
+
+                            // Hide the message after 3 seconds
+                            setTimeout(() => {
+                                messageDiv.style.display = "none";
+                            }, 3000);
+                        } else {
+                            alert(data.message);
+                        }
+                    })
+                    .catch((error) => {
+                        console.error("Error:", error);
+                        alert("An error occurred. Please try again.");
+                    });
+            }
+            function convertFileToBase64(file) {
+                return new Promise((resolve, reject) => {
+                    const reader = new FileReader();
+                    reader.onload = () => resolve(reader.result.split(",")[1]); // Loại bỏ tiền tố Base64
+                    reader.onerror = (error) => reject(error);
+                    reader.readAsDataURL(file);
                 });
             }
         </script>

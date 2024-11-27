@@ -95,7 +95,11 @@ const JobSchema = new mongoose.Schema(
                     type: mongoose.Schema.Types.ObjectId,
                     ref: "User",
                 },
-                CV: String, // title
+                name: String,
+                phoneNumber: String,
+                email: String,
+                coverLetter: String,
+                cvTitle: String, // title
             },
         ],
     },

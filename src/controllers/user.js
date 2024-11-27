@@ -10,7 +10,7 @@ const getUpdate = async (req, res) => {
     try {
         // Kiểm tra ID người dùng từ token
         const userId = req.user._id;
-        
+
         if (!userId) {
             return res.status(StatusCodes.BAD_REQUEST).json({ message: "User ID is not provided" });
         }
@@ -91,7 +91,6 @@ const generateUniqueTitle = (title, existingTitles) => {
     return newTitle;
 };
 const uploadCV = async (req, res) => {
-    console.log(req.file);
     try {
         if (!req.user) {
             return res.status(StatusCodes.UNAUTHORIZED).json({

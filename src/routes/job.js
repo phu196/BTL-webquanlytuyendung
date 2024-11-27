@@ -12,9 +12,7 @@ const passportJWT = passport.authenticate("jwt", {
 
 router.get("/viec-lam-it", jobController.searchJob);
 
-router.get("/:jobId", jobController.showJob);
-
-router.get("/:jobId/apply", passportJWT, jobController.applyJob);
+router.get("/:jobId", passportJWT, jobController.showJob);
 
 router.post("/:jobId/apply", passportJWT, jobController.applyJob);
 
