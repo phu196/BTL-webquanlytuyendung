@@ -94,7 +94,7 @@ const createJob = async (req, res) => {
         if (req.company) {
             const id = req.company._id;
             const company = await Company.findById(id);
-            const isExit = await Job.findOne({ title: jobTitle });
+            const isExit = await Job.findOne({ title: req.body.jobTitle });
             if (isExit) {
                 return res.status(400).send("Job already exists");
             } else {
@@ -105,29 +105,31 @@ const createJob = async (req, res) => {
                 } else {
                     console.error("jobSkill is undefined or null");
                 }
-                if (jobSalary != "Thoả thuận") {
+                if (req.body.jobSalary != "Thoả thuận") {
                     const isSalaryNegotiation = false;
                 } else {
                     const isSalaryNegotiation = true;
                 }
                 const job = new Job({
-                    title: jobTitle,
-                    description: jobDescription,
-                    requirement: jobRequirement,
-                    benefit: jobBenefit,
+                    title: req.body.jobTitle,
+                    description: req.body.jobDescription,
+                    requirement: req.body.jobRequirements,
+                    benefit: req.body.jobBenefits,
                     companyName: company.companyName,
                     companyId: company._id,
-                    region: jobLocation,
-                    experienceYears: jobExperience,
-                    numberOfRecruitment: jobQuantity,
+                    location: req.body.jobLocation,
+                    region: req.body.jobRegion,
+                    experienceYears: req.body.jobExperience,
+                    number_of_recruitment: req.body.jobQuantity,
                     status: true,
-                    time: jobTime,
-                    typeOfWork: jobType,
+                    time: req.body.jobTime,
+                    type: req.body.jobType,
+                    typeOfWork: req.body.jobTypeOfWork,
                     skill: skill,
-                    salary: jobSalary,
+                    salary: req.body.jobSalary,
                     isSalaryNegotiation: isSalaryNegotiation,
-                    deadline: jobDeadline,
-                    level: "",
+                    deadline: req.body.jobDeadline,
+                    level: req.body.jobLevel,
                 });
                 try {
                     await job.save();
