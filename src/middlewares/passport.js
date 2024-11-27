@@ -42,7 +42,7 @@ passport.use(
             const { id, identify } = { ...jwtPayload };
             if (id) {
                 if (identify === "user") {
-                    const user = await User.findById(id).select("_id");
+                    const user = await User.findById(id).select("_id, role");
                     if (user) {
                         req.user = user;
                         return done(null, user);

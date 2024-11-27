@@ -11,10 +11,10 @@ const getCompanyInfo = async (req, res) => {
 };
 
 const register = async (req, res) => {
-    const { companyName, fullName, email, currentPosition, phoneNumber, jobRequirement } = req.body;
+    const { companyName, fullName, email, currentPosition, phoneNumber } = req.body;
 
     // validate
-    if (!companyName || !fullName || !email || !currentPosition || !phoneNumber || !jobRequirement) {
+    if (!companyName || !fullName || !email || !currentPosition || !phoneNumber) {
         return res.status(StatusCodes.BAD_REQUEST).json({ success: false, message: "Missing required fields" });
     }
     // check phone number
@@ -31,7 +31,6 @@ const register = async (req, res) => {
         email,
         currentPosition,
         phoneNumber,
-        jobRequirement,
     });
     await companyRegistration.save();
     res.status(StatusCodes.CREATED).json({
@@ -79,9 +78,9 @@ const companyDetail = async (req, res) => {
 const companyJobs = async (req, res) => {
     try {
         if (req.company) {
-        const response = await axios.get("https://provinces.open-api.vn/api/?depth=1 ")
-        const provinces = response.data;
-        res.render("./company/layout/job_post", { provinces: provinces });
+            const response = await axios.get("https://provinces.open-api.vn/api/?depth=1 ")
+            const provinces = response.data;
+            res.render("./company/layout/job_post", { provinces: provinces });
         }
     }
     catch (error) {

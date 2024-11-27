@@ -4,18 +4,7 @@ services:
         container_name: dev
         ports:
             - "3000:3000"
-        depends_on:
-            - mongodb
         environment:
             - NODE_OPTIONS=--experimental-modules
         volumes:
             - ./src:/home/app/src
-    mongodb:
-        container_name: mongodb
-        image: mongo:4.4
-        ports:
-            - "27017:27017"
-        volumes:
-            - ./mongo-data:/data/db
-volumes:
-    mongo-data:
