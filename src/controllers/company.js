@@ -285,7 +285,6 @@ const postEditJob = async (req, res) => {
     try {
         if (req.company) {
             const jobId = req.params.job_id;
-            console.log(req.body);
             await Job.findByIdAndUpdate(jobId, {
                 title: req.body.title,
                 salary: req.body.salary,
