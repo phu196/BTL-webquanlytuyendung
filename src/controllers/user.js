@@ -90,6 +90,20 @@ const generateUniqueTitle = (title, existingTitles) => {
 
     return newTitle;
 };
+const getUploadCV= async (req, res) => {
+    if(req.user){
+        const userId = req.user._id;
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(StatusCodes.NOT_FOUND).json({
+                success: false,
+                message: "User not found",
+            });
+        }
+        res.render("upCV",{user});
+    }
+    
+}
 const uploadCV = async (req, res) => {
     console.log(req.file);
     try {
@@ -308,6 +322,7 @@ const getUserProfileForCompany = async (req, res) => {
 
 module.exports = {
     getUpdate,
+    getUploadCV,
     updateUser,
     getAppliedJobs,
     uploadCV,

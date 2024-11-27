@@ -23,6 +23,7 @@ router.get('/company/profile', passportJWT, userController.getUserProfileForComp
 router.get('/profile', passportJWT, userController.getUserInfo);
 
 // Route upload CV
+router.get("/upload-cv", passportJWT, userController.getUploadCV);
 router.post(
     "/upload-cv",
     passportJWT,
