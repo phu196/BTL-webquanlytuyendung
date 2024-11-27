@@ -7,92 +7,144 @@
     <title>Thông tin cá nhân</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
     <style>
         /* Tổng thể giao diện */
         body {
-            background: linear-gradient(to right, #e3f2fd, #bbdefb);
-            color: #212529;
+            font-family: 'Roboto', sans-serif;
+            background-color: #f4f4f9;
+            color: #2d3436;
+            padding-bottom: 30px;
         }
 
         /* Card Profile */
         .profile-card {
             background-color: #fff;
             border: none;
-            border-radius: 15px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
             padding: 20px;
-            margin-top: 20px;
+            margin-top: 40px;
+            transition: transform 0.2s, box-shadow 0.3s;
+        }
+
+        .profile-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
         }
 
         /* Header */
         .profile-header {
-            text-align: center;
-            background-color: #2196f3;
-            color: white;
+            display: flex;
+            align-items: center;
+            gap: 15px;
             padding: 20px;
-            border-radius: 15px 15px 0 0;
+            background-color: #6c5ce7;
+            color: #fff;
+            border-radius: 12px 12px 0 0;
         }
 
         .profile-header img {
-            width: 120px;
-            height: 120px;
+            width: 80px;
+            height: 80px;
             border-radius: 50%;
-            margin-bottom: 15px;
-            border: 5px solid #fff;
+            border: 3px solid #fff;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .profile-header .profile-info {
+            flex-grow: 1;
         }
 
         .profile-header h2 {
-            font-size: 1.8rem;
+            font-size: 1.5rem;
             font-weight: bold;
+            margin: 0;
+        }
+
+        .profile-header p {
+            margin: 5px 0;
+            font-size: 0.9rem;
+            color: #dfe6e9;
+        }
+
+        /* Thông tin cá nhân */
+        .info-section {
+            margin-top: 20px;
+        }
+
+        .info-section h5 {
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .info-section p {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            color: #2d3436;
+        }
+
+        .info-section p i {
+            font-size: 1.2rem;
+            color: #6c5ce7;
+            margin-right: 10px;
         }
 
         /* Button */
         .btn-update {
-            background-color: #28a745;
+            background-color: #00cec9;
             color: white;
+            font-weight: 500;
         }
 
         .btn-update:hover {
-            background-color: #218838;
+            background-color: #00b894;
         }
 
         /* Footer */
         footer {
-            background-color: #f1f1f1;
+            background-color: #f4f4f9;
             text-align: center;
-            padding: 15px;
-            margin-top: 30px;
+            padding: 20px;
+            margin-top: 40px;
+            font-size: 0.9rem;
+            color: #636e72;
+        }
+
+        footer a {
+            text-decoration: none;
+            color: #636e72;
+            transition: color 0.3s;
+        }
+
+        footer a:hover {
+            color: #2d3436;
         }
     </style>
 </head>
 
 <body>
     <!-- Header -->
-    <header class="py-3 bg-light shadow-sm">
-        <div class="container d-flex justify-content-between align-items-center">
-            <div class="logo">
-                <img src="/images/logo.png" alt="Logo" height="40">
-            </div>
-            <div>
-                <a href="/" class="btn btn-outline-primary">Trang chủ</a>
-                <a href="/logout" class="btn btn-danger">Đăng xuất</a>
-            </div>
-        </div>
-    </header>
+    <%- include('partials/header') %>
 
     <!-- Profile Section -->
     <div class="container">
         <div class="profile-card">
+            <!-- Profile Header -->
             <div class="profile-header">
                 <img src="<%= user.avatarPath || '/images/user1.png' %>" alt="Avatar">
-                <h2><%= user.fullname %></h2>
-                <!-- <p>@<%= user.username %></p> -->
+                <div class="profile-info">
+                    <h2><%= user.fullname %></h2>
+                    <p>@<%= user.username || 'username' %></p>
+                </div>
             </div>
-            <div class="mt-3">
-                <h5><strong>Thông tin chi tiết:</strong></h5>
-                <!-- <p><strong>ID:</strong> <%= user._id %></p> -->
-                <p><strong>Email:</strong> <%= user.email %></p>
-                <p><strong>Giới tính:</strong> 
+            <!-- Profile Info -->
+            <div class="info-section">
+                <h5>Thông tin chi tiết:</h5>
+                <p><i class="fas fa-envelope"></i> <strong>Email:</strong> <%= user.email %></p>
+                <p><i class="fas fa-venus-mars"></i> <strong>Giới tính:</strong>
                     <% if (user.gender === 'male') { %>
                         Nam
                     <% } else if (user.gender === 'female') { %>
@@ -101,74 +153,25 @@
                         Chưa cập nhật
                     <% } %>
                 </p>
-                <p><strong>Số điện thoại:</strong> <%= user.phoneNumber || 'Chưa cập nhật' %></p>
-                <h5 class="mt-3"><strong>Địa chỉ:</strong></h5>
-                <p><strong>Thôn:</strong> <%= user.address.detail || 'Chưa cập nhật' %></p>
-                <p><strong>Xã:</strong> <%= user.address.ward || 'Chưa cập nhật' %></p>
-                <p><strong>Quận:</strong> <%= user.address.district || 'Chưa cập nhật' %></p>
-                <p><strong>Thành phố:</strong> <%= user.address.province || 'Chưa cập nhật' %></p>
+                <p><i class="fas fa-phone-alt"></i> <strong>Số điện thoại:</strong> <%= user.phoneNumber || 'Chưa cập nhật' %></p>
+                <h5 class="mt-3">Địa chỉ:</h5>
+                <p><i class="fas fa-map-marker-alt"></i> <strong>Thôn:</strong> <%= user.address.detail || 'Chưa cập nhật' %></p>
+                <p><i class="fas fa-map-marker-alt"></i> <strong>Xã:</strong> <%= user.address.ward || 'Chưa cập nhật' %></p>
+                <p><i class="fas fa-map-marker-alt"></i> <strong>Quận:</strong> <%= user.address.district || 'Chưa cập nhật' %></p>
+                <p><i class="fas fa-map-marker-alt"></i> <strong>Thành phố:</strong> <%= user.address.province || 'Chưa cập nhật' %></p>
             </div>
-            <a href="/user/update" class="btn btn-update w-100 mt-3">Cập nhật thông tin</a>
+            <a href="/user/update" class="btn btn-update w-100 mt-4">Cập nhật thông tin</a>
         </div>
     </div>
 
     <!-- Footer -->
-    <footer class="bg-light py-5">
+    <footer>
         <div class="container">
-            <div class="row">
-                <div class="col-md-4 mb-4">
-                    <h5 class="fw-bold">TOPDev</h5>
-                    <p>
-                        TC-312 Đại học Bách khoa Hà Nội<br>
-                        Hai Bà Trưng, Thành phố Hà Nội<br>
-                        Liên hệ: 028 1234 5678 - contact@it203.vn
-                    </p>
-                    <img src="/images/logo_bocongthuong.jpgx" alt="Chứng nhận bởi Bộ Công Thương" class="img-fluid">
-                </div>
-                <div class="col-md-2 mb-4">
-                    <h5 class="fw-bold">Về TopDev</h5>
-                    <ul class="list-unstyled">
-                        <li><a href="#" style="text-decoration: none; color: black;">Về chúng tôi</a></li>
-                        <li><a href="#" style="text-decoration: none; color: black;">Liên hệ</a></li>
-                        <li><a href="#" style="text-decoration: none; color: black;">Thảo thuận sử dụng</a></li>
-                        <li><a href="#" style="text-decoration: none; color: black;">Cơ hội việc làm</a></li>
-                        <li><a href="#" style="text-decoration: none; color: black;">Quy định bảo mật</a></li>
-                        <li><a href="#" style="text-decoration: none; color: black;">Quy chế hoạt động</a></li>
-                        <li><a href="#" style="text-decoration: none; color: black;">Giải quyết khiếu nại</a></li>
-                    </ul>
-                </div>
-                <div class="col-md-2 mb-4">
-                    <h5 class="fw-bold">Ứng viên</h5>
-                    <ul class="list-unstyled">
-                        <li><a href="#" style="text-decoration: none; color: black;">Tính lương Gross - Net</a></li>
-                        <li><a href="#" style="text-decoration: none; color: black;">Tìm kiếm công việc IT</a></li>
-                        <li><a href="#" style="text-decoration: none; color: black;">Trắc nghiệm tính cách</a></li>
-                    </ul>
-                </div>
-                <div class="col-md-2 mb-4">
-                    <h5 class="fw-bold">Nhà tuyển dụng</h5>
-                    <ul class="list-unstyled">
-                        <li><a href="#" style="text-decoration: none; color: black;">Đăng việc làm IT</a></li>
-                        <li><a href="#" style="text-decoration: none; color: black;">Tìm kiếm nhân tài</a></li>
-                        <li><a href="#" style="text-decoration: none; color: black;">Báo cáo thị trường IT</a></li>
-                        <li><a href="#" style="text-decoration: none; color: black;">Tạo tài khoản</a></li>
-                    </ul>
-                </div>
-                <div class="col-md-2 mb-4">
-                    <h5 class="fw-bold">Theo dõi chúng tôi tại</h5>
-                    <div class="mb-3">
-                        <a href="#" class="me-2" style="text-decoration: none; color: black;"><i class="bi bi-facebook"></i></a>
-                        <a href="#" class="me-2" style="text-decoration: none; color: black;"><i class="bi bi-linkedin"></i></a>
-                        <a href="#" class="me-2" style="text-decoration: none; color: black;"><i class="bi bi-youtube"></i></a>
-                    </div>
-                </div>
-            </div>
-            <div class="text-center mt-4">
-                <p class="mb-0">Copyright © CÔNG TY CỔ PHẦN NHÓM 16 / ĐKKD: 031 303 2338 - Cấp ngày: 27/11/2014</p>
-            </div>
+            <p>Copyright © 2024 - Công ty Nhóm 16</p>
+            <p>Địa chỉ: TC-312 Đại học Bách khoa Hà Nội, Hai Bà Trưng, Hà Nội</p>
+            <a href="#">Điều khoản sử dụng</a> | <a href="#">Chính sách bảo mật</a>
         </div>
     </footer>
-    
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
