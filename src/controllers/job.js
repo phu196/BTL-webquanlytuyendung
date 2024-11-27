@@ -27,7 +27,7 @@ const searchJob = async (req, res) => {
                     companyName: job.companyName,
                     salary: job.salary,
                     location: job.location,
-                    keywords: job.skill,
+                    keywords: job.skills,
                 });
             }
         })
