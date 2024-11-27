@@ -13,9 +13,9 @@ const passportJWT = passport.authenticate("jwt", {
     session: false,
 });
 
-router.get("/update", passportJWT, userController.getUpdate);
+// router.get("/update", passportJWT, userController.getUpdate);
 
-router.post("/update", passportJWT, userController.updateUser);
+// router.post("/update", passportJWT, userController.updateUser);
 
 // Hiển thị thông tin User từ góc nhìn Company
 router.get('/company/profile', passportJWT, userController.getUserProfileForCompany);
@@ -34,7 +34,7 @@ router.post(
 router.get("/applied-jobs", passportJWT, userController.getAppliedJobs);
 
 // Route create thông tin người dùng 
-router.get("/create", passportJWT, userController.createInfo);
-router.post("/created", passportJWT, uploadAvatar.single("avatar"), uploadAvatarErrorHandler, userController.createdInfo);
+router.get("/update", passportJWT, userController.createInfo);
+router.post("/updated", passportJWT, uploadAvatar.single("avatar"), uploadAvatarErrorHandler, userController.createdInfo);
 
 module.exports = router;

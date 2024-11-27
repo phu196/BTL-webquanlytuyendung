@@ -84,30 +84,30 @@
 </head>
 <body>
 <div class="container mt-5">
-    <h2>Hoàn thành thông tin của bạn</h2>
-    <form action="/user/created" method="POST" enctype="multipart/form-data">
+    <h2>Chỉnh sửa thông tin của bạn</h2>
+    <form action="/user/updated" method="POST" enctype="multipart/form-data">
         <!-- Avatar -->
         <div class="mb-3">
             <label for="avatar" class="form-label">Đăng ảnh đại diện</label>
-            <input type="file" id="avatar" name="avatar" accept="image/*" class="form-control" required>
+            <input type="file" id="avatar" name="avatar" accept="image/*" class="form-control">
         </div>
 
         <!-- Username -->
         <div class="mb-3">
             <label for="username" class="form-label">Username</label>
-            <input type="text" class="form-control" id="username" name="username" value="<%= user.username %>" readonly>
+            <input type="text" class="form-control" id="username" name="username" value="<%= user.username %>" >
         </div>
 
         <!-- Fullname -->
         <div class="mb-3">
             <label for="fullname" class="form-label">Họ tên</label>
-            <input type="text" class="form-control" id="fullname" name="fullname" value="<%= user.fullname %>" readonly>
+            <input type="text" class="form-control" id="fullname" name="fullname" value="<%= user.fullname %>" >
         </div>
 
          <!-- Gender -->
          <div class="mb-3">
             <label for="gender" class="form-label">Giới tính</label>
-            <select class="form-select" id="gender" name="gender">
+            <select class="form-select" id="gender" name="gender" >   
                 <option value="male">Nam</option>
                 <option value="female">Nữ</option>
                 <option value="other">Khác</option>
@@ -117,13 +117,13 @@
         <!-- Email -->
         <div class="mb-3">
             <label for="email" class="form-label">Email</label>
-            <input type="email" class="form-control" id="email" name="email" value="<%= user.email %>" readonly>
+            <input type="email" class="form-control" id="email" name="email" value="<%= user.email %>" >
         </div>
 
         <!-- Phone Number -->
         <div class="mb-3">
             <label for="phoneNumber" class="form-label">Số điện thoại</label>
-            <input type="tel" class="form-control" id="phoneNumber" name="phoneNumber" value="<%= user.phoneNumber %>" readonly>
+            <input type="tel" class="form-control" id="phoneNumber" name="phoneNumber" value="<%= user.phoneNumber %>" >
         </div>
 
         <!-- Address -->
@@ -133,21 +133,21 @@
                 <input type="text" class="form-control" id="detail" name="address.detail" placeholder="Enter detailed address" value="<%= user.address?.detail || '' %>">
             </div>
             <div class="mb-3">
-                <label for="province" class="form-label">Tỉnh/ Thành phố</label>
-                <select class="form-select" id="province" name="address.province">
-                    <option value="">Chọn tỉnh/thành phố</option>
+                <label for="province" class="form-label">Tỉnh/ thành phố</label>
+                <select class="form-select" id="province" name="address.province" value="<%= user.address?.province || '' %>">
+                    <option value="<%= user.address?.province || '' %>"><%= user.address?.province || "" %></option>
                 </select>
             </div>
             <div class="mb-3">
                 <label for="district" class="form-label">Quận/ Huyện</label>
-                <select class="form-select" id="district" name="address.district">
-                    <option value="">Chọn quận/huyện</option>
+                <select class="form-select" id="district" name="address.district" value="<%= user.address?.district || '' %>">
+                    <option value="<%= user.address?.district || '' %>"><%= user.address?.district || "" %></option>
                 </select>
             </div>
             <div class="mb-3">
                 <label for="ward" class="form-label">Phường/ Xã</label>
-                <select class="form-select" id="ward" name="address.ward">
-                    <option value="">Chọn phường/xã</option>
+                <select class="form-select" id="ward" name="address.ward" value="<%= user.address?.ward || '' %>">
+                    <option value="<%= user.address?.ward || '' %>"><%= user.address?.ward || '' %></option>
                 </select>
             </div>
         <!-- Submit Button -->
@@ -163,15 +163,14 @@
     .then((response) => response.json())
     .then((data) => {
         if (data.success) {
+            
             const locations = data.locations;
-
             const provinceSelect = document.getElementById('province');
             const districtSelect = document.getElementById('district');
             const wardSelect = document.getElementById('ward');
-
             // Load Tỉnh/Thành phố
             function loadProvinces(locations) {
-                provinceSelect.innerHTML = '<option value="">Chọn tỉnh/thành phố</option>';
+                //provinceSelect.innerHTML = `<option value="">Chọn tỉnh thành phố </option>`;
                 for (const [code, province] of Object.entries(locations)) {
                     const option = document.createElement('option');
                     option.value = province.name; // Dùng tên

@@ -84,7 +84,7 @@
     <div class="container">
         <div class="profile-card">
             <div class="profile-header">
-                <img src="<%= user.avatarPath || '/images/default-avatar.png' %>" alt="Avatar">
+                <img src="<%= user.avatarPath || '/images/user1.png' %>" alt="Avatar">
                 <h2><%= user.fullname %></h2>
                 <!-- <p>@<%= user.username %></p> -->
             </div>
@@ -92,7 +92,15 @@
                 <h5><strong>Thông tin chi tiết:</strong></h5>
                 <!-- <p><strong>ID:</strong> <%= user._id %></p> -->
                 <p><strong>Email:</strong> <%= user.email %></p>
-                <p><strong>Giới tính:</strong> <%= user.gender || 'Chưa cập nhật' %></p>
+                <p><strong>Giới tính:</strong> 
+                    <% if (user.gender === 'male') { %>
+                        Nam
+                    <% } else if (user.gender === 'female') { %>
+                        Nữ
+                    <% } else { %>
+                        Chưa cập nhật
+                    <% } %>
+                </p>
                 <p><strong>Số điện thoại:</strong> <%= user.phoneNumber || 'Chưa cập nhật' %></p>
                 <h5 class="mt-3"><strong>Địa chỉ:</strong></h5>
                 <p><strong>Thôn:</strong> <%= user.address.detail || 'Chưa cập nhật' %></p>
@@ -100,7 +108,7 @@
                 <p><strong>Quận:</strong> <%= user.address.district || 'Chưa cập nhật' %></p>
                 <p><strong>Thành phố:</strong> <%= user.address.province || 'Chưa cập nhật' %></p>
             </div>
-            <a href="/user/create" class="btn btn-update w-100 mt-3">Cập nhật thông tin</a>
+            <a href="/user/update" class="btn btn-update w-100 mt-3">Cập nhật thông tin</a>
         </div>
     </div>
 

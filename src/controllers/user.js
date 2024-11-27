@@ -10,7 +10,7 @@ const getUpdate = async (req, res) => {
     try {
         // Kiểm tra ID người dùng từ token
         const userId = req.user._id;
-
+        
         if (!userId) {
             return res.status(StatusCodes.BAD_REQUEST).json({ message: "User ID is not provided" });
         }
@@ -31,7 +31,7 @@ const updateUser = async (req, res) => {
     try {
         // Lấy userId từ req.body hoặc req.params (nếu không có xác thực JWT)
         const userId = req.user._id;
-
+        console.log(userId);
         const user = await User.findById(userId);
 
         if (!user) {
@@ -50,8 +50,7 @@ const updateUser = async (req, res) => {
         }
 
         res.status(StatusCodes.OK).json({
-            message: "User updated successfully",
-            user: safeUser,
+            message: "User updated successfully"
         });
     } catch (error) {
         console.error(error);
