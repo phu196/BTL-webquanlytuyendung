@@ -31,8 +31,7 @@
 
                 <!-- Salary Negotiation -->
                 <div class="mb-3 form-check">
-                    <input type="checkbox" class="form-check-input" id="salaryNegotiation" name="salary_negotiation" <%=
-                    job.isSalaryNegotiation ? 'checked' : '' %>>
+                    <input type="checkbox" class="form-check-input" id="salaryNegotiation" name="salary_negotiation" <%= job.salaryNegotiation ? 'checked' : '' %>>
                     <label for="salaryNegotiation" class="form-check-label">Lương thoả thuận</label>
                 </div>
 
@@ -140,15 +139,14 @@
                         class="form-control"
                         id="numberOfRecruitment"
                         name="numberOfRecruitment"
-                        value="<%= job.numberOfRecruitment %>"
+                        value="<%= job.number_of_recruitment %>"
                         required
                     />
                 </div>
 
                 <!-- Job Status -->
                 <div class="mb-3 form-check">
-                    <input type="checkbox" class="form-check-input" id="jobStatus" name="job_status" <%= job.status
-                    ? 'checked' : '' %>>
+                    <input type="checkbox" class="form-check-input" id="jobStatus" name="job_status" <%= job.status ? 'checked' : '' %>>
                     <label for="jobStatus" class="form-check-label">Công việc còn tuyển</label>
                 </div>
 
@@ -164,17 +162,29 @@
                         required
                     />
                 </div>
-
-                <!-- Skills -->
+                <!-- Type of Work -->
                 <div class="mb-3">
-                    <label for="skill" class="form-label">Kỹ năng liên quan</label>
+                    <label for="typeOfWork" class="form-label">Phương thức làm việc</label>
                     <input
                         type="text"
                         class="form-control"
-                        id="skill"
-                        name="skill"
-                        value="<%= job.skill.join(', ') %>"
-                        placeholder="Separate skills with commas"
+                        id="type"
+                        name="type"
+                        value="<%= job.type %>"
+                        required
+                    />
+                </div>
+
+                <!-- Skills -->
+                <div class="mb-3">
+                    <label for="skills" class="form-label">Kỹ năng liên quan</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="skills"
+                        name="skills"
+                        value="<%= job.skills.join(', ') %>"
+                        
                     />
                 </div>
 

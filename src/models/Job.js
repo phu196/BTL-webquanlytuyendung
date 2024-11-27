@@ -18,7 +18,7 @@ const JobSchema = new mongoose.Schema(
         },
         region: {
             type: String,
-            required: [true, "Location is not provided"],
+            required: [true, "Region is not provided"],
             index: true,
         },
         experienceYears: {

@@ -285,25 +285,25 @@ const postEditJob = async (req, res) => {
     try {
         if (req.company) {
             const jobId = req.params.job_id;
-
+            console.log(req.body);
             await Job.findByIdAndUpdate(jobId, {
                 title: req.body.title,
                 salary: req.body.salary,
                 isSalaryNegotiation: req.body.isSalaryNegotiation === "on",
-                region: req.body.region,
+                region: req.body.jobRegion,
                 experienceYears: req.body.experienceYears,
                 deadline: new Date(req.body.deadline),
                 type: req.body.type,
-                description: req.body.description,
-                requirement: req.body.requirement,
-                benefit: req.body.benefit,
+                description: req.body.job_description,
+                requirement: req.body.job_requirement,
+                benefit: req.body.job_benefit,
                 location: req.body.location,
-                time: req.body.time,
+                time: req.body.job_time,
                 level: req.body.level,
                 numberOfRecruitment: req.body.numberOfRecruitment,
                 status: req.body.status === "on",
                 typeOfWork: req.body.typeOfWork,
-                skill: req.body.skill ? req.body.skill.split(",").map((s) => s.trim()) : [],
+                skills: req.body.skills ? req.body.skills.split(",").map((s) => s.trim()) : [],
             });
 
             res.redirect(`/company/jobs/${jobId}/show`);

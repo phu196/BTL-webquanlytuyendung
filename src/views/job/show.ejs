@@ -146,7 +146,7 @@
 
                         <!-- Apply Now Button -->
                         <form id="applyForm" action="/job/apply/<%= job._id %>" method="POST">
-                            <button type="button" onclick="applyToJob('<%= job._id %')" class="apply-btn">Apply Now</button>
+                            <button type="button" onclick="applyToJob('<%= job._id %>')" class="apply-btn">Apply Now</button>
                         </form>
                         <div id="applyMessage" style="display: none; color: green; margin-top: 10px;">
                             Job application successful!
@@ -159,19 +159,19 @@
                         <div class="job-detail-section"><strong>Loại công việc:</strong> <%= job.typeOfWork %></div>
                         <div class="section-title">Mô tả công việc</div>
                         <div class="job-detail-section">
-                            <p><%= job.description %></p>
+                            <p><%- job.description %></p>
                         </div>
                         <div class="section-title">Yêu cầu ứng viên</div>
                         <div class="job-detail-section">
-                            <p><%= job.requirement %></p>
+                            <p><%- job.requirement %></p>
                         </div>
                         <div class="section-title">Kỹ năng chuyên môn</div>
                         <div class="job-detail-section">
-                            <p><%= job.skill.join(', ') %></p>
+                            <p><%= job.skills.join(', ') %></p>
                         </div>
                         <div class="section-title">Quyền lợi</div>
                         <div class="job-detail-section">
-                            <p><%= job.benefit %></p>
+                            <p><%- job.benefit %></p>
                         </div>
                         <div class="section-title">Địa điểm làm việc</div>
                         <div class="job-detail-section">
