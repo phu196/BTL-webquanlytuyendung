@@ -78,9 +78,11 @@ const companyDetail = async (req, res) => {
 // [GET] /company/new-job
 const companyJobs = async (req, res) => {
     try {
+        if (req.company) {
         const response = await axios.get("https://provinces.open-api.vn/api/?depth=1 ")
         const provinces = response.data;
         res.render("./company/layout/job_post", { provinces: provinces });
+        }
     }
     catch (error) {
         console.error(error);

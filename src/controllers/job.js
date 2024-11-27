@@ -41,12 +41,11 @@ const searchJob = async (req, res) => {
 const showJob = async (req, res) => {
     try {
         const jobId = req.params.jobId;
-        console.log(jobId);
+        
         const job = await Job.findById(jobId).populate({
-            path: "company_id",
-            select: "company_name company_logo location company_phone company_email",
+            path: "companyId",
+            select: "companyName logoPath location phoneNumber email",
         });
-
         if (!job) {
             return res.status(404).json({ message: "Job not found" });
         }
