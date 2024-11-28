@@ -31,6 +31,8 @@ router.post(
     uploadErrorHandler, // Xử lý lỗi từ middleware
     userController.uploadCV
 );
+// Route xóa CV
+router.post("/delete-cv", passportJWT, userController.deleteCV);
 // Route xem job đang applied
 router.get("/applied-jobs", passportJWT, userController.getAppliedJobs);
 
