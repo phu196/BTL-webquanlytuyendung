@@ -185,7 +185,6 @@ const createInfo = async (req, res) => {
         }
         res.render("UserInfoSetup", { user });
 
-
     }
     catch (error) {
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({

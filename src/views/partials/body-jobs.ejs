@@ -104,7 +104,7 @@
                                             class="link d-flex align-items-center mb-3"
                                         >
                                             <img
-                                                src="<%= company.logoPath %>"
+                                                src="<%= company.logoPath ||'/images/default_logo.png' %>"
                                                 alt="Company Logo"
                                                 class="company-logo me-3"
                                             />
@@ -163,7 +163,7 @@
                                 <div class="job-card" style="min-height: 300px">
                                     <div class="d-flex align-items-center mb-3">
                                         <a href="/job/<%= job.id %>" class="link d-flex align-items-center mb-3">
-                                            <img src="<%= job.logo %>" alt="Job Logo" class="job-logo me-3" />
+                                            <img src="<%= job.logo || '/images/default_logo.png' %>" alt="Job Logo" class="job-logo me-3" />
                                             <h5 class="job-card-title mb-0"><%= job.title %></h5>
                                         </a>
                                     </div>

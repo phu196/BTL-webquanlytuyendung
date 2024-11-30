@@ -67,7 +67,7 @@
             <div class="container">
                 <div class="d-flex justify-content-between align-items-center">
                     <div class="logo">
-                        <a href="">
+                        <a href="/">
                             <img src="/images/logo.png" alt="Logo" height="30" />
                         </a>
                     </div>
@@ -167,14 +167,15 @@
                             document.getElementById("navigation-button").innerHTML = `
                                 <div class="dropdown">
                                     <button class="btn btn-light d-flex align-items-center" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <img src="${data.company.logoPath}"  alt="Avatar" class="rounded-circle me-3" style="width: 30px; height: 30px;">
+                                        <img src="${data.company.logoPath || '/images/default_logo.png'}"  alt="Avatar" class="rounded-circle me-3" style="width: 30px; height: 30px;">
                                         <span class="ml-2">${data.company.companyName}</span>
                                         <i class="fas fa-chevron-down ml-2"></i>
                                     </button>
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                        <a class="dropdown-item" href="/company/profile">Profile</a>
+                                        <a class="dropdown-item" href="/company/profile">Thông tin công ty</a>
+                                        <a class="dropdown-item" href="/company/edit">Cập nhật thông tin công ty</a>
                                         <div class="dropdown-divider"></div>
-                                        <button class="dropdown-item" onclick="handleLogout()">Logout</button>
+                                        <button class="dropdown-item" onclick="handleLogout()">Đăng xuất</button>
                                     </div>
                                 </div>
                             `;
