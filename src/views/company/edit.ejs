@@ -204,13 +204,13 @@
 
                     // Load provinces
                     function loadProvinces(locations) {
-                        provinceSelect.innerHTML = '<option value="">Chọn tỉnh/thành phố</option>';
-                        Object.entries(locations).forEach(([code, province]) => {
+                        //provinceSelect.innerHTML = `<option value="">Chọn tỉnh thành phố </option>`;
+                        for (const [code, province] of Object.entries(locations)) {
                             const option = document.createElement('option');
-                            option.value = province.name;
+                            option.value = province.name; // Dùng tên
                             option.textContent = province.name;
                             provinceSelect.appendChild(option);
-                        });
+                        }
                     }
 
                     // Load districts
