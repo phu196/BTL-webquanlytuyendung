@@ -26,16 +26,19 @@
                 <div class="col-md-4 mb-4">
                     <div class="card shadow-sm">
                         <div class="card-body">
-                            <h5 class="card-title"><i class="fas fa-user text-primary"></i> <%= candidate.fullname %></h5>
+                            <h5 class="card-title"><i class="fas fa-user text-primary"></i> <%= candidate.user.fullname %></h5>
                             <p class="card-text">
-                                <strong>Username:</strong> <%= candidate.username %> <br>
-                                <strong>Email:</strong> <%= candidate.email %> <br>
-                                <strong>Phone:</strong> <%= candidate.phoneNumber %> <br>
-                                <strong>Gender:</strong> <%= candidate.gender %>
+                                <strong>Username:</strong> <%= candidate.user.username %> <br>
+                                <strong>Email:</strong> <%= candidate.user.email %> <br>
+                                <strong>Phone:</strong> <%= candidate.user.phoneNumber %> <br>
+                                <strong>Gender:</strong> <%= candidate.user.gender %>
                             </p>
-                            <a href="/candidate/<%= candidate._id %>/cv" class="btn btn-primary">
+                            <a href="/candidate/<%= candidate.user._id %>/cv" class="btn btn-primary">
                                 <i class="fas fa-file-alt"></i> View CV
                             </a>
+                            <button class="btn btn-light btn-sm" onclick="chat('<%= candidate.user._id %>')">
+                                <i class="fa fa-comment"></i> Liên hệ 
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -47,5 +50,16 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        function chat(id){
+            fetch('/chat/createRoom',{
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({id})
+            })
+        }
+    </script>
 </body>
 </html>

@@ -5,4 +5,5 @@ const adminRoutes = require("./admin");
 const dashboardRoutes = require("./dashboard");
 const jobRoutes = require("./job");
 const apiRoutes = require('./api');
-module.exports = { authRoutes, userRoutes, companyRoutes, adminRoutes, dashboardRoutes, jobRoutes, apiRoutes };
+const chatRoutes = require('./chat');
+module.exports = { authRoutes, userRoutes, companyRoutes, adminRoutes, dashboardRoutes, jobRoutes, apiRoutes, chatRoutes };

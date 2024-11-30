@@ -20,7 +20,6 @@ router.get("/profile", passportJWT, companyController.profile);
 router.get("/edit", passportJWT, companyController.edit);
 // Trang thông tin công ty phía user
 router.get("/:id", companyController.companyDetail);
-
 // router.post("/update", passportJWT, companyController.updateCompany);
 
 // Xoa job trong cty

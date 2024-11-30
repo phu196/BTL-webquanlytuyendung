@@ -1,5 +1,6 @@
 const Company = require("../models/Company");
 const Job = require("../models/Job");
+const User = require("../models/User");
 const bcrypt = require("bcrypt");
 const axios = require("axios");
 
@@ -186,8 +187,16 @@ const viewCandidates = async (req, res) => {
             if (!companyJobs.jobs.includes(job_id)) {
                 return res.status(404).send("Job not found or this job is not belong to your company");
             }
-            const job = await Job.findById(job_id).populate("applicants");
-            const candidates = job.applicants;
+            const job = await Job.findById(job_id).populate("applicants.userId");
+            
+            const candidates = job.applicants.map((applicant) => {
+                return {
+                    user: applicant.userId, 
+                    CV: applicant.CV, 
+                };
+            });
+               
+            console.log(candidates);
             res.render("./company/layout/view_candidates", {
                 candidates: candidates,
             });
