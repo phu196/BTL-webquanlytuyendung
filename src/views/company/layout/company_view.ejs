@@ -212,6 +212,15 @@
                     },
                     body: JSON.stringify({id})
                 })
+                .then(response => response.json())
+                .then(data =>{
+                    if(data.success){
+                        window.location.href = `/chat/${data.roomID}`
+                    }
+                    else{
+                        alert(data.message || 'Đã xảy ra lỗi. Vui lòng thử lại.')
+                    }
+                })
             }
         </script>
     </body>

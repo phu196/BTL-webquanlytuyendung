@@ -1,13 +1,6 @@
 const Chat = require("../models/Chat");
 const sendMessage = async (req,res,io)=>{
     try {
-      // Xác minh người gửi hợp lệ
-      // if (senderType === 'User' && !req.body.userID) {
-      //   return res.status(400).json({ success: false, message: 'User ID is required for User senderType' });
-      // }
-      // if (senderType === 'Company' && !req.body.companyID) {
-      //   return res.status(400).json({ success: false, message: 'Company ID is required for Company senderType' });
-      // }
 
       const chat = new Chat({
         senderType: req.body.senderType,
@@ -43,7 +36,7 @@ const getMessage = async(req,res)=>{
     }
   try {
     const messages = await Chat.find({ roomID })
-      .populate('userID', 'username') 
+      .populate('userID', 'fullname') 
       .populate('companyID', 'companyName') 
       .sort({ createdAt: 1 });
         res.render("chat",{messages,roomID,isCompany});
@@ -52,8 +45,58 @@ const getMessage = async(req,res)=>{
   }
 }
 const index = async (req, res) => {
-    
-}
+  try {
+    let user;
+
+    // Xác định người dùng hiện tại
+    if (req.company) {
+      user = req.company;
+    } else if (req.user) {
+      user = req.user;
+    }
+
+    if (!user) {
+      return res.status(400).json({ success: false, message: "User not found" });
+    }
+
+    // Tìm danh sách các room mà user tham gia
+    const rooms = await Chat.find({ 
+      $or: [{ userID: user._id }, { companyID: user._id }] 
+    }).distinct('roomID')
+    if (req.company){
+      const chats = await Chat.find({ roomID: { $in: rooms } })
+        .populate("userID", "fullname") 
+        .exec();
+      const roomDetails = rooms.map(roomID => {
+          const userChat = chats.find(chat => chat.roomID === roomID);
+          return {
+            roomID,
+            name: userChat?.userID?.fullname || "Unknown user",
+          };
+        });
+        res.render("chatList", { roomDetails });
+    }
+    else if (req.user){
+      const chats = await Chat.find({ roomID: { $in: rooms } })
+      .populate("companyID", "companyName") 
+      .exec();
+
+    // Chuẩn bị dữ liệu để render
+    const roomDetails = rooms.map(roomID => {
+      const companyChat = chats.find(chat => chat.roomID === roomID);
+      return {
+        roomID,
+        name: companyChat?.companyID?.companyName || "Unknown Company",
+      };
+    });
+        res.render("chatList", { roomDetails });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, message: "Error fetching chat rooms", error: error.message });
+  }
+};
+
 const createRoom = async (req, res) => {
   var userID, companyID, senderType, content;
   if (req.company){
@@ -76,8 +119,7 @@ const createRoom = async (req, res) => {
     content: content,
     roomID: roomID,
   });
-  console.log(chat);
   await chat.save();
-  res.redirect(`/chat/${roomID}`);  
+  res.status(200).json({ success: true, message: 'Room created', roomID });
 }
 module.exports = { sendMessage, getMessage, index ,createRoom};

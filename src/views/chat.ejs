@@ -9,73 +9,111 @@
   <!-- Font Awesome for icons -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
   <style>
-    body {
-      background-color: #f7f9fc;
+    .scoped-chat body {
+      background-color: #eef2f5;
+      font-family: 'Roboto', sans-serif;
+      margin: 0;
+      padding: 0;
+      height: 100vh; /* Chiều cao full viewport */
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
-    .chat-container {
+    .scoped-chat {
+      display: flex;
+      justify-content: center; /* Canh giữa theo chiều ngang */
+      align-items: center; /* Canh giữa theo chiều dọc */
+      height: 100vh; /* Đặt chiều cao bao phủ toàn bộ màn hình */
+    }
+    
+    
+    .scoped-chat .chat-container {
       max-width: 800px;
-      margin: 20px auto;
-      background: #fff;
-      border-radius: 8px;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      height: 90vh; /* Chiều cao cố định cho khung chat */
       display: flex;
       flex-direction: column;
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
-    .chat-header {
-      background: #007bff;
+    .scoped-chat .chat-header {
+      background: linear-gradient(135deg, #6a11cb, #2575fc);
       color: white;
       padding: 15px;
       text-align: center;
-      border-radius: 8px 8px 0 0;
+      border-radius: 10px 10px 0 0;
     }
-    .chat-messages {
-      height: 400px;
-      overflow-y: auto;
+    .scoped-chat .chat-messages {
+      flex: 1; /* Chiếm không gian còn lại */
+      overflow-y: auto; /* Chỉ cuộn nội dung phần tin nhắn */
       padding: 15px;
-      border-bottom: 1px solid #ddd;
-      flex: 1;
+      background-color: #f8f9fa;
     }
-    .chat-message {
+    .scoped-chat .chat-message {
       margin-bottom: 10px;
       display: flex;
-      flex-direction: column;
-    }
-    .chat-message.sender {
       align-items: flex-end;
+      gap: 10px;
     }
-    .chat-message.receiver {
-      align-items: flex-start;
+    .scoped-chat .chat-message.sender {
+      justify-content: flex-end;
     }
-    .chat-message .content {
+    .scoped-chat .chat-message.receiver {
+      justify-content: flex-start;
+    }
+    .scoped-chat .chat-message .avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background-color: #dee2e6;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 1.2rem;
+      color: #6c757d;
+    }
+    .scoped-chat .chat-message .content {
       padding: 10px 15px;
       border-radius: 20px;
-      max-width: 70%;
+      max-width: 60%;
     }
-    .chat-message.sender .content {
+    .scoped-chat .chat-message.sender .content {
       background-color: #007bff;
       color: white;
     }
-    .chat-message.receiver .content {
+    .scoped-chat .chat-message.receiver .content {
       background-color: #e9ecef;
       color: #333;
     }
-    .chat-input {
+    .scoped-chat .chat-input {
       padding: 15px;
       display: flex;
       gap: 10px;
       align-items: center;
+      border-top: 1px solid #ddd;
     }
-    .chat-input input {
+    .scoped-chat .chat-input input {
       flex: 1;
+      border-radius: 20px;
+      padding: 10px 15px;
+      border: 1px solid #ccc;
+    }
+    .scoped-chat .chat-input button {
+      border-radius: 20px;
+      padding: 10px 15px;
     }
   </style>
 </head>
 <body>
+  <%- include('partials/header.ejs') %>
+  <div class="scoped-chat">
   <div class="chat-container">
     <!-- Header -->
     <div class="chat-header">
       <h5><i class="fas fa-comments"></i> Chat Room</h5>
       <p class="text-white-50">Room ID: <%= roomID %></p>
+      <p class="text-white-50"><%= messages[0].userID.fullname %> - <%= messages[0].companyID.companyName %></p>
     </div>
 
     <!-- Chat Messages -->
@@ -83,6 +121,11 @@
       <% messages.forEach((message) => { %>
         <div class="chat-message <%= (message.senderType === 'User' && isCompany) || (message.senderType === 'Company' && !isCompany) ? 'receiver' : 'sender' %>">
           <div class="content">
+            <% if (message.senderType === 'User' && isCompany) { %>
+              <strong><%= messages[0].userID.fullname %></strong>
+            <% } else if (message.senderType === 'Company' && !isCompany) { %>
+              <strong><%= messages[0].companyID.companyName %></strong>
+            <% } %>
             <p><%= message.content %></p>
             <small class="text-muted"><%= new Date(message.createdAt).toLocaleString() %></small>
           </div>
@@ -102,11 +145,12 @@
   <!-- Socket.IO -->
   <script src="/socket.io/socket.io.js"></script>
   <script>
-    
     const roomID = "<%= roomID %>";
     const userType = "<%= isCompany ? 'Company' : 'User' %>";
-    const userID = "<%=  (messages[0]?.userID._id || '')  %>";
-    const companyID = "<%=  (messages[0]?.userID._id || '')  %>";
+    const userID = "<%=  (messages[0]?.userID._id|| '')  %>";
+    const companyID = "<%=  (messages[0]?.companyID._id || '')  %>";
+    const fullname = "<%=  (messages[0]?.userID.fullname || '')  %>";
+    const companyName = "<%=  (messages[0]?.companyID.companyName || '')  %>";
     // Khởi tạo socket
     const socket = io();
 
@@ -116,7 +160,6 @@
     // Xử lý sự kiện nhận tin nhắn
     socket.on('receiveMessage', (message) => {
       const chatMessages = document.getElementById('chat-messages');
-      console.log('New message:', message);
       // Tạo element tin nhắn mới
       const messageElement = document.createElement('div');
       messageElement.classList.add('chat-message');
@@ -127,6 +170,8 @@
 
       messageElement.innerHTML = `
         <div class="content">
+          <strong>${(message.senderType === 'User' && userType === 'User') ||
+             (message.senderType === 'Company' && userType === 'Company') ? '' : (userType === "User") ? companyName : fullname}</strong>
           <p>${message.content}</p>
           <small class="text-muted">${new Date(message.createdAt).toLocaleString()}</small>
         </div>
@@ -142,7 +187,6 @@
 
       const content = document.getElementById('message-input').value.trim();
       if (!content) return;
-
       const messageData = {
         senderType: userType,
         userID: userID || null,
@@ -158,5 +202,6 @@
     });
     
   </script>
+</div>
 </body>
 </html>
