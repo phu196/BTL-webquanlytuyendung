@@ -211,29 +211,43 @@ const viewCandidates = async (req, res) => {
 //[POST] /company/update
 const updateCompany = async (req, res) => {
     try {
-        if (req.company) {
-            const companyId = req.company._id;
-            // Cập nhật thông tin công ty
-            await Company.findByIdAndUpdate(companyId, {
-                companyName: req.body.companyName,
-                location: req.body.location,
-                description: req.body.description,
-                website: req.body.website,
-                email: req.body.email,
-                phoneNumber: req.body.phoneNumber,
-                address: {
-                    detail: req.body.addressDetail,
-                    ward: req.body.ward,
-                    district: req.body.district,
-                    province: req.body.province,
-                    country: req.body.country,
-                },
-            });
+        console.log(req.file);
+        const companyId = req.company._id;
 
-            res.redirect("/company/profile");
-        } else {
-            res.status(401).send("Unauthorized");
+        const address = {
+            detail: req.body.addressDetail,
+            ward: req.body.ward,
+            district: req.body.district,
+            province: req.body.province,
+        };
+
+        const logoPath = req.file ? `/images/${req.file.filename}` : undefined;
+
+        const updateData = {
+            companyName: req.body.companyName,
+            email: req.body.email,
+            phoneNumber: req.body.phoneNumber,
+            description: req.body.description,
+            website: req.body.website,
+            address: address,
         }
+
+        if (logoPath) {
+            updateData.logoPath = logoPath;
+        }
+
+        const updatedCompany = await Company.findByIdAndUpdate(
+            companyId,
+            updateData,
+            {new: true, runValidators: true}
+        );
+
+        if (!updatedCompany) {
+            return res
+                .status(404)
+                .json({ success: false, message: "Company not found" });
+        }
+        res.redirect("/company/profile");
     } catch (error) {
         console.log(error);
         res.status(400).json({ message: error.message });

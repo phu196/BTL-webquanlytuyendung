@@ -183,6 +183,8 @@
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                         <a class="dropdown-item" href="/company/profile">Profile</a>
                                         <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item" href="/company/edit">Cập nhật thông tin công ty</a>
+                                        <div class="dropdown-divider"></div>
                                         <a class="dropdown-item" href="/Chat">Tin nhắn</a>
                                         <div class="dropdown-divider"></div>
                                         <button class="dropdown-item" onclick="handleLogout()">Logout</button>
@@ -198,7 +200,7 @@
                     }
                 });
             const handleLogout = () => {
-                fetch("auth/logout")
+                fetch("/auth/logout")
                     .then((res) => res.json())
                     .then((data) => {
                         if (data.success) {

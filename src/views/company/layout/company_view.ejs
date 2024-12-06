@@ -82,7 +82,7 @@
         <div class="container mt-5">
             <!-- Company Banner -->
             <div class="company-banner" data-aos="fade-up">
-                <img src="<%= company.logoPath %>" alt="Company Logo" class="logo-circle" />
+                <img src="<%= company.logoPath || '/images/user1.png'%>" alt="Company Logo" class="logo-circle" />
                 <div>
                     <h3 class="mb-2"><%= company.companyName %></h3>
                     <a href="<%= company.website %>" class="btn btn-light btn-sm">
@@ -114,7 +114,7 @@
                             formattedDate = `${lastDate.getDate().toString().padStart(2, '0')}/${(lastDate.getMonth() +
                             1).toString().padStart(2, '0')}/${lastDate.getFullYear()}`; %>
                             <div class="d-flex align-items-center mb-3">
-                                <img src="<%= company.logoPath %>" alt="Company Logo" class="job-logo" />
+                                <img src="<%= company.logoPath || '/images/default_logo.png' %>" alt="Company Logo" class="job-logo" />
                                 <div class="job-info">
                                     <h6><%= job.title %></h6>
                                     <p class="text-muted mb-1"><strong>Lương:</strong> <%= job.salary %></p>

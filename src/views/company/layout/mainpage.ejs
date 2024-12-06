@@ -4,58 +4,31 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title><%= company.companyName %> - Company Profile</title>
-        <!-- Bootstrap CSS -->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
-        <!-- FontAwesome -->
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-        <!-- AOS (Animation On Scroll) -->
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" />
         <style>
-            body {
-                font-family: "Arial", sans-serif;
-                background-color: #f9f9f9;
-            }
-
+            /* Styling for the Company Banner */
             .company-banner {
-                background: linear-gradient(45deg, #007bff, #0056b3);
-                color: #fff;
-                padding: 30px 20px;
-                border-radius: 12px;
+                background-color: #f10f0f;
+                padding: 20px;
+                border-radius: 8px;
+                margin-bottom: 20px;
                 display: flex;
                 align-items: center;
-                margin-bottom: 30px;
-                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
             }
-
             .company-banner .logo-circle {
                 width: 100px;
                 height: 100px;
-                border-radius: 50%;
                 object-fit: cover;
+                border-radius: 50%;
                 margin-right: 20px;
-                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
             }
 
-            .btn-create-job {
-                background: linear-gradient(45deg, #28a745, #218838);
-                color: #fff;
-                padding: 10px 25px;
-                border-radius: 8px;
-                font-weight: bold;
-                transition: all 0.3s ease-in-out;
-            }
-
-            .btn-create-job:hover {
-                background: linear-gradient(45deg, #218838, #1e7e34);
-                transform: scale(1.05);
-            }
-
+            /* Styling for Company Info and Contact Info sections */
             .company-info,
             .contact-info {
-                background-color: #fff;
+                background-color: #e9ecef;
+                border-radius: 8px;
                 padding: 20px;
-                border-radius: 12px;
-                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
                 margin-bottom: 20px;
             }
 
@@ -105,10 +78,11 @@
         </style>
     </head>
     <body>
+        <%- include('../../partials/header') %>
         <div class="container mt-5">
             <!-- Company Banner -->
             <div class="company-banner" data-aos="fade-up">
-                <img src="<%= company.logoPath %>" alt="Company Logo" class="logo-circle" />
+                <img src="<%= company.logoPath || '/images/default_logo.png'%>" alt="Company Logo" class="logo-circle" />
                 <div>
                     <h3 class="mb-2"><%= company.companyName %></h3>
                     <a href="<%= company.website %>" class="btn btn-light btn-sm" target="_blank">
@@ -148,22 +122,13 @@
                             </div>
 
                             <div class="d-flex job-actions">
-                                <a href="/company/jobs/<%= job._id %>/edit" class="btn btn-outline-primary btn-sm me-2">
-                                    <i class="fa fa-edit"></i> Chỉnh sửa
-                                </a>
-                                <button
-                                    class="btn btn-outline-danger btn-sm me-2"
-                                    onclick="deleteJob('<%= job._id %>')"
-                                >
-                                    <i class="fa fa-trash"></i> Xoá
+                                <!-- <a href="/user/apply/<%= job._id %>" class="btn btn-outline-primary btn-sm">
+                                <i class="fa fa-paper-plane"></i> Ứng tuyển
+                            </a> -->
+                                <button class="btn btn-outline-primary btn-sm" onclick="apply('<%=job._id%>')">
+                                    <i class="fa fa-paper-plane"></i> Ứng tuyển
                                 </button>
-                                <a
-                                    href="/company/jobs/<%= job._id %>/view-candidates"
-                                    class="btn btn-outline-secondary btn-sm"
-                                >
-                                    <i class="fa fa-users"></i> Ứng viên
-                                </a>
-                                <a href="/company/jobs/<%= job._id %>/show" class="btn btn-outline-secondary btn-sm">
+                                <a href="/job/<%= job._id %>" class="btn btn-outline-secondary btn-sm">
                                     <i class="fa fa-eye"></i> Xem
                                 </a>
                             </div>
@@ -180,7 +145,7 @@
                             <strong>Địa chỉ:</strong> <%= company.address.detail %>, <%= company.address.ward %>, <%=
                             company.address.district %>, <%= company.address.province %>
                         </p>
-                        <p><strong>SĐT:</strong> <%= company.phone %></p>
+                        <p><strong>SĐT:</strong> <%= company.phoneNumber %></p>
                         <p><strong>Email:</strong> <%= company.email %></p>
                     </div>
 
@@ -199,32 +164,44 @@
             </div>
         </div>
 
+        <%- include('../../partials/footer') %>
+
         <!-- JS Libraries -->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
-        <script>
-            AOS.init({ duration: 1000 });
 
-            function deleteJob(jobId) {
-                if (confirm("Bạn có chắc chắn muốn xóa công việc này không?")) {
-                    fetch(`/company/jobs/${jobId}/delete`, {
+        <script>
+            AOS.init();
+        </script>
+        <script>
+            function apply(job_id) {
+                if (confirm("Bạn có chắc chắn muốn ứng tuyển công việc này?")) {
+                    fetch(`/user/apply/${job_id}`, {
                         method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({ jobId }),
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({ job_id }),
                     })
-                        .then((response) => response.json())
+                        .then((response) => {
+                            if (!response.ok) {
+                                throw new Error("Network response was not ok");
+                            }
+                            return response.json();
+                        })
                         .then((data) => {
                             if (data.success) {
-                                alert("Job deleted successfully.");
-                                window.location.reload();
+                                alert("Ứng tuyển thành công!");
                             } else {
-                                alert("An error occurred.");
+                                alert(data.message || "Đã xảy ra lỗi. Vui lòng thử lại.");
                             }
                         })
                         .catch((error) => {
-                            console.error("Error deleting job:", error);
-                            alert("An error occurred.");
+                            console.error("Error applying for job:", error);
+                            alert("Đã xảy ra lỗi trong quá trình ứng tuyển. Vui lòng thử lại sau.");
                         });
+                } else {
+                    return;
                 }
             }
         </script>
