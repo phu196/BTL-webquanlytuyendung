@@ -3,6 +3,10 @@ const bcrypt = require("bcrypt");
 const CompanyRegistration = require("../models/CompanyRegistration");
 const Company = require("../models/Company");
 const User = require("../models/User");
+const ejs = require('ejs');
+const fs = require('fs');
+const transporter = require("../services/nodemailer");
+
 const getCompanyRegistrations = async (req, res) => {
     try {
         const companyRegistrations = await CompanyRegistration.find({ status: "pending" });
@@ -52,11 +56,36 @@ const deleteCompany = async (req, res) => {
 const addCompany = async (req, res) => {
     try {
         const companyInfo = req.body;
+        const companyExists = await Company.findOne({ username: companyInfo.email });
+        if (companyExists) {
+            return res.status(400).json({ success: false, message: "Company already exists" });
+        }
+        const plainPassword = companyInfo.password;
         const hashPassword = await bcrypt.hash(companyInfo.password, 10);
         companyInfo.password = hashPassword;
         const company = new Company(companyInfo);
-        await company.save();
-        res.status(200).json({ success: true, message: "Company added successfully" });
+
+        htmlContent = ejs.render(fs.readFileSync("src/views/emails/company-registration.ejs", "utf8"), {
+            companyName: companyInfo.companyName,
+            email: companyInfo.email,
+            password: plainPassword,
+        });
+        const mailOptions = {
+            from: process.env.USER_GMAIL,
+            to: companyInfo.email,
+            subject: "Thank you for registering your company.",
+            html: htmlContent
+        };
+        transporter.sendMail(mailOptions, async (error, info) => {
+            if (error) {
+                console.log(error);
+                res.status(500).json({ success: false, message: error.message });
+            } else {
+                await company.save();
+                console.log("Email sent: " + info.response);
+                res.status(200).json({ success: true, message: "Company added successfully" });
+            }
+        });
     } catch (error) {
         res.status(500).json({ success: false, message: error.message });
     }
