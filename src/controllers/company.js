@@ -323,7 +323,7 @@ const postEditJob = async (req, res) => {
                 location: req.body.location,
                 time: req.body.job_time,
                 level: req.body.level,
-                numberOfRecruitment: req.body.numberOfRecruitment,
+                number_of_recruitment: req.body.numberOfRecruitment,
                 status: req.body.status === "on",
                 typeOfWork: req.body.typeOfWork,
                 skills: req.body.skills ? req.body.skills.split(",").map((s) => s.trim()) : [],
