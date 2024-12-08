@@ -1,8 +1,12 @@
+require("dotenv").config({ path: ".env.example" });
 const User = require("../models/User");
 const { StatusCodes } = require("http-status-codes");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const Company = require("../models/Company");
+const transporter = require("../services/nodemailer");
+const ejs = require('ejs');
+const fs = require('fs');
 
 const register = async (req, res) => {
     const { username, fullname, email, password, phoneNumber } = req.body;
@@ -109,4 +113,76 @@ const logout = async (req, res) => {
     res.clearCookie("session").redirect("/");
 }
 
-module.exports = { register, login, isLoggedIn, logout };
+const forgotPassword = async (req, res) => {
+    const { identifier } = req.body;
+    if (!identifier) {
+        return res.status(StatusCodes.BAD_REQUEST).json({ success: false, message: "Please fill in all fields" });
+    }
+    const user = await User.findOne({ $or: [{ email: identifier }, { username: identifier }] });
+    const company = await Company.findOne({ email: identifier });
+    if (!user && !company) {
+        return res.status(StatusCodes.OK).json({ success: true, message: null });
+    }
+    const email = user ? user.email : company.email;
+
+    resetToken = jwt.sign({ id: user ? user._id : company._id, type: user ? 'user' : 'company' }, process.env.JWT_SECRET, {
+        expiresIn: "1h"
+    });
+
+    const htmlContent = ejs.render(fs.readFileSync("src/views/emails/reset-password.ejs", "utf8"), {
+        userName: user ? user.fullname : company.companyName,
+        resetLink: `${process.env.CLIENT_URL}/auth/reset-password/?token=${resetToken}`,
+    });
+    const mailOptions = {
+        from: process.env.USER_GMAIL,
+        to: email,
+        subject: "Reset your password",
+        html: htmlContent,
+    }
+    transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+            console.log(error);
+            res.status(500).json({ success: false, message: error.message });
+        } else {
+            console.log("Email sent: " + info.response);
+            res.status(200).json({ success: true, message: null });
+        }
+    });
+};
+
+const resetPassword = async (req, res) => {
+    try {
+        const { token } = req.body;
+        jwt.verify(token, process.env.JWT_SECRET, async (err, decoded) => {
+            if (err) {
+                throw new Error("Invalid token");
+            }
+            const { id, type } = decoded;
+            if (type == 'user') {
+                const user = await User.findById(id);
+                if (!user) return res.status(StatusCodes.BAD_REQUEST).json({ success: false, message: "Invalid token" });
+                const { newPassword, confirmPassword } = req.body;
+                if (newPassword != confirmPassword) return res.status(StatusCodes.BAD_REQUEST).json({ success: false, message: "Passwords do not match" });
+                const salt = await bcrypt.genSalt(10);
+                const hashedPassword = await bcrypt.hash(newPassword, salt);
+                user.password = hashedPassword;
+                await user.save();
+                return res.status(StatusCodes.OK).json({ success: true, message: "Password reset successfully" });
+            } else {
+                const company = await Company.findById(id);
+                if (!company) return res.status(StatusCodes.BAD_REQUEST).json({ success: false, message: "Invalid token" });
+                const { newPassword, confirmPassword } = req.body;
+                if (newPassword != confirmPassword) return res.status(StatusCodes.BAD_REQUEST).json({ success: false, message: "Passwords do not match" });
+                const salt = await bcrypt.genSalt(10);
+                const hashedPassword = await bcrypt.hash(newPassword, salt);
+                company.password = hashedPassword;
+                await company.save();
+                return res.status(StatusCodes.OK).json({ success: true, message: "Password reset successfully" });
+            }
+        });
+    } catch (error) {
+        return res.status(StatusCodes.BAD_REQUEST).json({ success: false, message: "Something went wrong" });
+    }
+};
+
+module.exports = { register, login, isLoggedIn, logout, forgotPassword, resetPassword };

@@ -36,6 +36,25 @@ router.post("/login", authController.login);
 
 router.get("/logout", authController.logout);
 
+router.get("/forgot", (req, res) => {
+    res.render("forgot-password", { message: null });
+});
+
+router.post("/forgot-password", authController.forgotPassword);
+
+router.get("/reset-password", (req, res) => {
+    const { token } = req.query;
+    jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+        if (err) {
+            return res.redirect("/");
+        }
+        res.render("reset-password", { message: null, token });
+    });
+});
+
+router.post("/reset-password", authController.resetPassword);
+
 router.get("/is-logged-in", authController.isLoggedIn);
+
 
 module.exports = router;
