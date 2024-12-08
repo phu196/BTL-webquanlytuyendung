@@ -90,6 +90,20 @@ const generateUniqueTitle = (title, existingTitles) => {
 
     return newTitle;
 };
+const getUploadCV= async (req, res) => {
+    if(req.user){
+        const userId = req.user._id;
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(StatusCodes.NOT_FOUND).json({
+                success: false,
+                message: "User not found",
+            });
+        }
+        res.render("upCV",{user});
+    }
+    
+}
 const uploadCV = async (req, res) => {
     try {
         if (!req.user) {
@@ -150,7 +164,62 @@ const uploadCV = async (req, res) => {
         });
     }
 };
-
+const deleteCV = async (req, res) => {
+    try {
+      if (!req.user) {
+        return res.status(StatusCodes.UNAUTHORIZED).json({
+          success: false,
+          message: "Unauthorized",
+        });
+      }
+  
+      const userId = req.user._id;
+      const cvId = req.body.id;
+      const user = await User.findById(userId);
+      if (!user) {
+        return res.status(StatusCodes.NOT_FOUND).json({
+          success: false,
+          message: "User not found",
+        });
+      }
+      const cv = user.CV.find((cv) => cv._id.toString() === cvId);
+      if (!cv) {
+        return res.status(StatusCodes.NOT_FOUND).json({
+          success: false,
+          message: "CV not found",
+        });
+      }
+  
+      const filePath = cv.path;
+      if (fs.existsSync(filePath)) {
+        fs.unlinkSync(filePath); // Xóa file đồng bộ
+      } else {
+        console.log(`File not found: ${filePath}`);
+      }
+      const result = await User.updateOne(
+        { _id: userId },
+        { $pull: { CV: { _id: cvId } } }
+      );
+  
+      if (result.modifiedCount > 0) {
+        return res.status(StatusCodes.OK).json({
+          success: true,
+          message: "CV deleted successfully",
+        });
+      } else {
+        return res.status(StatusCodes.NOT_FOUND).json({
+          success: false,
+          message: "CV not found in database",
+        });
+      }
+    } catch (error) {
+      console.log(error);
+      return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+        success: false,
+        message: "Error deleting CV",
+      });
+    }
+  };
 const getUserInfo = async (req, res) => {
     try {
         // Kiểm tra ID người dùng từ token
@@ -183,7 +252,6 @@ const createInfo = async (req, res) => {
             return res.status(StatusCodes.UNAUTHORIZED).json({ success: false, message: "User not found" });
         }
         res.render("UserInfoSetup", { user });
-
 
     }
     catch (error) {
@@ -307,9 +375,11 @@ const getUserProfileForCompany = async (req, res) => {
 
 module.exports = {
     getUpdate,
+    getUploadCV,
     updateUser,
     getAppliedJobs,
     uploadCV,
+    deleteCV,
     getUserInfo,
     getUserProfileForCompany,
     // getUpdateForm,  // Export hàm render form cập nhật

@@ -105,6 +105,7 @@
         </style>
     </head>
     <body>
+        <%- include('../../partials/header') %>
         <div class="container mt-5">
             <!-- Company Banner -->
             <div class="company-banner" data-aos="fade-up">
@@ -180,7 +181,7 @@
                             <strong>Địa chỉ:</strong> <%= company.address.detail %>, <%= company.address.ward %>, <%=
                             company.address.district %>, <%= company.address.province %>
                         </p>
-                        <p><strong>SĐT:</strong> <%= company.phone %></p>
+                        <p><strong>SĐT:</strong> <%= company.phoneNumber %></p>
                         <p><strong>Email:</strong> <%= company.email %></p>
                     </div>
 
@@ -228,5 +229,6 @@
                 }
             }
         </script>
+        <%- include('../../partials/footer') %>
     </body>
 </html>

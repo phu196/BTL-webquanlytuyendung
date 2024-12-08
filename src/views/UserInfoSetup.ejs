@@ -150,8 +150,12 @@
                     <option value="<%= user.address?.ward || '' %>"><%= user.address?.ward || '' %></option>
                 </select>
             </div>
-        <!-- Submit Button -->
-        <button type="submit">Xác nhận</button>
+
+            <div class="d-flex justify-content-between mt-4">
+                <a href="/" class="btn btn-secondary w-50">Hủy</a>
+                <button type="submit" class="btn btn-primary w-50 ms-2">Xác nhận</button>
+            </div>            
+            
     </form>
 </div>
 

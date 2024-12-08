@@ -1,5 +1,6 @@
 const Company = require("../models/Company");
 const Job = require("../models/Job");
+const User = require("../models/User");
 const bcrypt = require("bcrypt");
 const axios = require("axios");
 
@@ -186,8 +187,16 @@ const viewCandidates = async (req, res) => {
             if (!companyJobs.jobs.includes(job_id)) {
                 return res.status(404).send("Job not found or this job is not belong to your company");
             }
-            const job = await Job.findById(job_id).populate("applicants");
-            const candidates = job.applicants;
+            const job = await Job.findById(job_id).populate("applicants.userId");
+            
+            const candidates = job.applicants.map((applicant) => {
+                return {
+                    user: applicant.userId, 
+                    CV: applicant.CV, 
+                };
+            });
+               
+            console.log(candidates);
             res.render("./company/layout/view_candidates", {
                 candidates: candidates,
             });
@@ -202,29 +211,43 @@ const viewCandidates = async (req, res) => {
 //[POST] /company/update
 const updateCompany = async (req, res) => {
     try {
-        if (req.company) {
-            const companyId = req.company._id;
-            // Cập nhật thông tin công ty
-            await Company.findByIdAndUpdate(companyId, {
-                companyName: req.body.companyName,
-                location: req.body.location,
-                description: req.body.description,
-                website: req.body.website,
-                email: req.body.email,
-                phoneNumber: req.body.phoneNumber,
-                address: {
-                    detail: req.body.addressDetail,
-                    ward: req.body.ward,
-                    district: req.body.district,
-                    province: req.body.province,
-                    country: req.body.country,
-                },
-            });
+        console.log(req.file);
+        const companyId = req.company._id;
 
-            res.redirect("/company/profile");
-        } else {
-            res.status(401).send("Unauthorized");
+        const address = {
+            detail: req.body.addressDetail,
+            ward: req.body.ward,
+            district: req.body.district,
+            province: req.body.province,
+        };
+
+        const logoPath = req.file ? `/images/${req.file.filename}` : undefined;
+
+        const updateData = {
+            companyName: req.body.companyName,
+            email: req.body.email,
+            phoneNumber: req.body.phoneNumber,
+            description: req.body.description,
+            website: req.body.website,
+            address: address,
         }
+
+        if (logoPath) {
+            updateData.logoPath = logoPath;
+        }
+
+        const updatedCompany = await Company.findByIdAndUpdate(
+            companyId,
+            updateData,
+            {new: true, runValidators: true}
+        );
+
+        if (!updatedCompany) {
+            return res
+                .status(404)
+                .json({ success: false, message: "Company not found" });
+        }
+        res.redirect("/company/profile");
     } catch (error) {
         console.log(error);
         res.status(400).json({ message: error.message });
@@ -300,7 +323,7 @@ const postEditJob = async (req, res) => {
                 location: req.body.location,
                 time: req.body.job_time,
                 level: req.body.level,
-                numberOfRecruitment: req.body.numberOfRecruitment,
+                number_of_recruitment: req.body.numberOfRecruitment,
                 status: req.body.status === "on",
                 typeOfWork: req.body.typeOfWork,
                 skills: req.body.skills ? req.body.skills.split(",").map((s) => s.trim()) : [],

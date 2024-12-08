@@ -33,11 +33,13 @@
         "multer": "^1.4.5-lts.1",
         "passport": "0.7.0",
         "passport-jwt": "4.0.0",
-        "tinymce": "^7.4.1"
+        "socket.io": "^4.8.1",
+        "tinymce": "^7.4.1",
+        "nodemailer": "6.9.16"
     },
     "devDependencies": {
         "body-parser": "^1.20.3",
         "morgan": "^1.10.0",
-        "nodemon": "^2.0.15"
+        "nodemon": "^2.0.22"
     }
 }

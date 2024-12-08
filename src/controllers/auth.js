@@ -106,7 +106,7 @@ const isLoggedIn = async (req, res) => {
 };
 
 const logout = async (req, res) => {
-    res.clearCookie("session").json({ success: true });
+    res.clearCookie("session").redirect("/");
 }
 
 module.exports = { register, login, isLoggedIn, logout };

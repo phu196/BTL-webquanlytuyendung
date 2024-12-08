@@ -23,6 +23,7 @@ router.get('/company/profile', passportJWT, userController.getUserProfileForComp
 router.get('/profile', passportJWT, userController.getUserInfo);
 
 // Route upload CV
+router.get("/upload-cv", passportJWT, userController.getUploadCV);
 router.post(
     "/upload-cv",
     passportJWT,
@@ -30,6 +31,8 @@ router.post(
     uploadErrorHandler, // Xử lý lỗi từ middleware
     userController.uploadCV
 );
+// Route xóa CV
+router.post("/delete-cv", passportJWT, userController.deleteCV);
 // Route xem job đang applied
 router.get("/applied-jobs", passportJWT, userController.getAppliedJobs);
 
