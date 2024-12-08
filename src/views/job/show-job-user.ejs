@@ -136,7 +136,7 @@
                                 <div><%= job.experienceYears %> năm</div>
                             </div>
                         </div>
-
+                        <% if (user) { %>
                         <!-- Job Deadline -->
                         <div class="job-deadline">
                             <i class="bi bi-clock"></i> Hạn nộp hồ sơ: <%= job.deadline.toLocaleDateString('vi-VN') %>
@@ -145,6 +145,7 @@
                         <!-- Apply Now Button -->
                         <form id="applyForm" action="/job/apply/<%= job._id %>" method="POST">
                             <!-- Button to trigger modal -->
+
                             <button
                                 type="button"
                                 class="apply-btn"
@@ -256,6 +257,7 @@
                                 </div>
                             </div>
                         </form>
+                        <% } %>
                         <div id="applyMessage" style="display: none; color: green; margin-top: 10px">
                             Job application successful!
                         </div>

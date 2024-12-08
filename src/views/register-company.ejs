@@ -50,7 +50,7 @@
             <div class="form-check mb-3">
                 <input class="form-check-input" type="checkbox" id="agreePrivacy" required />
                 <label class="form-check-label" for="agreePrivacy">
-                    TopDev tôn trọng và bảo vệ dữ liệu cá nhân của bạn. Bằng việc điền thông tin và nhấn đăng ký, bạn đã
+                    Team16 tôn trọng và bảo vệ dữ liệu cá nhân của bạn. Bằng việc điền thông tin và nhấn đăng ký, bạn đã
                     đồng ý với
                     <a href="#" class="link-info">Điều khoản sử dụng và Chính sách bảo mật</a>
                     của TopDev
@@ -100,6 +100,7 @@
                     .then((data) => {
                         if (data.success) {
                             alert("Thông tin của bạn đã được gửi thành công!");
+                            window.location.href = "/";
                         } else {
                             alert(data.message);
                         }
