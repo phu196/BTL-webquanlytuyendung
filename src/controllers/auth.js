@@ -24,9 +24,9 @@ const register = async (req, res) => {
     if (!emailRegex.test(email)) {
         return res.status(StatusCodes.BAD_REQUEST).json({ success: false, message: "Invalid email" });
     }
-    const user = await User.findOne({ username });
+    const user = await User.findOne({ $or: [{ username }, { email }] });
     if (user) {
-        return res.status(StatusCodes.UNAUTHORIZED).json({ success: false, message: "Username already exists" });
+        return res.status(StatusCodes.UNAUTHORIZED).json({ success: false, message: "Username or email already exists" });
     }
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);

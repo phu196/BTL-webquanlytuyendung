@@ -9,7 +9,7 @@
         <div class="main-content">
             <h2>Add User Account</h2>
             <p>Fill in the details below to create a new user account:</p>
-            <form action="/admin/users/add" method="POST">
+            <form onsubmit="handleCreate(event)">
                 <div class="form-group">
                     <label for="fullName">Fullname</label>
                     <input
@@ -65,11 +65,21 @@
                         required
                     />
                 </div>
-                <button class="btn btn-primary" onclick="handleCreate()">Create Account</button>
+                <button class="btn btn-primary" type="submit">Create Account</button>
             </form>
         </div>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.19/dist/sweetalert2.min.js"></script>
         <script>
-            const handleCreate = () => {
+            const handleCreate = (event) => {
+                event.preventDefault();
+                Swal.fire({
+                    title: "Đang thực hiện...",
+                    html: "Vui lòng đợi trong giây lát...",
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading(); // Hiển thị vòng quay loading
+                    },
+                });
                 const username = document.getElementById("userName").value;
                 const fullname = document.getElementById("fullName").value;
                 const email = document.getElementById("email").value;
@@ -87,14 +97,33 @@
                         return response.json();
                     })
                     .then((data) => {
+                        Swal.close();
                         if (data.success) {
-                            alert("User account created successfully");
-                            window.location.href = "/admin/users";
+                            Swal.fire({
+                                icon: "success",
+                                title: "Thành công!",
+                                text: "Tạo người dùng thành công!",
+                                showConfirmButton: false,
+                                timer: 1500,
+                            }).then(() => {
+                                window.location.href = "/admin/users";
+                            });
                         } else {
-                            alert("Failed to create user account");
+                            Swal.fire({
+                                icon: "error",
+                                title: "Lỗi",
+                                text: "Lỗi khi tạo người dùng!",
+                                showConfirmButton: true,
+                            });
                         }
                     });
             };
+            document.addEventListener("keydown", function (e) {
+                if (e.key === "Enter") {
+                    e.preventDefault(); // Ngừng hành động mặc định của Enter, tránh reload trang
+                    handleCreate(e);
+                }
+            });
         </script>
     </body>
 </html>
