@@ -33,4 +33,7 @@ router.post("/jobs/:job_id/update", passportJWT, companyController.postEditJob);
 router.get("/jobs/:job_id/show", passportJWT, companyController.showJob);
 router.get("/jobs/:job_id/view-candidates", passportJWT, companyController.viewCandidates);
 
+//Xem cv ứng viên
+router.get("/view-cv/:cvTitle", passportJWT, companyController.viewCV);
+
 module.exports = router;

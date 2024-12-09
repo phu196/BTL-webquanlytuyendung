@@ -187,15 +187,19 @@ const viewCandidates = async (req, res) => {
             if (!companyJobs.jobs.includes(job_id)) {
                 return res.status(404).send("Job not found or this job is not belong to your company");
             }
-            const job = await Job.findById(job_id).populate("applicants.userId");
-            
+            const job = await Job.findById(job_id);
+
             const candidates = job.applicants.map((applicant) => {
                 return {
-                    user: applicant.userId, 
-                    CV: applicant.CV, 
+                    user: applicant.userId,
+                    name: applicant.name,
+                    phoneNumber: applicant.phoneNumber,
+                    email: applicant.email,
+                    coverLetter: applicant.coverLetter,
+                    cvTitle: applicant.cvTitle, // title
                 };
             });
-               
+
             console.log(candidates);
             res.render("./company/layout/view_candidates", {
                 candidates: candidates,
@@ -208,6 +212,20 @@ const viewCandidates = async (req, res) => {
         res.status(500).send("Internal Server Error");
     }
 };
+const viewCV = async (req, res) => {
+    try {
+        const cvTitle = req.params.cvTitle;
+        const cv = await User.findOne({ "CV.title": cvTitle }, { CV: { $elemMatch: { title: cvTitle } } });
+        if (!cv) {
+            return res.status(404).send("CV not found");
+        }
+        const cvPath = cv.CV[0].path;
+        res.render("view-cv", { cvPath });
+    }
+    catch (error) {
+        res.status(500).send("Internal Server Error");
+    }
+}
 //[POST] /company/update
 const updateCompany = async (req, res) => {
     try {
@@ -239,7 +257,7 @@ const updateCompany = async (req, res) => {
         const updatedCompany = await Company.findByIdAndUpdate(
             companyId,
             updateData,
-            {new: true, runValidators: true}
+            { new: true, runValidators: true }
         );
 
         if (!updatedCompany) {
@@ -370,4 +388,5 @@ module.exports = {
     editJob,
     postEditJob,
     showJob,
+    viewCV,
 };

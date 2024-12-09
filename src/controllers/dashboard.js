@@ -34,7 +34,7 @@ const index = async (req, res) => {
                     location: job.location,
                     keywords: job.skills,
                 });
-            }
+            }   
         })
     );
     res.render("index", { title: "TopDev Clone", companies, newestJobs });

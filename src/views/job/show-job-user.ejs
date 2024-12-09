@@ -212,7 +212,7 @@
                                                 <div class="mb-3">
                                                     <label for="cv" class="form-label">Chọn CV</label>
                                                     <select class="form-select" id="cv">
-                                                        <% if (user.CV.size == 0) { %> <% user.CV.forEach(cv => { %>
+                                                        <% if (user.CV.length > 0) { %> <% user.CV.forEach(cv => { %>
                                                         <option value="<%= cv.title %>"><%= cv.title %></option>
                                                         <% }) %> <% } else { %>
                                                         <option disabled selected>Bạn chưa upload CV nào</option>
