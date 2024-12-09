@@ -83,15 +83,18 @@
         <div class="container mt-5">
             <!-- Company Banner -->
             <div class="company-banner" data-aos="fade-up">
-                <img src="<%= company.logoPath || '/images/user1.png'%>" alt="Company Logo" class="logo-circle" />
+                <img src="<%= company.logoPath || '/images/default_logo.png' %>" alt="Company Logo" class="logo-circle" />
                 <div>
                     <h3 class="mb-2"><%= company.companyName %></h3>
                     <a href="<%= company.website %>" class="btn btn-light btn-sm">
                         <i class="fa fa-globe"></i> Xem website công ty
                     </a>
-                    <button class="btn btn-light btn-sm" onclick="chat('<%=company._id%>')">
-                        <i class="fa fa-comment"></i> Liên hệ công ty
-                    </button>
+                    
+                    <% if (user) { %>
+                        <button class="btn btn-light btn-sm" onclick="chat('<%=company._id%>')">
+                            <i class="fa fa-comment"></i> Liên hệ công ty
+                        </button>
+                        <% } %>
                 </div>
             </div>
 
@@ -128,9 +131,11 @@
                                 <!-- <a href="/user/apply/<%= job._id %>" class="btn btn-outline-primary btn-sm">
                                 <i class="fa fa-paper-plane"></i> Ứng tuyển
                             </a> -->
+                            <% if (user) { %>
                                 <button class="btn btn-outline-primary btn-sm" onclick="apply('<%=job._id%>')">
                                     <i class="fa fa-paper-plane"></i> Ứng tuyển
                                 </button>
+                                <% } %>
                                 <a href="/job/<%= job._id %>" class="btn btn-outline-secondary btn-sm">
                                     <i class="fa fa-eye"></i> Xem
                                 </a>

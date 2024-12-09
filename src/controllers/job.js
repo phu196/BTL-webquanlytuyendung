@@ -52,13 +52,33 @@ const showJob = async (req, res) => {
         if (!job) {
             return res.status(404).json({ message: "Job not found" });
         }
-        const user = await User.findById(req.user._id).select("-password");
-        res.render("job/show-job-user.ejs", { job, user });
+
+        const isCompany = !!req.company; // Token của công ty
+        const isUser = !!req.user; // Token của người dùng
+
+        console.log("Token là của công ty:", isCompany);
+        console.log("Token là của người dùng:", isUser);
+
+        const loggedInCompanyId = req.company?._id; 
+        const companyFromJobId = job.companyId?._id;
+
+        if (isCompany && loggedInCompanyId?.toString() === companyFromJobId?.toString()) {
+            return res.render("job/show", { job });
+        }
+
+        if (isUser) {
+            const user = await User.findById(req.user._id).select("-password");
+            return res.render("job/show-job-user.ejs", { job, user });
+        }
+
+        // Trường hợp không hợp lệ
+        return res.status(403).json({ message: "Access denied" });
     } catch (error) {
-        console.log(error);
+        console.error(error);
         res.status(500).json({ message: "This id is not exist" });
     }
 };
+
 const generateUniqueTitle = (title, existingTitles) => {
     let baseTitle = title.replace(/(\(\d+\))?(\.pdf)$/i, ""); // Loại bỏ phần (x) nếu có
     let extension = ".pdf";
