@@ -276,7 +276,7 @@ const updateCompany = async (req, res) => {
                 .status(404)
                 .json({ success: false, message: "Company not found" });
         }
-        res.status(200).json({ success: true, message: "Company updated successfully" });
+        res.redirect("/company/profile");
     } catch (error) {
         console.log(error);
         res.status(400).json({ success: false, message: error.message });
