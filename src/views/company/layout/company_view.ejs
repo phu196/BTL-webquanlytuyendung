@@ -71,29 +71,32 @@
                     opacity: 0.9;
                 }
 
-                .iframe {
-                    border-radius: 12px;
-                    border: 1px solid #ddd;
-                    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-                }
-            </style>
-        </head>
-        <body>
-            <%- include('../../partials/header') %>
-            <div class="container mt-5">
-                <!-- Company Banner -->
-                <div class="company-banner" data-aos="fade-up">
-                    <img src="<%= company.logoPath || '/images/user1.png'%>" alt="Company Logo" class="logo-circle" />
-                    <div>
-                        <h3 class="mb-2"><%= company.companyName %></h3>
-                        <a href="<%= company.website %>" class="btn btn-light btn-sm">
-                            <i class="fa fa-globe"></i> Xem website công ty
-                        </a>
+            .iframe {
+                border-radius: 12px;
+                border: 1px solid #ddd;
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            }
+        </style>
+    </head>
+    <body>
+        <%- include('../../partials/header') %>
+        <div class="container mt-5">
+            <!-- Company Banner -->
+            <div class="company-banner" data-aos="fade-up">
+                <img src="<%= company.logoPath || '/images/default_logo.png' %>" alt="Company Logo" class="logo-circle" />
+                <div>
+                    <h3 class="mb-2"><%= company.companyName %></h3>
+                    <a href="<%= company.website %>" class="btn btn-light btn-sm">
+                        <i class="fa fa-globe"></i> Xem website công ty
+                    </a>
+                    
+                    <% if (user) { %>
                         <button class="btn btn-light btn-sm" onclick="chat('<%=company._id%>')">
                             <i class="fa fa-comment"></i> Liên hệ công ty
                         </button>
-                    </div>
+                        <% } %>
                 </div>
+            </div>
 
                 <div class="row">
                     <!-- Company Information -->
@@ -124,32 +127,35 @@
                                     </div>
                                 </div>
 
-                                <div class="d-flex job-actions">
-                                    <!-- <a href="/user/apply/<%= job._id %>" class="btn btn-outline-primary btn-sm">
+                            <div class="d-flex job-actions">
+                                <!-- <a href="/user/apply/<%= job._id %>" class="btn btn-outline-primary btn-sm">
+                                <i class="fa fa-paper-plane"></i> Ứng tuyển
+                            </a> -->
+                            <% if (user) { %>
+                                <button class="btn btn-outline-primary btn-sm" onclick="apply('<%=job._id%>')">
                                     <i class="fa fa-paper-plane"></i> Ứng tuyển
-                                </a> -->
-                                    
-                                    <a href="/job/<%= job._id %>" class="btn btn-outline-secondary btn-sm">
-                                        <i class="fa fa-eye"></i> Xem
-                                    </a>
-                                </div>
+                                </button>
+                                <% } %>
+                                <a href="/job/<%= job._id %>" class="btn btn-outline-secondary btn-sm">
+                                    <i class="fa fa-eye"></i> Xem
+                                </a>
                             </div>
-                            <% }); %>
                         </div>
+                        <% }); %>
                     </div>
-                    
-                    
-                    <!-- Contact Information -->
-                    <div class="col-md-4">
-                        <div class="contact-info" data-aos="fade-up">
-                            <h5>Thông tin liên hệ</h5>
-                            <p>
-                                <strong>Địa chỉ:</strong> <%= company.address.detail %>, <%= company.address.ward %>, <%=
-                                company.address.district %>, <%= company.address.province %>
-                            </p>
-                            <p><strong>SĐT:</strong> <%= company.phoneNumber %></p>
-                            <p><strong>Email:</strong> <%= company.email %></p>
-                        </div>
+                </div>
+
+                <!-- Contact Information -->
+                <div class="col-md-4">
+                    <div class="contact-info" data-aos="fade-up">
+                        <h5>Thông tin liên hệ</h5>
+                        <p>
+                            <strong>Địa chỉ:</strong> <%= company.address.detail %>, <%= company.address.ward %>, <%=
+                            company.address.district %>, <%= company.address.province %>
+                        </p>
+                        <p><strong>SĐT:</strong> <%= company.phoneNumber %></p>
+                        <p><strong>Email:</strong> <%= company.email %></p>
+                    </div>
 
                         <!-- Map -->
                         <div class="contact-info" data-aos="fade-up">

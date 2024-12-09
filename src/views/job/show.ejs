@@ -184,7 +184,7 @@
                     <div class="company-card p-4 text-center">
                         <!-- Company Logo -->
                         <div class="company-logo">
-                            <img src="<%= job.companyId.logoPath %>" alt="Company Logo" />
+                            <img src="<%= job.companyId.logoPath || '/images/default_logo.png'%>" alt="Company Logo" />
                         </div>
                         <!-- Company Name -->
                         <h5><%= job.companyId.companyName %></h5>

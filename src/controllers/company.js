@@ -45,7 +45,7 @@ const profile = async (req, res) => {
         if (req.company) {
             const id = req.company._id;
             console.log("Company ID: " + id);
-
+            
             const company = await Company.findById(id).populate("jobs");
 
             res.render("company/layout/mainpage", {
@@ -64,11 +64,22 @@ const profile = async (req, res) => {
 const companyDetail = async (req, res) => {
     const id = req.params.id;
     try {
-        const company = await Company.findById(id).populate("jobs");
-
-        res.render("company/layout/company_view", {
-            company: company,
-        });
+        const company1 = await Company.findById(id).populate("jobs");
+        
+        const user = await User.findById(req.user._id).select("-password");
+        const loggedInCompanyId = req.company?._id;
+        
+        if(id == loggedInCompanyId){
+            res.render("company/layout/mainpage", {
+                company: company1,
+            });
+        }
+        else{
+            res.render("company/layout/company_view", {
+                company: company1, user 
+            });
+        }
+        
     } catch (error) {
         console.error(error);
         res.status(500).send("Internal Server Error");

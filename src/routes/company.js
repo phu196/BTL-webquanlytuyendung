@@ -21,7 +21,7 @@ router.get("/profile", passportJWT, companyController.profile);
 router.get("/edit", passportJWT, companyController.edit);
 router.post("/update",passportJWT,uploadAvatar.single("logo"), uploadAvatarErrorHandler,companyController.updateCompany);
 // Trang thông tin công ty phía user
-router.get("/:id", companyController.companyDetail);
+router.get("/:id", passportJWT,companyController.companyDetail);
 
 // Xoa job trong cty
 router.post("/jobs/:job_id/delete", passportJWT, companyController.deleteJob);
