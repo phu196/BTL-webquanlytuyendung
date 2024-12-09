@@ -45,7 +45,7 @@ const profile = async (req, res) => {
         if (req.company) {
             const id = req.company._id;
             console.log("Company ID: " + id);
-            
+
             const company = await Company.findById(id).populate("jobs");
 
             res.render("company/layout/mainpage", {
@@ -65,21 +65,21 @@ const companyDetail = async (req, res) => {
     const id = req.params.id;
     try {
         const company1 = await Company.findById(id).populate("jobs");
-        
+
         const user = await User.findById(req.user._id).select("-password");
         const loggedInCompanyId = req.company?._id;
-        
-        if(id == loggedInCompanyId){
+
+        if (id == loggedInCompanyId) {
             res.render("company/layout/mainpage", {
                 company: company1,
             });
         }
-        else{
+        else {
             res.render("company/layout/company_view", {
-                company: company1, user 
+                company: company1, user
             });
         }
-        
+
     } catch (error) {
         console.error(error);
         res.status(500).send("Internal Server Error");
@@ -276,10 +276,10 @@ const updateCompany = async (req, res) => {
                 .status(404)
                 .json({ success: false, message: "Company not found" });
         }
-        res.redirect("/company/profile");
+        res.status(200).json({ success: true, message: "Company updated successfully" });
     } catch (error) {
         console.log(error);
-        res.status(400).json({ message: error.message });
+        res.status(400).json({ success: false, message: error.message });
     }
 };
 //[GET] /company/edit
