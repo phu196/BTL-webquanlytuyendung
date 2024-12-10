@@ -3,6 +3,8 @@ const Job = require("../models/Job");
 const User = require("../models/User");
 const bcrypt = require("bcrypt");
 const axios = require("axios");
+const pdfParse = require("pdf-parse");
+const fs = require("fs");
 
 const { StatusCodes } = require("http-status-codes");
 const CompanyRegistration = require("../models/CompanyRegistration");
@@ -148,7 +150,7 @@ const createJob = async (req, res) => {
                     await job.save();
                     company.jobs.push(job);
                     await company.save();
-                    res.redirect(`/company/profile`);
+                    res.redirect(`/job/${job._id}`);
                 } catch (error) {
                     console.error(error);
                     res.status(500).send("Internal Server Error");
@@ -202,6 +204,7 @@ const viewCandidates = async (req, res) => {
 
             const candidates = job.applicants.map((applicant) => {
                 return {
+                    jobId: job_id,
                     user: applicant.userId,
                     name: applicant.name,
                     phoneNumber: applicant.phoneNumber,
@@ -225,16 +228,34 @@ const viewCandidates = async (req, res) => {
 };
 const viewCV = async (req, res) => {
     try {
-        const cvTitle = req.params.cvTitle;
-        const cv = await User.findOne({ "CV.title": cvTitle }, { CV: { $elemMatch: { title: cvTitle } } });
-        if (!cv) {
-            return res.status(404).send("CV not found");
-        }
-        const cvPath = cv.CV[0].path;
-        res.render("view-cv", { cvPath });
+        const candidate = req.query.candidate;
+        const jobId = req.params.jobId;
+        const job = await Job.findById(jobId);
+        const applicants = job.applicants;
+        const cvTitle = applicants.find((applicant) => applicant.userId == candidate).cvTitle;
+        const user = await User.findById(candidate);
+        res.render("view-cv", { jobId: job._id, cvTitle, userId: user._id });
     }
     catch (error) {
-        res.status(500).send("Internal Server Error");
+        console.error(error);
+        return res.status(500).send("Internal Server Error");
+    }
+}
+const getCV = async (req, res) => {
+    try {
+        const userId = req.query.user;
+        const jobId = req.query.job;
+
+        const job = await Job.findById(jobId);
+        const applicants = job.applicants;
+        const cvTitle = applicants.find((applicant) => applicant.userId == userId).cvTitle;
+        const user = await User.findById(userId);
+        const cv = user.CV.find((cv) => cv.title == cvTitle);
+        const cvPath = cv.path;
+        res.sendFile(cvPath);
+    } catch (error) {
+        console.error(error);
+        return res.status(500).send("Internal Server Error");
     }
 }
 //[POST] /company/update
@@ -400,4 +421,5 @@ module.exports = {
     postEditJob,
     showJob,
     viewCV,
+    getCV
 };

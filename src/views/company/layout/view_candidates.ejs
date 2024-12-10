@@ -1,75 +1,71 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Candidate List</title>
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <!-- Font Awesome CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-</head>
-<body>
-    <%- include('../../partials/header') %>
-    <div class="container mt-5">
-        <h1 class="text-center mb-4 text-primary">Candidate List for Job</h1>
-        <div class="row">
-            
-            <% 
-            if (candidates.length === 0) { %>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Candidate List</title>
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+        <!-- Font Awesome CSS -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+    </head>
+    <body>
+        <%- include('../../partials/header') %>
+        <div class="container mt-5">
+            <h1 class="text-center mb-4 text-primary">Candidate List for Job</h1>
+            <div class="row">
+                <% if (candidates.length === 0) { %>
                 <div class="col-md-12">
-                    <div class="alert alert-warning">
-                        No candidate has applied for this job yet.
-                    </div>
+                    <div class="alert alert-warning">No candidate has applied for this job yet.</div>
                 </div>
-            <% } else { %>
-            <% candidates.forEach(candidate => { %>
+                <% } else { %> <% candidates.forEach(candidate => { %>
                 <div class="col-md-4 mb-4">
                     <div class="card shadow-sm">
                         <div class="card-body">
                             <h5 class="card-title"><i class="fas fa-user text-primary"></i> <%= candidate.name %></h5>
                             <p class="card-text">
-                                <strong>Email:</strong> <%= candidate.email %> <br>
-                                <strong>Phone:</strong> <%= candidate.phoneNumber %> <br>
-                                 
+                                <strong>Email:</strong> <%= candidate.email %> <br />
+                                <strong>Phone:</strong> <%= candidate.phoneNumber %> <br />
                             </p>
-                            <a href="/company/view-cv/<%= candidate.cvTitle %>" class="btn btn-primary">
+                            <a
+                                href="/company/job/<%= candidate.jobId %>/view-cv?candidate=<%= candidate.user %>"
+                                class="btn btn-primary"
+                            >
                                 <i class="fas fa-file-alt"></i> View CV
                             </a>
                             <button class="btn btn-light btn-sm" onclick="chat('<%= candidate.user._id %>')">
-                                <i class="fa fa-comment"></i> Liên hệ 
+                                <i class="fa fa-comment"></i> Liên hệ
                             </button>
                         </div>
                     </div>
                 </div>
-            <% }) } %>
+                <% }) } %>
+            </div>
         </div>
-    </div>
 
-    <!-- Bootstrap JS and dependencies -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script>
-        function chat(id){
-            fetch('/chat/createRoom',{
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({id})
-            })
-            .then(response => response.json())
-                .then(data =>{
-                    if(data.success){
-                        window.location.href = `/chat/${data.roomID}`
-                    }
-                    else{
-                        alert(data.message || 'Đã xảy ra lỗi. Vui lòng thử lại.')
-                    }
+        <!-- Bootstrap JS and dependencies -->
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        <script>
+            function chat(id) {
+                fetch("/chat/createRoom", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({ id }),
                 })
-        }
-    </script>
-    <%- include('../../partials/footer') %>
-</body>
+                    .then((response) => response.json())
+                    .then((data) => {
+                        if (data.success) {
+                            window.location.href = `/chat/${data.roomID}`;
+                        } else {
+                            alert(data.message || "Đã xảy ra lỗi. Vui lòng thử lại.");
+                        }
+                    });
+            }
+        </script>
+        <%- include('../../partials/footer') %>
+    </body>
 </html>

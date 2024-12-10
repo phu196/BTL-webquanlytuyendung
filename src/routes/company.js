@@ -13,15 +13,18 @@ router.get("/register", (req, res) => {
     res.render("register-company");
 });
 // Tạo job mới
-router.get("/new-job",passportJWT, companyController.companyJobs);
-router.post("/new-job",passportJWT, companyController.createJob);
+router.get("/new-job", passportJWT, companyController.companyJobs);
+router.post("/new-job", passportJWT, companyController.createJob);
 // Trang thông tin công ty phía công ty
 router.get("/profile", passportJWT, companyController.profile);
+
+router.get("/get-cv", passportJWT, companyController.getCV);
+
 // Edit company profile
 router.get("/edit", passportJWT, companyController.edit);
-router.post("/update",passportJWT,uploadAvatar.single("logo"), uploadAvatarErrorHandler,companyController.updateCompany);
+router.post("/update", passportJWT, uploadAvatar.single("logo"), uploadAvatarErrorHandler, companyController.updateCompany);
 // Trang thông tin công ty phía user
-router.get("/:id", passportJWT,companyController.companyDetail);
+router.get("/:id", passportJWT, companyController.companyDetail);
 
 // Xoa job trong cty
 router.post("/jobs/:job_id/delete", passportJWT, companyController.deleteJob);
@@ -34,6 +37,8 @@ router.get("/jobs/:job_id/show", passportJWT, companyController.showJob);
 router.get("/jobs/:job_id/view-candidates", passportJWT, companyController.viewCandidates);
 
 //Xem cv ứng viên
-router.get("/view-cv/:cvTitle", passportJWT, companyController.viewCV);
+router.get("/job/:jobId/view-cv/", passportJWT, companyController.viewCV);
+
+
 
 module.exports = router;

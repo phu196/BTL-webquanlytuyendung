@@ -1,16 +1,58 @@
 <!DOCTYPE html>
-<html lang="vi">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Xem CV</title>
-</head>
-<body>
-    <h1>Xem CV</h1>
-    <iframe 
-        src="/<%= cvPath %>" 
-        width="100%" 
-        height="800px">
-    </iframe>
-</body>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title><%= cvTitle %></title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                margin: 20px;
+                text-align: center;
+            }
+            canvas {
+                margin: 20px auto;
+                display: block;
+                border: 1px solid #ccc;
+            }
+        </style>
+        <!-- PDF.js từ CDN -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.5.141/pdf.min.js"></script>
+        <script>
+            // Cấu hình đường dẫn cho worker
+            pdfjsLib.GlobalWorkerOptions.workerSrc =
+                "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.5.141/pdf.worker.min.js";
+        </script>
+    </head>
+    <body>
+        <h2><%= cvTitle %></h2>
+        <div id="pdf-container"></div>
+        <script>
+            // URL của file PDF từ backend
+            const pdfUrl = "/company/get-cv?job=<%= jobId %>&user=<%= userId %>";
+            const container = document.getElementById("pdf-container");
+            pdfjsLib.getDocument(pdfUrl).promise.then((pdfDoc) => {
+                const totalPages = pdfDoc.numPages;
+
+                // Render từng trang
+                for (let pageNum = 1; pageNum <= totalPages; pageNum++) {
+                    pdfDoc.getPage(pageNum).then((page) => {
+                        const canvas = document.createElement("canvas");
+                        container.appendChild(canvas);
+
+                        const ctx = canvas.getContext("2d");
+                        const viewport = page.getViewport({ scale: 1.5 });
+
+                        canvas.width = viewport.width;
+                        canvas.height = viewport.height;
+
+                        page.render({
+                            canvasContext: ctx,
+                            viewport: viewport,
+                        });
+                    });
+                }
+            });
+        </script>
+    </body>
 </html>

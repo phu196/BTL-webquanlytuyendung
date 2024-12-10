@@ -9,7 +9,7 @@
         <style>
             /* Styling for the Company Banner */
             .company-banner {
-                background-color: #d9eafd;
+                background: linear-gradient(45deg, #8eb4862d, #8eb486);
                 padding: 20px;
                 border-radius: 8px;
                 margin-bottom: 20px;
@@ -27,10 +27,11 @@
             /* Styling for Company Info and Contact Info sections */
             .company-info,
             .contact-info {
-                background-color: #bcccdc;
+                background-color: white;
                 border-radius: 8px;
                 padding: 20px;
                 margin-bottom: 20px;
+                box-shadow: 0 8px 12px rgba(0, 0, 0, 0.1);
             }
 
             .job-item {
@@ -207,87 +208,7 @@
             }
         </script>
         <!-- JavaScript for Applying to Job -->
-        <script>
-            document.getElementById("fileUpload").addEventListener("change", function () {
-                const file = this.files[0];
-                if (file.size > 5 * 1024 * 1024) {
-                    alert("File size must be less than 5MB");
-                    this.value = "";
-                }
-                document.getElementById("cv").value = file.name;
-                document.getElementById("cv").disabled = true;
-            });
-            async function applyToJob(jobId) {
-                const name = document.getElementById("name").value;
-                const phoneNumber = document.getElementById("phone").value;
-                const email = document.getElementById("email").value;
-                const cvTitle = document.getElementById("cv").value;
-                const coverLetter = document.getElementById("coverLetter").value;
-                const file = document.getElementById("fileUpload").files[0];
-                let isFileUploaded = false;
-                let fileUpload = {};
-
-                if (!name || !phoneNumber || !email) {
-                    alert("Please fill in all fields");
-                    return;
-                }
-                if (!cvTitle && !file) {
-                    alert("Please select a CV file or upload a new one");
-                    return;
-                }
-
-                if (file) {
-                    isFileUploaded = true;
-                    fileUpload = {
-                        name: file.name,
-                        type: file.type,
-                        size: file.size,
-                        data: await convertFileToBase64(file),
-                    };
-                }
-
-                fetch(`/job/${jobId}/apply`, {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({
-                        name,
-                        phoneNumber,
-                        email,
-                        cvTitle,
-                        coverLetter,
-                        isFileUploaded,
-                        fileUpload,
-                    }),
-                })
-                    .then((response) => response.json())
-                    .then((data) => {
-                        if (data.success) {
-                            const messageDiv = document.getElementById("applyMessage");
-                            messageDiv.style.display = "block";
-
-                            // Hide the message after 3 seconds
-                            setTimeout(() => {
-                                messageDiv.style.display = "none";
-                            }, 3000);
-                        } else {
-                            alert(data.message);
-                        }
-                    })
-                    .catch((error) => {
-                        console.error("Error:", error);
-                        alert("An error occurred. Please try again.");
-                    });
-            }
-            function convertFileToBase64(file) {
-                return new Promise((resolve, reject) => {
-                    const reader = new FileReader();
-                    reader.onload = () => resolve(reader.result.split(",")[1]); // Loại bỏ tiền tố Base64
-                    reader.onerror = (error) => reject(error);
-                    reader.readAsDataURL(file);
-                });
-            }
+        
         </script>
         <%- include('../../partials/footer') %>
     </body>

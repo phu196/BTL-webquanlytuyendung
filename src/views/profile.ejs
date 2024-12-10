@@ -1,178 +1,232 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Thông tin cá nhân</title>
-  <!-- Bootstrap CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <!-- Font Awesome -->
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-  <style>
-    body {
-      background-color: #f8f9fa;
-    }
-    .card {
-      border-radius: 10px;
-      margin-bottom: 20px;
-    }
-    .profile-header {
-      display: flex;
-      align-items: center;
-      gap: 15px;
-    }
-    .profile-avatar {
-      width: 100px;
-      height: 100px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 2px solid #007bff;
-    }
-    .section-header {
-      font-size: 1.1rem;
-      font-weight: bold;
-      color: #333;
-    }
-    .cv-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .cv-item a {
-      text-decoration: none;
-      color: #007bff;
-    }
-    .cv-item a:hover {
-      text-decoration: underline;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thông tin cá nhân</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .card {
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .profile-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #007bff;
+        }
+
+        .section-header {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .cv-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .cv-item a {
+            text-decoration: none;
+            color: #007bff;
+        }
+
+        .cv-item a:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
+
 <body>
-  <%- include('partials/header.ejs') %>
-  <div class="container my-5">
-    <!-- Header Row -->
-    <div class="row">
-        <div class="col-md-2"></div>
-      <!-- Avatar and Full Name -->
+    <%- include('partials/header.ejs') %>
+        <div class="container my-5">
+            <!-- Header Row -->
+            <div class="row">
+                <div class="col-md-2"></div>
+                <!-- Avatar and Full Name -->
 
-      <div class="col-md-3">
-        <div class="card shadow">
-          <div class="card-body profile-header">
-            <img 
-              src="<%= user.avatarPath || 'https://via.placeholder.com/100' %>" 
-              alt="Ảnh đại diện" 
-              class="profile-avatar"
-            >
-            <div>
-              <h5 class="text-primary mb-1"><%= user.fullname %></h5>
-              <p class="text-secondary mb-0">Vai trò: <span class="text-success"><%= user.role === 'user' ? 'Người dùng' : user.role ==='admin' ? 'Quản trị viên': 'Công ty' %></span></p>
+                <div class="col-md-3">
+                    <div class="card shadow">
+                        <div class="card-body profile-header">
+                            <img src="<%= user.avatarPath || 'https://via.placeholder.com/100' %>" alt="Ảnh đại diện"
+                                class="profile-avatar">
+                            <div>
+                                <h5 class="text-primary mb-1">
+                                    <%= user.fullname %>
+                                </h5>
+                                <p class="text-secondary mb-0">Vai trò: <span class="text-success">
+                                        <%= user.role==='user' ? 'Người dùng' : user.role==='admin' ? 'Quản trị viên'
+                                            : 'Công ty' %>
+                                    </span></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Thông tin cá nhân -->
+                <div class="col-md-5">
+                    <div class="card shadow">
+                        <div class="card-header bg-primary text-white">
+                            <i class="fa-solid fa-user me-2"></i> Thông tin cá nhân
+                        </div>
+                        <div class="card-body">
+                            <p class="mb-2"><span class="section-header">Tên đăng nhập:</span>
+                                <%= user.username %>
+                            </p>
+                            <p class="mb-2"><span class="section-header">Email:</span>
+                                <%= user.email %>
+                            </p>
+                            <p class="mb-2"><span class="section-header">Số điện thoại:</span>
+                                <%= user.phoneNumber || 'Chưa cung cấp' %>
+                            </p>
+                            <p class="mb-2">
+                                <span class="section-header">Giới tính:</span>
+                                <% if (user.gender==='male' ) { %>
+                                    Nam
+                                    <% } else if (user.gender==='female' ) { %>
+                                        Nữ
+                                        <% } else { %>
+                                            Khác
+                                            <% } %>
+                            </p>
+                            <p class="mb-2">
+                                <span class="section-header">Địa chỉ:</span>
+                                <%= user.address.detail || 'Không có' %>,
+                                    <%= user.address.ward || 'Không có' %>,
+                                        <%= user.address.district || 'Không có' %>,
+                                            <%= user.address.province || 'Không có' %>
+                            </p>
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
+
+            <!-- CV Section -->
+            <div class="row mt-4">
+                <div class="col-md-5"></div>
+                <div class="col-md-5">
+                    <div class="card shadow">
+                        <div class="card-header bg-warning text-dark d-flex justify-content-between align-items-center">
+                            <span>
+                                <i class="fa-solid fa-file me-2"></i> Thông tin CV
+                            </span>
+                            <a href="/user/upload-cv" class="btn btn-sm btn-primary">
+                                <i class="fa-solid fa-plus me-1"></i> Thêm CV
+                            </a>
+                        </div>
+                        <div class="card-body">
+                            <% if (user.CV && user.CV.length> 0) { %>
+                                <ul class="list-group">
+                                    <% user.CV.forEach(function(cv) { %>
+                                        <li class="list-group-item cv-item">
+                                            <a href="<%= cv.path %>" target="_blank">
+                                                <i class="fa-solid fa-file-pdf text-danger me-2"></i>
+                                                <%= cv.title %>
+                                            </a>
+                                            <button class="btn btn-sm btn-danger" onclick="deleteCV('<%= cv._id %>')">
+                                                <i class="fa-solid fa-trash-alt"></i>
+                                            </button>
+                                        </li>
+                                        <% }); %>
+                                </ul>
+                                <% } else { %>
+                                    <p class="text-secondary">Chưa có CV nào được tải lên.</p>
+                                    <% } %>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Update Button -->
+            <div class="text-center mt-4">
+                <a href="/user/update" class="btn btn-primary btn-lg">
+                    <i class="fa-solid fa-pen-to-square me-2"></i> Cập nhật thông tin
+                </a>
+            </div>
         </div>
-      </div>
 
-      <!-- Thông tin cá nhân -->
-      <div class="col-md-5">
-        <div class="card shadow">
-          <div class="card-header bg-primary text-white">
-            <i class="fa-solid fa-user me-2"></i> Thông tin cá nhân
-          </div>
-          <div class="card-body">
-            <p class="mb-2"><span class="section-header">Tên đăng nhập:</span> <%= user.username %></p>
-            <p class="mb-2"><span class="section-header">Email:</span> <%= user.email %></p>
-            <p class="mb-2"><span class="section-header">Số điện thoại:</span> <%= user.phoneNumber || 'Chưa cung cấp' %></p>
-            <p class="mb-2">
-              <span class="section-header">Giới tính:</span> 
-              <% if (user.gender === 'male') { %>
-                Nam
-              <% } else if (user.gender === 'female') { %>
-                Nữ
-              <% } else { %>
-                Khác
-              <% } %>
-            </p>
-            <p class="mb-2">
-              <span class="section-header">Địa chỉ:</span> 
-              <%= user.address.detail || 'Không có' %>, 
-              <%= user.address.ward || 'Không có' %>, 
-              <%= user.address.district || 'Không có' %>, 
-              <%= user.address.province || 'Không có' %>
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
+        <!-- Bootstrap JS -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.19/dist/sweetalert2.min.js"></script>
 
-    <!-- CV Section -->
-    <div class="row mt-4">
-        <div class="col-md-5"></div>
-      <div class="col-md-5">
-        <div class="card shadow">
-          <div class="card-header bg-warning text-dark d-flex justify-content-between align-items-center">
-            <span>
-              <i class="fa-solid fa-file me-2"></i> Thông tin CV
-            </span>
-            <a href="/user/upload-cv" class="btn btn-sm btn-primary">
-              <i class="fa-solid fa-plus me-1"></i> Thêm CV
-            </a>
-          </div>
-          <div class="card-body">
-            <% if (user.CV && user.CV.length > 0) { %>
-              <ul class="list-group">
-                <% user.CV.forEach(function(cv) { %>
-                  <li class="list-group-item cv-item">
-                    <a href="<%= cv.path %>" target="_blank">
-                      <i class="fa-solid fa-file-pdf text-danger me-2"></i><%= cv.title %>
-                    </a>
-                    <button class="btn btn-sm btn-danger" onclick="deleteCV('<%= cv._id %>')">
-                      <i class="fa-solid fa-trash-alt"></i>
-                    </button>
-                  </li>
-                <% }); %>
-              </ul>
-            <% } else { %>
-              <p class="text-secondary">Chưa có CV nào được tải lên.</p>
-            <% } %>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Update Button -->
-    <div class="text-center mt-4">
-      <a href="/user/update" class="btn btn-primary btn-lg">
-        <i class="fa-solid fa-pen-to-square me-2"></i> Cập nhật thông tin
-      </a>
-    </div>
-  </div>
-
-  <!-- Bootstrap JS -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-  <script>
-    function deleteCV(id){
-      if(confirm("Bạn có muốn xoá CV này?")){
-        fetch('/user/delete-cv',{
-          method : 'POST',
-          headers : {
-            'Content-Type' : 'application/json'
-          },
-          body : JSON.stringify({id})
-        })
-        .then(res => {
-          if(!res.ok) throw new Error('Xoá CV thất bại');
-          return res.json();
-        })
-        .then(data => {
-          if(data.success){
-            alert('Xoá CV thành công');
-            window.location.reload();
-          } else {
-            alert('Xoá CV thất bại');
-          }
-        })
-      }
-    }
-  </script>
-    <%- include('partials/footer.ejs') %>
+        <script>
+            const deleteCV = (id) => {
+                Swal.fire({
+                    title: "Bạn có chắc muốn xóa CV này không?",
+                    text: "Hành động này không thể hoàn tác!",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonText: "OK",
+                    cancelButtonText: "Cancel",
+                    reverseButtons: true,
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        Swal.close();
+                        Swal.fire({
+                            title: "Đang xóa...",
+                            html: "Vui lòng đợi trong giây lát...",
+                            allowOutsideClick: false,
+                            didOpen: () => {
+                                Swal.showLoading();
+                            },
+                        });
+                        fetch("/user/delete-cv", {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                            },
+                            body: JSON.stringify({ id }),
+                        })
+                            .then((response) => {
+                                return response.json();
+                            })
+                            .then((data) => {
+                                Swal.close();
+                                if (data.success) {
+                                    Swal.fire({
+                                        icon: "success",
+                                        title: "Thành công!",
+                                        text: "Xóa thành công CV!",
+                                        showConfirmButton: false,
+                                        timer: 1500,
+                                    }).then(() => {
+                                        window.location.href = "/user/profile";
+                                    });
+                                } else {
+                                    Swal.fire({
+                                        icon: "error",
+                                        title: "Lỗi",
+                                        text: "Xóa thất bại. Vui lòng thử lại!",
+                                        showConfirmButton: true,
+                                    });
+                                }
+                            });
+                    } else if (result.isDenied) {
+                        Swal.fire("Changes are not saved", "", "info");
+                    }
+                });
+            };
+        </script>
+        <%- include('partials/footer.ejs') %>
 </body>
+
 </html>

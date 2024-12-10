@@ -18,32 +18,39 @@
                 box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
                 margin-top: 20px;
             }
+
             .job-title {
                 font-size: 1.25rem;
                 font-weight: bold;
                 color: #333;
             }
+
             .job-info {
                 display: flex;
                 justify-content: space-around;
                 margin-top: 15px;
                 margin-bottom: 15px;
             }
+
             .job-info-item {
                 text-align: center;
             }
+
             .job-info-item i {
                 font-size: 1.5rem;
                 color: #28a745;
             }
+
             .job-info-item span {
                 display: block;
                 font-weight: bold;
             }
+
             .job-deadline {
                 color: #757575;
                 font-size: 0.9rem;
             }
+
             .edit-btn,
             .apply-btn {
                 background-color: #28a745;
@@ -58,10 +65,12 @@
                 cursor: pointer;
                 text-decoration: none;
             }
+
             .edit-btn:hover,
             .apply-btn:hover {
                 background-color: #218838;
             }
+
             .section-title {
                 font-weight: bold;
                 color: #333;
@@ -70,6 +79,7 @@
                 border-left: 4px solid #28a745;
                 padding-left: 10px;
             }
+
             .company-logo {
                 width: 80px;
                 height: 80px;
@@ -77,29 +87,35 @@
                 overflow: hidden;
                 margin-bottom: 10px;
             }
+
             .company-logo img {
                 width: 100%;
                 height: auto;
             }
+
             .company-link {
                 color: #28a745;
                 font-weight: bold;
                 text-decoration: none;
             }
+
             .company-link:hover {
                 text-decoration: underline;
             }
+
             .general-info-item {
                 display: flex;
                 align-items: center;
                 margin-bottom: 15px;
                 color: #333;
             }
+
             .general-info-item i {
                 font-size: 1.5rem;
                 color: #28a745;
                 margin-right: 10px;
             }
+
             .general-info-item span {
                 font-weight: bold;
                 display: block;
@@ -152,7 +168,6 @@
                             Ứng tuyển ngay
                         </button>
                         <% } %>
-                        <!-- Modal -->
                         <div
                             class="modal fade"
                             id="applyJobModal"
@@ -173,7 +188,7 @@
                                     </div>
                                     <div class="modal-body">
                                         <h6><%= job.title %></h6>
-                                        <form onclick="applyToJob(event, '<%= job._id %>')">
+                                        <form onsubmit="applyToJob(event, '<%= job._id %>')">
                                             <!-- Thông tin cơ bản -->
                                             <div class="mb-3">
                                                 <label for="name" class="form-label">Họ và tên</label>
@@ -203,11 +218,10 @@
                                                 />
                                             </div>
 
-                                            <!-- Chọn CV -->
                                             <div class="mb-3">
                                                 <label for="cv" class="form-label">Chọn CV</label>
                                                 <select class="form-select" id="cv">
-                                                    <% if (user.CV.length > 0) { %> <% user.CV.forEach(cv => { %>
+                                                    <% if (user.CV.length> 0) { %> <% user.CV.forEach(cv=> { %>
                                                     <option value="<%= cv.title %>"><%= cv.title %></option>
                                                     <% }) %> <% } else { %>
                                                     <option disabled selected>Bạn chưa upload CV nào</option>
@@ -225,7 +239,6 @@
                                                 ></textarea>
                                             </div>
 
-                                            <!-- File upload -->
                                             <div class="mb-3">
                                                 <label for="fileUpload" class="form-label">Tải lên CV mới</label>
                                                 <input class="form-control" type="file" id="fileUpload" />
@@ -233,28 +246,25 @@
                                                     >Hỗ trợ định dạng: .doc, .docx, .pdf, .xls. Dung lượng < 5MB</small
                                                 >
                                             </div>
-                                            <!-- <div class="modal-footer"> -->
                                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                                                 Hủy
                                             </button>
                                             <button type="submit" class="apply-btn">Ứng tuyển</button>
-                                            <!-- </div> -->
                                         </form>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <!-- </form> -->
                         <% } %>
-                        <div id="applyMessage" style="display: none; color: green; margin-top: 10px">
-                            Job application successful!
-                        </div>
                     </div>
 
                     <!-- Job Details Section -->
                     <div class="job-details p-4">
                         <div class="section-title">Chi tiết tuyển dụng</div>
-                        <div class="job-detail-section"><strong>Loại công việc:</strong> <%= job.typeOfWork %></div>
+                        <div class="job-detail-section">
+                            <strong>Loại công việc:</strong>
+                            <%= job.typeOfWork %>
+                        </div>
                         <div class="section-title">Mô tả công việc</div>
                         <div class="job-detail-section">
                             <p><%- job.description %></p>
@@ -287,7 +297,10 @@
                     <div class="company-card p-4 text-center">
                         <!-- Company Logo -->
                         <div class="company-logo">
-                            <img src="<%= job.companyId.logoPath || '/images/default_logo.png' %>" alt="Company Logo" />
+                            <img
+                                src="<%= job.companyId.logoPath || ' /images/default_logo.png' %>"
+                                alt="Company Logo"
+                            />
                         </div>
                         <!-- Company Name -->
                         <h5><%= job.companyId.companyName %></h5>
@@ -351,10 +364,16 @@
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.19/dist/sweetalert2.min.js"></script>
         <!-- JavaScript for Applying to Job -->
         <script>
-            document.getElementById("fileUpload").addEventListener("change", function () {
+            document.getElementById("fileUpload").addEventListener("change", function (event) {
+                event.preventDefault();
                 const file = this.files[0];
                 if (file.size > 5 * 1024 * 1024) {
-                    alert("File size must be less than 5MB");
+                    Swal.fire({
+                        icon: "error",
+                        title: "Lỗi",
+                        text: "Dung lượng file phải nhỏ hơn 5MB!",
+                        showConfirmButton: true,
+                    });
                     this.value = "";
                 }
                 document.getElementById("cv").value = file.name;
