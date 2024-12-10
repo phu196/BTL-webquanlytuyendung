@@ -379,9 +379,9 @@ const postEditJob = async (req, res) => {
                 skills: req.body.skills ? req.body.skills.split(",").map((s) => s.trim()) : [],
             });
 
-            res.redirect(`/company/jobs/${jobId}/show`);
+            res.status(200).json({ success: true, message: "Job updated successfully" });
         } else {
-            res.status(401).send("Unauthorized");
+            res.status(401).json({ sucess: false, message: "Unauthorized" });
         }
     } catch (error) {
         console.log(error);

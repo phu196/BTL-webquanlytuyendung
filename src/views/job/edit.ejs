@@ -5,12 +5,30 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Chỉnh sửa thông tin công việc</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+        <style>
+            .back-button-container {
+                position: absolute;
+                top: 10px; /* Điều chỉnh để di chuyển nút xuống */
+                left: 10px; /* Điều chỉnh để di chuyển nút sang phải */
+                z-index: 1000; /* Đảm bảo nút nằm phía trên các phần tử khác */
+            }
+        
+            .back-button-container .btn {
+                padding: 8px 16px; /* Điều chỉnh kích thước nút */
+                font-size: 14px; /* Kích thước chữ */
+                background-color: aqua;
+                color: black;
+            }
+        </style>
         <script src="/tinymce/tinymce.min.js" referrerpolicy="origin"></script>
     </head>
     <body>
+        <div class="back-button-container">
+            <a href="/company/profile" class="btn btn-secondary">Quay lại</a>
+        </div>
         <div class="container mt-4">
             <h3 class="text-center mb-4">Chỉnh sửa thông tin công việc</h3>
-            <form action="/company/jobs/<%= job._id %>/update" method="POST" class="border p-4 rounded bg-light">
+            <form id="editForm" class="border p-4 rounded bg-light">
                 <div class="mb-3">
                     <label for="title" class="form-label">Tên công việc</label>
                     <input type="text" class="form-control" id="title" name="title" value="<%= job.title %>" required />
@@ -190,10 +208,14 @@
 
                 <!-- Submit Button -->
                 <button type="submit" class="btn btn-primary w-100">Lưu chỉnh sửa</button>
+
             </form>
+            
         </div>
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.19/dist/sweetalert2.min.js"></script>
+
         <script>
             // Khởi tạo TinyMCE
             tinymce.init({
@@ -202,6 +224,72 @@
                 toolbar: 'undo redo | formatselect | bold italic | alignleft aligncenter alignright | bullist numlist outdent indent | link image code',
                 height: 300,
             });
+            document.getElementById('editForm').addEventListener('submit', async function (event) {
+                event.preventDefault();
+
+                Swal.fire({
+                    title: "Đang thực hiện...",
+                    html: "Vui lòng đợi trong giây lát...",
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading(); // Hiển thị vòng quay loading
+                    },
+                });
+                // Lấy form element
+                const form = document.getElementById('editForm');
+        
+                // Thu thập dữ liệu từ các trường trong form
+                const formData = new FormData(form);
+                const data = {};
+                formData.forEach((value, key) => {
+                    if (key === 'salary_negotiation' || key === 'job_status') {
+                        data[key] = formData.get(key) ? true : false; // Chuyển đổi checkbox thành boolean
+                    } else {
+                        data[key] = value;
+                    }
+                });
+        
+                // Gửi dữ liệu qua API
+                try {
+                    const response = await fetch('/company/jobs/<%= job._id %>/update', {
+                        method: 'POST', // Phương thức HTTP PUT
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(data),
+                    }).then (response => {
+                        return response.json();
+                    }).then(data => {
+                        Swal.close();
+                        if(data.success) {
+                            Swal.fire({
+                                icon: "success",
+                                title: "Thành công!",
+                                text: "Tạo công ty thành công!",
+                                showConfirmButton: false,
+                                timer: 1500,
+                            }).then(() => {
+                                window.location.href = "/company/jobs/<%= job._id %>/show";
+                            });
+                        } else {
+                            Swal.fire({
+                                icon: "error",
+                                title: "Lỗi",
+                                text: "Lỗi khi cập nhật thông tin!",
+                                showConfirmButton: true,
+                            });
+                        }
+                    })
+                } catch (err) {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Lỗi",
+                        text: "Lỗi khi cập nhật thông tin!",
+                        showConfirmButton: true,
+                    });
+                }
+            });
+            
         </script>
     </body>
 </html>
