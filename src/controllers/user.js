@@ -137,7 +137,7 @@ const uploadCV = async (req, res) => {
 
         // Tạo tên file ngẫu nhiên
         const randomFileName = crypto.randomBytes(16).toString("hex");
-        const filePath = path.join(__dirname, `/home/app/uploads/${userId}/cv`, `${randomFileName}.pdf`);
+        const filePath = path.join(`/home/app/uploads/${userId}/cv`, `${randomFileName}.pdf`);
 
         // Tạo thư mục nếu chưa tồn tại
         const uploadDir = path.dirname(filePath);

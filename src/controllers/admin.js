@@ -49,6 +49,10 @@ const deleteCompany = async (req, res) => {
     try {
         const { id } = req.body;
         await Company.findByIdAndDelete(id);
+        const jobs = await Job.find({ companyId: id });
+        forEach(async (job) => {
+            await Job.findByIdAndDelete(job._id);
+        })
         res.status(200).json({ success: true, message: "Company deleted successfully" });
     } catch (error) {
         res.status(500).json({ success: false, message: error.message });
@@ -105,9 +109,14 @@ const deleteUser = async (req, res) => {
     try {
         const { id } = req.body;
         await User.findByIdAndDelete(id);
-        res.status(200).json({ success: true, message: "User deleted successfully" });
+        const jobs = await Job.find({ applicants: { $elemMatch: { $eq: new mongoose.Types.ObjectId(id) } } });
+        jobs.forEach(async (job) => {
+            job.applicants = job.applicants.filter((applicant) => applicant.toString() !== id);
+            await job.save();
+        });
+        return res.status(200).json({ success: true, message: "User deleted successfully" });
     } catch (error) {
-        res.status(500).json({ success: false, message: error.message });
+        return res.status(500).json({ success: false, message: error.message });
     }
 };
 
@@ -123,9 +132,9 @@ const addUser = async (req, res) => {
             phoneNumber,
         });
         await user.save();
-        res.status(200).json({ success: true, message: "User added successfully" });
+        return res.status(200).json({ success: true, message: "User added successfully" });
     } catch (error) {
-        res.status(500).json({ success: false, message: error.message });
+        return res.status(500).json({ success: false, message: error.message });
     }
 };
 
@@ -136,7 +145,7 @@ const getStatistics = async (req, res) => {
         const totalRegistrations = await CompanyRegistration.countDocuments({});
         res.render("admin/statistics", { totalUsers, totalCompanies, totalRegistrations });
     } catch (error) {
-        res.status(500).json({ success: false, message: error.message });
+        return res.status(500).json({ success: false, message: error.message });
     }
 };
 
