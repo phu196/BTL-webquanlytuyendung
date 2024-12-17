@@ -215,27 +215,58 @@
             AOS.init({ duration: 1000 });
 
             function deleteJob(jobId) {
-                // TODO: Dùng thư viện SweetAlert2 để xác nhận việc xóa công việc
-                if (confirm("Bạn có chắc chắn muốn xóa công việc này không?")) {
-                    fetch(`/company/jobs/${jobId}/delete`, {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({ jobId }),
-                    })
-                        .then((response) => response.json())
-                        .then((data) => {
-                            if (data.success) {
-                                alert("Job deleted successfully.");
-                                window.location.reload();
-                            } else {
-                                alert("An error occurred.");
-                            }
-                        })
-                        .catch((error) => {
-                            console.error("Error deleting job:", error);
-                            alert("An error occurred.");
+                Swal.fire({
+                    title: "Bạn có chắc chắn muốn xóa công việc này không?",
+                    text: "Hành động này không thể hoàn tác!",
+                    icon: "warning",
+                    showCancelButton: true, // Hiển thị nút Cancel
+                    confirmButtonText: "Xóa!",
+                    cancelButtonText: "Hủy!",
+                    reverseButtons: true, // Đảo ngược vị trí của các nút
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        Swal.close(); // Đóng popup
+                        Swal.fire({
+                            title: "Đang xóa...",
+                            html: "Vui lòng đợi trong giây lát...",
+                            allowOutsideClick: false,
+                            didOpen: () => {
+                                Swal.showLoading();
+                            },
                         });
-                }
+                        fetch(`/company/jobs/${jobId}/delete`, {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify({ jobId }),
+                        })
+                            .then((response) => response.json())
+                            .then((data) => {
+                                Swal.close();
+                                if (data.success) {
+                                    Swal.fire({
+                                        icon: "success",
+                                        title: "Thành công!",
+                                        text: "Xóa thành công công việc!",
+                                        showConfirmButton: false,
+                                        timer: 1500,
+                                    }).then(() => {
+                                        location.reload();
+                                    });
+                                } else {
+                                    alert("An error occurred.");
+                                }
+                            })
+                            .catch((error) => {
+                                console.error("Error deleting job:", error);
+                                Swal.fire({
+                                    icon: "error",
+                                    title: "Lỗi",
+                                    text: "Xóa thất bại. Vui lòng thử lại!",
+                                    showConfirmButton: true,
+                                });
+                            });
+                    }
+                });
             }
         </script>
         <%- include('../../partials/footer') %>
