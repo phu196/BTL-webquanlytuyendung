@@ -2,35 +2,59 @@
 <html lang="en">
     <head>
         <%- include('../partials/admin-head', {title: "Companies Control - Admin Panel"}) %>
-        <title>Companies - Admin Panel</title>
+        <title>Jobs - Admin Panel</title>
     </head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <body>
         <%- include('../partials/admin-sidebar') %>
 
         <div class="main-content">
             <div class="d-flex justify-content-between align-items-center mb-4">
-                <h2>Companies</h2>
-                <a href="/admin/companies/add" class="btn btn-primary" style="margin-right: 150px">Add Company</a>
+                <h2>Jobs of <%= company.companyName %></h2>
             </div>
-            <p>List of registered companies:</p>
+            <p>List of jobs:</p>
             <table class="table">
                 <thead>
                     <tr>
                         <th>#</th>
-                        <th>Company Name</th>
-                        <th>Email</th>
+                        <th>Job Title</th>
+                        <th>Created at</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <% for( let i = 0; i < companies.length; i++ ) { %>
+                    <% for( let i = 0; i < jobs.length; i++ ) { %>
                     <tr>
                         <td><%= i + 1 %></td>
-                        <td><%= companies[i]["companyName"] %></td>
-                        <td><%= companies[i]["email"] %></td>
+                        <td><%= jobs[i]["title"] %></td>
+                        <td><%= new Date(jobs[i]["createdAt"]).toLocaleDateString('vi-VN') %></td>
                         <td>
-                            <button id="<%= companies[i]["_id"] %>" class="btn btn-danger btn-sm" onclick="handleDelete(this.id)">Delete</button>
-                            <button class="btn btn-success btn-sm" onclick="window.location='/admin/company/<%= companies[i]._id %>/jobs'">Jobs</button>
+                            <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#jobModal">
+                                Job Detail
+                            </button>
+                            <div class="modal fade" id="jobModal" tabindex="-1" aria-labelledby="jobModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="jobModalLabel">Job Detail</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <p><strong>Job title:</strong> <%= jobs[i]["title"]%> </p>
+                                            <p><strong>Deadline:</strong> </p>
+                                            <p id="jobDes"><strong>Job Description:</strong> </p><%= jobs[i]["description"] %>
+                                            <p><strong>Amount of applicants:</strong> <%= jobs[i]["applicants"].length %></p>
+                                            <p><strong>Created At:</strong> <%= new Date(jobs[i]["createdAt"]).toLocaleDateString('vi-VN') %></p>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-danger">Xóa Job</button>
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>                            
+                            <button id="<%= jobs[i]["_id"] %>" class="btn btn-danger btn-sm" onclick="handleDelete(this.id)">Delete</button>
                         </td>
                     </tr>
                     <% } %>
@@ -40,6 +64,7 @@
         <!-- SweetAlert2 JS -->
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.19/dist/sweetalert2.min.js"></script>
         <script>
+            
             const handleDelete = (id) => {
                 Swal.fire({
                     title: 'Are you sure?',
@@ -60,7 +85,7 @@
                                 Swal.showLoading();
                             }
                         });
-                        fetch("/admin/companies/delete", {
+                        fetch("/admin/jobs/delete", {
                             method: "POST",
                             headers: {
                                 "Content-Type": "application/json",
@@ -76,11 +101,11 @@
                                     Swal.fire({
                                         icon: "success",
                                         title: "Thành công!",
-                                        text: "Xóa thành công công ty!",
+                                        text: "Xóa thành công công việc!",
                                         showConfirmButton: false,
                                         timer: 1500,
                                     }).then(() => {
-                                        window.location.href = "/admin/companies"; 
+                                        location.reload(); 
                                     });
                                 } else {
                                     Swal.fire({

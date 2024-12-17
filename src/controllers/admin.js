@@ -3,9 +3,11 @@ const bcrypt = require("bcrypt");
 const CompanyRegistration = require("../models/CompanyRegistration");
 const Company = require("../models/Company");
 const User = require("../models/User");
+const Job = require("../models/Job");
 const ejs = require('ejs');
 const fs = require('fs');
 const transporter = require("../services/nodemailer");
+const mongoose = require("mongoose");
 
 const getCompanyRegistrations = async (req, res) => {
     try {
@@ -138,6 +140,34 @@ const getStatistics = async (req, res) => {
     }
 };
 
+const getCompanyJobs = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const company = await Company.findById(id);
+        const jobs = await Job.find({ companyId: id });
+        res.render("admin/companyJobs", { company, jobs });
+    } catch (error) {
+        return res.status(500).json({ success: false, message: error.message });
+    }
+};
+
+const deleteJob = async (req, res) => {
+    try {
+        const { id } = req.body;
+        const users = await User.find({ jobs: { $elemMatch: { $eq: new mongoose.Types.ObjectId(id) } } });
+
+        users.forEach(async (user) => {
+            user.jobs = user.jobs.filter((job) => job.toString() !== id);
+            await user.save();
+        });
+        await Job.findByIdAndDelete(id);
+        return res.status(200).json({ success: true, message: "Job deleted successfully" });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ success: false, message: error.message });
+    }
+};
+
 module.exports = {
     getCompanyRegistrations,
     deleteCompanyRegistration,
@@ -149,4 +179,6 @@ module.exports = {
     deleteUser,
     addUser,
     getStatistics,
+    getCompanyJobs,
+    deleteJob
 };
