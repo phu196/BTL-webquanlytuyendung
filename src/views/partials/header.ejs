@@ -130,7 +130,11 @@
                                         <div class="dropdown-divider"></div>
                                         <a class="dropdown-item" href="/company/edit">Cập nhật thông tin công ty</a>
                                         <div class="dropdown-divider"></div>
-                                        <a class="dropdown-item" href="/company/new-job">Đăng tin tuyển dụng</a>
+                                        ${
+                                            data.company.updated 
+                                                ? `<a class="dropdown-item" href="/company/new-job">Đăng tin tuyển dụng</a>` 
+                                                : `<button class="dropdown-item " onclick="alert('Vui lòng cập nhật hồ sơ công ty trước khi đăng tin tuyển dụng.')">Đăng tin tuyển dụng</button>`
+                                        }
                                         <div class="dropdown-divider"></div>
                                         <a class="dropdown-item" href="/Chat">Tin nhắn</a>
                                         <div class="dropdown-divider"></div>

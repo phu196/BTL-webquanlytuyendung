@@ -133,7 +133,13 @@
                     <!-- Job Listings -->
                     <div class="d-flex justify-content-between align-items-center mb-3" data-aos="fade-up">
                         <h5>Vị trí tuyển dụng</h5>
-                        <a href="/company/new-job" class="btn btn-create-job">+ Thêm vị trí mới</a>
+                        <% if (company.updated) { %>
+                            <a href="/company/new-job" class="btn btn-create-job">+ Thêm vị trí mới</a>
+                        <% } else { %>
+                            <button class="btn btn-create-job " onclick="alert('Vui lòng cập nhật hồ sơ công ty của bạn trước khi thêm công việc mới.')">
+                                + Thêm vị trí mới
+                            </button>
+                        <% } %>
                     </div>
 
                     <div class="list-group" data-aos="fade-up">

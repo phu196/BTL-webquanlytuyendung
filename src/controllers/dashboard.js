@@ -1,7 +1,7 @@
 const Company = require("../models/Company");
 const Job = require("../models/Job");
 const index = async (req, res) => {
-    const companies = await Company.find().limit(9).sort({ createdAt: -1 });
+    const companies = await Company.find({updated: true}).limit(9).sort({ createdAt: -1 });
     companies.forEach((company) => {
         const jobIds = company.jobs;
         const jobNames = [];

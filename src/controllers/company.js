@@ -272,7 +272,10 @@ const updateCompany = async (req, res) => {
         };
 
         const logoPath = req.file ? `/images/${req.file.filename}` : undefined;
-
+        var updated = false;
+        if(req.body.description.length>30  && address && req.body.companyName && req.body.email && req.body.phoneNumber && req.body.website){
+             updated = true;
+        }
         const updateData = {
             companyName: req.body.companyName,
             email: req.body.email,
@@ -280,12 +283,12 @@ const updateCompany = async (req, res) => {
             description: req.body.description,
             website: req.body.website,
             address: address,
+            updated: updated,
         }
 
         if (logoPath) {
             updateData.logoPath = logoPath;
         }
-
         const updatedCompany = await Company.findByIdAndUpdate(
             companyId,
             updateData,

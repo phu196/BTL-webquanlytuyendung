@@ -113,7 +113,7 @@
                                     </div>
                                     <div class="company-card-body">
                                         <p>
-                                            <% if (company.description.length > 240) { %> <%=
+                                            <% if (company.description && company.description.length > 240) { %> <%=
                                             company.description.substring(0, 240) %> ... <% } else { %> <%=
                                             company.description %> <% } %>
                                         </p>

@@ -44,6 +44,10 @@ const CompanySchema = new mongoose.Schema(
                 ref: "Job",
             },
         ],
+        updated:{
+            type: Boolean,
+            default: false,
+        }
     },
     { timestamps: true }
 );

@@ -43,7 +43,7 @@
                                         <div class="modal-body">
                                             <p><strong>Job title:</strong> <%= jobs[i]["title"]%> </p>
                                             <p><strong>Deadline:</strong> </p>
-                                            <p id="jobDes"><strong>Job Description:</strong> </p><%= jobs[i]["description"] %>
+                                            <p id="jobDes"><strong>Job Description:</strong> </p><%- jobs[i]["description"] %>
                                             <p><strong>Amount of applicants:</strong> <%= jobs[i]["applicants"].length %></p>
                                             <p><strong>Created At:</strong> <%= new Date(jobs[i]["createdAt"]).toLocaleDateString('vi-VN') %></p>
                                         </div>
