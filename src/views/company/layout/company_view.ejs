@@ -117,11 +117,18 @@
                     </div>
 
                     <div class="list-group" data-aos="fade-up">
-                        <% company.jobs.forEach(function(job) { %>
+                        <% 
+                            const currentTime = new Date(); 
+                            let jobCount = 0; // Biến đếm số lượng job hợp lệ
+                        %>
+                    
+                        <% company.jobs.forEach(function(job) { 
+                            const lastDate = new Date(job.deadline); 
+                            if (lastDate >= currentTime) { 
+                                jobCount++; // Tăng biến đếm nếu job hợp lệ
+                                const formattedDate = `${lastDate.getDate().toString().padStart(2, '0')}/${(lastDate.getMonth() + 1).toString().padStart(2, '0')}/${lastDate.getFullYear()}`;
+                        %>
                         <div class="job-item">
-                            <% let lastDate = new Date(job.deadline); // Chuyển chuỗi thành đối tượng Date let
-                            formattedDate = `${lastDate.getDate().toString().padStart(2, '0')}/${(lastDate.getMonth() +
-                            1).toString().padStart(2, '0')}/${lastDate.getFullYear()}`; %>
                             <div class="d-flex align-items-center mb-3">
                                 <img
                                     src="<%= company.logoPath || '/images/default_logo.png' %>"
@@ -135,23 +142,24 @@
                                     <p class="text-muted mb-1"><strong>Hạn ứng tuyển:</strong> <%= formattedDate %></p>
                                 </div>
                             </div>
-
+                    
                             <div class="d-flex job-actions">
-                                <!-- <a href="/user/apply/<%= job._id %>" class="btn btn-outline-primary btn-sm">
-                                <i class="fa fa-paper-plane"></i> Ứng tuyển
-                            </a> -->
-                                <!-- <% if (user) { %>
-                                <button class="btn btn-outline-primary btn-sm" onclick="apply('<%=job._id%>')">
-                                    <i class="fa fa-paper-plane"></i> Ứng tuyển
-                                </button>
-                                <% } %> -->
                                 <a href="/job/<%= job._id %>" class="btn btn-outline-secondary btn-sm">
                                     <i class="fa fa-eye"></i> Xem
                                 </a>
                             </div>
                         </div>
-                        <% }); %>
+                        <% 
+                            } 
+                        }); 
+                        %>
+                    
+                        <% if (jobCount === 0) { %> <!-- Kiểm tra nếu không có job nào -->
+                            <p class="text-center text-muted mt-3">Hiện tại công ty chưa tuyển dụng công việc nào</p>
+                        <% } %>
                     </div>
+                    
+                    
                 </div>
 
                 <!-- Contact Information -->

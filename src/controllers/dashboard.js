@@ -16,10 +16,12 @@ const index = async (req, res) => {
             company.jobNames = jobNames;
         });
     });
-    const jobs = await Job.find()
-        .limit(9)
-        .sort({ createdAt: -1 })
-        .select("title companyId companyName location skills salary");
+    const jobs = await Job.find({ 
+        deadline: { $gte: new Date() } // Lọc job có deadline lớn hơn hoặc bằng thời gian hiện tại
+    })
+    .limit(9) // Giới hạn 9 job
+    .sort({ createdAt: -1 }) // Sắp xếp theo thời gian tạo mới nhất
+    .select("title companyId companyName location skills salary");
     var newestJobs = [];
     await Promise.all(
         jobs.map(async (job) => {

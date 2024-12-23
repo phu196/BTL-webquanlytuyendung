@@ -16,7 +16,12 @@ const searchJob = async (req, res) => {
     const escapedKeyword = escapeRegExp(keyword);
     const regex = new RegExp(escapedKeyword, "i"); // Tạo biểu thức chính quy không phân biệt hoa thường
 
-    const jobs = await Job.find({ title: regex }).sort({ deadline: -1 }); // Tìm kiếm các công việc theo tiêu đề khớp với từ khóa
+    const currentTime = new Date();
+    const jobs = await Job.find({ 
+        title: regex, 
+        deadline: { $gt: currentTime } 
+    }).sort({ deadline: -1 });
+ // Tìm kiếm các công việc theo tiêu đề khớp với từ khóa
     // jobs.sort((a, b) => new Date(b.deadline) - new Date(a.deadline)); // Sắp xếp theo ngày hết hạn
     var searchJobs = [];
     await Promise.all(

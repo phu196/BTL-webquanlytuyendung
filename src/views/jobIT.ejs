@@ -89,6 +89,10 @@
         <%- include('partials/header') %>
         <div class="container mt-5">
             <h3 class="fw-bold mb-4">Tìm việc IT</h3>
+
+            <% if(jobs.length === 0) { %>
+                <h4> Hiện tại không có công việc phù hợp</h4>
+            <% } else { %>
             <div id="jobCarousel" class="carousel slide" data-bs-ride="carousel">
                 <div class="carousel-inner">
                     <% for (let i = 0; i < jobs.length; i += 3) { %>
@@ -133,6 +137,7 @@
                 </button>
             </div>
         </div>
+        <% } %>
 
         <%- include('partials/footer') %>
     </body>

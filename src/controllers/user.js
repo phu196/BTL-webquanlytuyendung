@@ -305,7 +305,7 @@ const createdInfo = async (req, res) => {
                 .json({ success: false, message: "User not found" });
         }
 
-        res.redirect("/user/prifile");
+        res.redirect("/user/profile");
     } catch (error) {
         console.error(error);
         res.status(400).json({ success: false, message: error.message });

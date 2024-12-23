@@ -161,12 +161,20 @@
                         <!-- Apply Now Button -->
                         <!-- <form> -->
                         <!-- Button to trigger modal -->
+                        <% 
+                            const currentTime = new Date();
+                            const jobDeadline = new Date(job.deadline);
+                            const isExpired = jobDeadline < currentTime;
+                        %>
+
                         <% if (isApplied) { %>
-                        <button type="button" class="apply-btn" disabled>Bạn đã ứng tuyển rồi</button>
+                            <button type="button" class="apply-btn" disabled>Bạn đã ứng tuyển rồi</button>
+                        <% } else if (isExpired) { %>
+                            <button type="button" class="apply-btn" disabled>Hết hạn ứng tuyển</button>
                         <% } else { %>
-                        <button type="button" class="apply-btn" data-bs-toggle="modal" data-bs-target="#applyJobModal">
-                            Ứng tuyển ngay
-                        </button>
+                            <button type="button" class="apply-btn" data-bs-toggle="modal" data-bs-target="#applyJobModal">
+                                Ứng tuyển ngay
+                            </button>
                         <% } %>
                         <div
                             class="modal fade"
