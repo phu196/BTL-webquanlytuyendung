@@ -23,8 +23,6 @@ router.get("/get-cv", passportJWT, companyController.getCV);
 // Edit company profile
 router.get("/edit", passportJWT, companyController.edit);
 router.post("/update", passportJWT, uploadAvatar.single("logo"), uploadAvatarErrorHandler, companyController.updateCompany);
-// Trang thông tin công ty phía user
-router.get("/:id", passportJWT, companyController.companyDetail);
 
 // Xoa job trong cty
 router.post("/jobs/:job_id/delete", passportJWT, companyController.deleteJob);
@@ -39,6 +37,10 @@ router.get("/jobs/:job_id/view-candidates", passportJWT, companyController.viewC
 //Xem cv ứng viên
 router.get("/job/:jobId/view-cv/", passportJWT, companyController.viewCV);
 
+// Đổi mật khẩu 
+router.get("/change-password", passportJWT, companyController.changePassword);
+router.post("/change-password", passportJWT, companyController.updatedPassword);
 
-
+// Trang thông tin công ty phía user
+router.get("/:id", passportJWT, companyController.companyDetail);
 module.exports = router;

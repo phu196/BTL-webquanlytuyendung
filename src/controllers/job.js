@@ -61,14 +61,14 @@ const showJob = async (req, res) => {
         const isCompany = !!req.company; // Token của công ty
         const isUser = !!req.user; // Token của người dùng
 
-        console.log("Token là của công ty:", isCompany);
-        console.log("Token là của người dùng:", isUser);
-
         const loggedInCompanyId = req.company?._id;
         const companyFromJobId = job.companyId?._id;
 
         if (isCompany && loggedInCompanyId?.toString() === companyFromJobId?.toString()) {
             return res.render("job/show", { job });
+        }
+        else if(isCompany &&loggedInCompanyId?.toString() !== companyFromJobId?.toString()){
+            return res.render("job/otherCompanyJob", { job, companyFromJobId });
         }
 
         if (isUser) {

@@ -91,7 +91,7 @@
                                 <div class="dropdown">
                                     <button class="btn btn-light d-flex align-items-center" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         <img src="${
-                                            (data.user.role == "admin" ? "/images/admin.png" : data.user.avatarPath) ||
+                                            (data.user.role == "admin" ? "/images/admin.jpg" : data.user.avatarPath) ||
                                             "/images/user1.png"
                                         }" alt="Avatar" class="rounded-circle me-3" style="width: 30px; height: 30px;">
                                         <span class="ml-2">${data.user.fullname}</span>
@@ -109,7 +109,8 @@
                                         <div class="dropdown-divider"></div>
                                         <a class="dropdown-item" href="/Chat">Tin nhắn</a>`
                                         }
-                                        
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item" href="/user/change-password">Đổi mật khẩu</a>
                                         <div class="dropdown-divider"></div>
                                         <a class="dropdown-item" href="/auth/logout">Đăng xuất</a>
                                     </div>
@@ -137,6 +138,8 @@
                                         }
                                         <div class="dropdown-divider"></div>
                                         <a class="dropdown-item" href="/Chat">Tin nhắn</a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item" href="/company/change-password">Đổi mật khẩu</a>
                                         <div class="dropdown-divider"></div>
                                         <a class="dropdown-item" href="/auth/logout">Đăng xuất</a>
                                     </div>
