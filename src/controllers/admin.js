@@ -50,7 +50,7 @@ const deleteCompany = async (req, res) => {
         const { id } = req.body;
         await Company.findByIdAndDelete(id);
         const jobs = await Job.find({ companyId: id });
-        forEach(async (job) => {
+        jobs.forEach(async (job) => {
             await Job.findByIdAndDelete(job._id);
         })
         res.status(200).json({ success: true, message: "Company deleted successfully" });
