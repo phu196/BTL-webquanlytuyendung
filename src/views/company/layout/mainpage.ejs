@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title><%= company.companyName %> - Company Profile</title>
+        <!-- Bootstrap CSS -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+        <!-- FontAwesome -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+        <!-- AOS (Animation On Scroll) -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" />
+        <style>
+            body {
+                font-family: "Arial", sans-serif;
+                background-color: #f9f9f9;
+            }
+
+            .company-banner {
+                background: linear-gradient(45deg, #007bff, #0056b3);
+                color: #fff;
+                padding: 30px 20px;
+                border-radius: 12px;
+                display: flex;
+                align-items: center;
+                margin-bottom: 30px;
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            }
+
+            .company-banner .logo-circle {
+                width: 100px;
+                height: 100px;
+                border-radius: 50%;
+                object-fit: cover;
+                margin-right: 20px;
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            }
+
+            .btn-create-job {
+                background: linear-gradient(45deg, #28a745, #218838);
+                color: #fff;
+                padding: 10px 25px;
+                border-radius: 8px;
+                font-weight: bold;
+                transition: all 0.3s ease-in-out;
+            }
+
+            .btn-create-job:hover {
+                background: linear-gradient(45deg, #218838, #1e7e34);
+                transform: scale(1.05);
+            }
+
+            .company-info,
+            .contact-info {
+                background-color: #fff;
+                padding: 20px;
+                border-radius: 12px;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+                margin-bottom: 20px;
+            }
+
+            .job-item {
+                background-color: #ffffff;
+                border: 1px solid #e0e0e0;
+                border-radius: 10px;
+                padding: 15px;
+                margin-bottom: 15px;
+                display: flex;
+                flex-direction: column;
+            }
+
+            .job-logo {
+                width: 60px;
+                height: 60px;
+                object-fit: cover;
+                border-radius: 50%;
+                margin-right: 15px;
+            }
+
+            .job-info {
+                flex-grow: 1;
+                margin-left: 10px;
+            }
+
+            .job-actions {
+                display: flex;
+                flex-wrap: nowrap;
+                justify-content: flex-start;
+                gap: 10px;
+            }
+
+            .job-actions .btn {
+                min-width: 100px;
+            }
+
+            .job-actions .btn:hover {
+                opacity: 0.9;
+            }
+
+            .iframe {
+                border-radius: 12px;
+                border: 1px solid #ddd;
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            }
+        </style>
+    </head>
+    <body>
+        <%- include('../../partials/header') %>
+        <div class="container mt-5">
+            <!-- Company Banner -->
+            <div class="company-banner" data-aos="fade-up">
+                <img
+                    src="<%= company.logoPath || '/images/default_logo.png' %>"
+                    alt="Company Logo"
+                    class="logo-circle"
+                />
+                <div>
+                    <h3 class="mb-2"><%= company.companyName %></h3>
+                    <a href="<%= company.website %>" class="btn btn-light btn-sm" target="_blank">
+                        <i class="fa fa-globe"></i> Xem website công ty
+                    </a>
+                </div>
+            </div>
+
+            <div class="row">
+                <!-- Company Information -->
+                <div class="col-md-8">
+                    <div class="company-info" data-aos="fade-up">
+                        <h5>Thông tin chung</h5>
+                        <p><%= company.description %></p>
+                    </div>
+
+                    <!-- Job Listings -->
+                    <div class="d-flex justify-content-between align-items-center mb-3" data-aos="fade-up">
+                        <h5>Vị trí tuyển dụng</h5>
+                        <% if (company.updated) { %>
+                            <a href="/company/new-job" class="btn btn-create-job">+ Thêm vị trí mới</a>
+                        <% } else { %>
+                            <button class="btn btn-create-job " onclick="alert('Vui lòng cập nhật hồ sơ công ty của bạn trước khi thêm công việc mới.')">
+                                + Thêm vị trí mới
+                            </button>
+                        <% } %>
+                    </div>
+
+                    <div class="list-group" data-aos="fade-up">
+                        <% company.jobs.forEach(function(job) { %>
+                        <div class="job-item">
+                            <% let lastDate = new Date(job.deadline); // Chuyển chuỗi thành đối tượng Date let
+                            formattedDate = `${lastDate.getDate().toString().padStart(2, '0')}/${(lastDate.getMonth() +
+                            1).toString().padStart(2, '0')}/${lastDate.getFullYear()}`; %>
+                            <div class="d-flex align-items-center mb-3">
+                                <img
+                                    src="<%= company.logoPath || '/images/default_logo.png' %>"
+                                    alt="Company Logo"
+                                    class="job-logo"
+                                />
+                                <div class="job-info">
+                                    <h6><%= job.title %></h6>
+                                    <p class="text-muted mb-1"><strong>Lương:</strong> <%= job.salary %></p>
+                                    <p class="text-muted mb-1"><strong>Địa điểm:</strong> <%= job.location %></p>
+                                    <p class="text-muted mb-1"><strong>Hạn ứng tuyển:</strong> <%= formattedDate %></p>
+                                </div>
+                            </div>
+
+                            <div class="d-flex job-actions">
+                                <a href="/company/jobs/<%= job._id %>/edit" class="btn btn-outline-primary btn-sm me-2">
+                                    <i class="fa fa-edit"></i> Chỉnh sửa
+                                </a>
+                                <button
+                                    class="btn btn-outline-danger btn-sm me-2"
+                                    onclick="deleteJob('<%= job._id %>')"
+                                >
+                                    <i class="fa fa-trash"></i> Xoá
+                                </button>
+                                <a
+                                    href="/company/jobs/<%= job._id %>/view-candidates"
+                                    class="btn btn-outline-secondary btn-sm"
+                                >
+                                    <i class="fa fa-users"></i> Ứng viên
+                                </a>
+                                <a href="/company/jobs/<%= job._id %>/show" class="btn btn-outline-secondary btn-sm">
+                                    <i class="fa fa-eye"></i> Xem
+                                </a>
+                            </div>
+                        </div>
+                        <% }); %>
+                    </div>
+                </div>
+
+                <!-- Contact Information -->
+                <div class="col-md-4">
+                    <div class="contact-info" data-aos="fade-up">
+                        <h5>Thông tin liên hệ</h5>
+                        <p>
+                            <strong>Địa chỉ:</strong> <%= company.address.detail %>, <%= company.address.ward %>, <%=
+                            company.address.district %>, <%= company.address.province %>
+                        </p>
+                        <p><strong>SĐT:</strong> <%= company.phoneNumber %></p>
+                        <p><strong>Email:</strong> <%= company.email %></p>
+                    </div>
+
+                    <!-- Map -->
+                    <div class="contact-info" data-aos="fade-up">
+                        <h5>Địa điểm</h5>
+                        <iframe
+                            src="https://www.google.com/maps?q=<%= encodeURIComponent(company.address.detail + ', ' + company.address.district + ', ' + company.address.province) %>&output=embed"
+                            width="100%"
+                            height="250"
+                            allowfullscreen=""
+                            loading="lazy"
+                        ></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- JS Libraries -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+        <script>
+            AOS.init({ duration: 1000 });
+
+            function deleteJob(jobId) {
+                Swal.fire({
+                    title: "Bạn có chắc chắn muốn xóa công việc này không?",
+                    text: "Hành động này không thể hoàn tác!",
+                    icon: "warning",
+                    showCancelButton: true, // Hiển thị nút Cancel
+                    confirmButtonText: "Xóa!",
+                    cancelButtonText: "Hủy!",
+                    reverseButtons: true, // Đảo ngược vị trí của các nút
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        Swal.close(); // Đóng popup
+                        Swal.fire({
+                            title: "Đang xóa...",
+                            html: "Vui lòng đợi trong giây lát...",
+                            allowOutsideClick: false,
+                            didOpen: () => {
+                                Swal.showLoading();
+                            },
+                        });
+                        fetch(`/company/jobs/${jobId}/delete`, {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify({ jobId }),
+                        })
+                            .then((response) => response.json())
+                            .then((data) => {
+                                Swal.close();
+                                if (data.success) {
+                                    Swal.fire({
+                                        icon: "success",
+                                        title: "Thành công!",
+                                        text: "Xóa thành công công việc!",
+                                        showConfirmButton: false,
+                                        timer: 1500,
+                                    }).then(() => {
+                                        location.reload();
+                                    });
+                                } else {
+                                    alert("An error occurred.");
+                                }
+                            })
+                            .catch((error) => {
+                                console.error("Error deleting job:", error);
+                                Swal.fire({
+                                    icon: "error",
+                                    title: "Lỗi",
+                                    text: "Xóa thất bại. Vui lòng thử lại!",
+                                    showConfirmButton: true,
+                                });
+                            });
+                    }
+                });
+            }
+        </script>
+        <%- include('../../partials/footer') %>
+    </body>
+</html>

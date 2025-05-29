@@ -8,16 +8,16 @@
 
         <div class="main-content">
             <h2>Add Company Account</h2>
-            <p>Fill in the details below to create a new company account:</p>
-            <form action="/admin/companies/add" method="POST">
+            <form id="registerForm" onsubmit="handleCreate(event)">
+                <p>Fill in the details below to create a new company account:</p>
                 <div class="form-group">
-                    <label for="companyName">Company Name</label>
+                    <label for="companyName">Tên công ty</label>
                     <input
                         type="text"
                         class="form-control"
                         id="companyName"
                         name="companyName"
-                        placeholder="Enter company name"
+                        placeholder="Nhập tên công ty"
                         required
                     />
                 </div>
@@ -28,7 +28,7 @@
                         class="form-control"
                         id="email"
                         name="email"
-                        placeholder="Enter email"
+                        placeholder="Nhập email"
                         required
                     />
                 </div>
@@ -39,26 +39,39 @@
                         class="form-control"
                         id="password"
                         name="password"
-                        placeholder="Enter password"
+                        placeholder="Nhập password"
                         required
                     />
                 </div>
                 <div class="form-group">
-                    <label for="phoneNumber">Phone Number</label>
+                    <label for="phoneNumber">Số điện thoại</label>
                     <input
                         type="tel"
                         class="form-control"
                         id="phoneNumber"
                         name="phoneNumber"
-                        placeholder="Enter phone number"
+                        placeholder="Nhập số điện thoại"
                         required
                     />
                 </div>
-                <button class="btn btn-primary" onclick="handleCreate()">Create Account</button>
+                <button class="btn btn-primary" type="submit">Tạo công ty</button>
             </form>
         </div>
+        <!-- SweetAlert2 JS -->
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.19/dist/sweetalert2.min.js"></script>
         <script>
-            const handleCreate = () => {
+            const handleCreate = (event) => {
+                event.preventDefault();
+
+                Swal.fire({
+                    title: "Đang thực hiện...",
+                    html: "Vui lòng đợi trong giây lát...",
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading(); // Hiển thị vòng quay loading
+                    },
+                });
+
                 const companyName = document.getElementById("companyName").value;
                 const email = document.getElementById("email").value;
                 const password = document.getElementById("password").value;
@@ -69,20 +82,44 @@
                     headers: {
                         "Content-Type": "application/json",
                     },
-                    body: JSON.stringify({ companyName, email, password, phoneNumber }),
+                    body: JSON.stringify({
+                        companyName: companyName,
+                        email: email,
+                        password,
+                        phoneNumber: phoneNumber,
+                    }),
                 })
                     .then((response) => {
                         return response.json();
                     })
                     .then((data) => {
+                        Swal.close();
                         if (data.success) {
-                            alert("Company account created successfully");
-                            window.location.href = "/admin/companies";
+                            Swal.fire({
+                                icon: "success",
+                                title: "Thành công!",
+                                text: "Tạo công ty thành công!",
+                                showConfirmButton: false,
+                                timer: 1500,
+                            }).then(() => {
+                                window.location.href = "/admin/companies";
+                            });
                         } else {
-                            alert("Failed to create company account");
+                            Swal.fire({
+                                icon: "error",
+                                title: "Lỗi",
+                                text: "Lỗi khi tạo công ty!",
+                                showConfirmButton: true,
+                            });
                         }
                     });
             };
+            document.addEventListener("keydown", function (e) {
+                if (e.key === "Enter") {
+                    e.preventDefault(); // Ngừng hành động mặc định của Enter, tránh reload trang
+                    handleCreate(e);
+                }
+            });
         </script>
     </body>
 </html>

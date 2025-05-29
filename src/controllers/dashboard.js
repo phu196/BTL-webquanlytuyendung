@@ -1,62 +1,44 @@
 const Company = require("../models/Company");
+const Job = require("../models/Job");
 const index = async (req, res) => {
-    const newestJobs = [
-        {
-            logo: "/images/job_logo.png",
-            title: "Kỹ Sư Lập Trình Mobile App",
-            companyName: "CÔNG TY TNHH CUNG CẤP GIẢI PHÁP VIVAS",
-            location: "Hà Nội",
-            keywords: ["MVC", "Mobile", "Flutter"],
-        },
-        {
-            logo: "/images/job_logo.png",
-            title: "Senior Manager, Quality Assurance",
-            companyName: "NEC Vietnam",
-            location: "TP. Hồ Chí Minh",
-            keywords: ["Manager", "Project Manager"],
-        },
-        {
-            logo: "/images/job_logo.png",
-            title: "DevOps Engineer (ID: TS090602)",
-            companyName: "Talent Success",
-            location: "Đà Nẵng",
-            keywords: ["Linux", "MySQL", "Azure"],
-        },
-        {
-            logo: "/images/job_logo.png",
-            title: "Software Tester",
-            companyName: "BSS Group",
-            location: "Hồ Chí Minh",
-            keywords: ["Tester", "Manual Test"],
-        },
-        {
-            logo: "/images/job_logo.png",
-            title: "Game Developer (Python và Lua)",
-            companyName: "TNT MEDIA & ISOCIA",
-            location: "Hà Nội",
-            keywords: ["Python", "Lua", "Golang"],
-        },
-        {
-            logo: "/images/job_logo.png",
-            title: "Head of Development, IT",
-            companyName: "Public Bank Vietnam (PBVN)",
-            location: "Hà Nội",
-            keywords: ["ASP.NET", "C#", "Java EE"],
-        },
-    ];
-    const companies = await Company.find();
+    const companies = await Company.find({updated: true}).limit(9).sort({ createdAt: -1 });
     companies.forEach((company) => {
-        const jobIds = company.company_jobs;
+        const jobIds = company.jobs;
         const jobNames = [];
-        jobIds.forEach((jobId) => {
-            const job = newestJobs.find((job) => job._id === jobId);
-            if (job) {
-                jobNames.push(job.title);
-            }
+        jobIds.forEach(async (jobId) => {
+            const job = await Job.findById(jobId);
+            jobIds.forEach(async (jobId) => {
+                const job = await Job.findById(jobId);
+                if (job) {
+                    jobNames.push(job.title);
+                }
+            });
+            company.jobNames = jobNames;
         });
-        company.jobNames = jobNames;
     });
-
+    const jobs = await Job.find({ 
+        deadline: { $gte: new Date() } // Lọc job có deadline lớn hơn hoặc bằng thời gian hiện tại
+    })
+    .limit(9) // Giới hạn 9 job
+    .sort({ createdAt: -1 }) // Sắp xếp theo thời gian tạo mới nhất
+    .select("title companyId companyName location skills salary");
+    var newestJobs = [];
+    await Promise.all(
+        jobs.map(async (job) => {
+            const company = await Company.findById(job.companyId).select("logoPath");
+            if (company) {
+                newestJobs.push({
+                    id: job._id,
+                    logo: company.logoPath,
+                    title: job.title,
+                    companyName: job.companyName,
+                    salary: job.salary,
+                    location: job.location,
+                    keywords: job.skills,
+                });
+            }   
+        })
+    );
     res.render("index", { title: "TopDev Clone", companies, newestJobs });
 };
 

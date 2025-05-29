@@ -1,0 +1,50 @@
+.job-list {
+    margin: 20px;
+}
+
+.job-card {
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    margin-bottom: 20px; /* Khoảng cách giữa các công việc */
+    width: 100%; /* Công việc chiếm toàn bộ chiều rộng của vùng chứa */
+    display: block; /* Mỗi công việc là một block-level element */
+}
+
+.job-card h2 {
+    margin: 0;
+    font-size: 1.5em;
+}
+
+.job-card p {
+    margin: 10px 0;
+    font-size: 1em;
+}
+
+.job-card strong {
+    font-weight: bold;
+}
+
+.btn {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 1em;
+    text-align: center;
+    text-decoration: none;
+    color: #fff;
+    background-color: #007bff; /* Màu xanh Bootstrap */
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn:hover {
+    background-color: #0056b3; /* Màu xanh đậm hơn khi hover */
+}
+
+.btn-primary {
+    margin-top: 15px; /* Tạo khoảng cách giữa nút và nội dung phía trên */
+}

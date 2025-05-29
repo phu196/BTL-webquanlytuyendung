@@ -51,6 +51,15 @@
                 margin-left: 0.5em;
                 margin-top: 0.6em;
             }
+            /* Button */
+            .btn-update {
+                background-color: #28a745;
+                color: white;
+            }
+
+            .btn-update:hover {
+                background-color: #218838;
+            }
         </style>
     </head>
     <body>
@@ -58,72 +67,11 @@
             <div class="container">
                 <div class="d-flex justify-content-between align-items-center">
                     <div class="logo">
-                        <img src="/images/logo.png" alt="Logo" height="30" />
+                        <a href="/">
+                            <img src="/images/logo_header.jpeg" alt="Logo" height="70" />
+                        </a>
                     </div>
-                    <nav class="d-none d-md-flex">
-                        <div class="dropdown">
-                            <a
-                                class="nav-link dropdown-toggle"
-                                href="#"
-                                role="button"
-                                id="jobsDropdown"
-                                data-bs-toggle="dropdown"
-                                aria-expanded="false"
-                            >
-                                Việc Làm IT
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="jobsDropdown">
-                                <li class="dropdown-submenu">
-                                    <a class="dropdown-item dropdown-toggle" href="#">Theo cấp bậc</a>
-                                    <ul class="dropdown-menu">
-                                        <li><a class="dropdown-item" href="#">Intern</a></li>
-                                        <li><a class="dropdown-item" href="#">Fresher</a></li>
-                                        <li><a class="dropdown-item" href="#">Junior</a></li>
-                                        <li><a class="dropdown-item" href="#">Middle</a></li>
-                                        <li><a class="dropdown-item" href="#">Senior</a></li>
-                                        <li><a class="dropdown-item" href="#">Trưởng Nhóm</a></li>
-                                        <li><a class="dropdown-item" href="#">Trưởng phòng</a></li>
-                                        <li><a class="dropdown-item" href="#">All Levels</a></li>
-                                    </ul>
-                                </li>
-                                <li class="dropdown-submenu">
-                                    <a class="dropdown-item dropdown-toggle" href="#">Theo loại hình</a>
-                                    <ul class="dropdown-menu">
-                                        <li><a class="dropdown-item" href="#">Full-time</a></li>
-                                        <li><a class="dropdown-item" href="#">Part-time</a></li>
-                                        <li><a class="dropdown-item" href="#">Freelance</a></li>
-                                    </ul>
-                                </li>
-                                <li class="dropdown-submenu">
-                                    <a class="dropdown-item dropdown-toggle" href="#">Theo địa điểm</a>
-                                    <ul class="dropdown-menu">
-                                        <li><a class="dropdown-item" href="#">Hà Nội</a></li>
-                                        <li><a class="dropdown-item" href="#">Hồ Chí Minh</a></li>
-                                        <li><a class="dropdown-item" href="#">Đà Nẵng</a></li>
-                                        <li><a class="dropdown-item" href="#">Toàn quốc</a></li>
-                                    </ul>
-                                </li>
-                                <li class="dropdown-submenu">
-                                    <a class="dropdown-item dropdown-toggle" href="#">Theo kỹ năng</a>
-                                    <ul class="dropdown-menu">
-                                        <li><a class="dropdown-item" href="#">Java</a></li>
-                                        <li><a class="dropdown-item" href="#">Python</a></li>
-                                        <li><a class="dropdown-item" href="#">JavaScript</a></li>
-                                        <li><a class="dropdown-item" href="#">C++</a></li>
-                                    </ul>
-                                </li>
-                                <li><a class="dropdown-item" href="#">TopDev</a></li>
-                            </ul>
-                        </div>
-                        <a href="#" class="nav-link">Công Ty IT</a>
-                        <a href="#" class="nav-link">Blog IT</a>
-                    </nav>
-                    <div class="d-flex align-items-center" id="navigation-button">
-                        <a href="/company/register"
-                            ><button class="btn btn-outline-danger btn-register">Nhà tuyển dụng</button></a
-                        >
-                        <a href="/auth/login"><button class="btn btn-success btn-login">Đăng nhập</button></a>
-                    </div>
+                    <div class="d-flex align-items-center" id="navigation-button"></div>
                 </div>
             </div>
         </header>
@@ -142,24 +90,77 @@
                             document.getElementById("navigation-button").innerHTML = `
                                 <div class="dropdown">
                                     <button class="btn btn-light d-flex align-items-center" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <img src="${data.user.avatarPath}" alt="Avatar" class="rounded-circle me-3" style="width: 30px; height: 30px;">
+                                        <img src="${
+                                            (data.user.role == "admin" ? "/images/admin.jpg" : data.user.avatarPath) ||
+                                            "/images/user1.png"
+                                        }" alt="Avatar" class="rounded-circle me-3" style="width: 30px; height: 30px;">
                                         <span class="ml-2">${data.user.fullname}</span>
                                         <i class="fas fa-chevron-down ml-2"></i>
                                     </button>
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                        <a class="dropdown-item" href="/user/profile">Profile</a>
+                                        <a class="dropdown-item" href="/user/profile">Thông tin</a>
                                         <div class="dropdown-divider"></div>
-                                        <a class="dropdown-item" href="/logout">Logout</a>
+                                        ${
+                                            data.user.role == "admin"
+                                                ? `<a class="dropdown-item" href="/admin">Admin Panel</a>`
+                                                : `<a class="dropdown-item" href="/user/applied-jobs">Công việc đã ứng tuyển</a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item" href="/user/update">Chỉnh sửa thông tin</a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item" href="/Chat">Tin nhắn</a>`
+                                        }
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item" href="/user/change-password">Đổi mật khẩu</a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item" href="/auth/logout">Đăng xuất</a>
+                                    </div>
+                                </div>
+                            `;
+                        } else if (data.identify == "company") {
+                            document.getElementById("navigation-button").innerHTML = `
+                                <div class="dropdown">
+                                    <button class="btn btn-light d-flex align-items-center" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <img src="${
+                                            data.company.logoPath || "/images/default_logo.png"
+                                        }"  alt="Avatar" class="rounded-circle me-3" style="width: 30px; height: 30px;">
+                                        <span class="ml-2">${data.company.companyName}</span>
+                                        <i class="fas fa-chevron-down ml-2"></i>
+                                    </button>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                        <a class="dropdown-item" href="/company/profile">Thông tin công ty</a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item" href="/company/edit">Cập nhật thông tin công ty</a>
+                                        <div class="dropdown-divider"></div>
+                                        ${
+                                            data.company.updated 
+                                                ? `<a class="dropdown-item" href="/company/new-job">Đăng tin tuyển dụng</a>` 
+                                                : `<button class="dropdown-item " onclick="alert('Vui lòng cập nhật hồ sơ công ty trước khi đăng tin tuyển dụng.')">Đăng tin tuyển dụng</button>`
+                                        }
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item" href="/Chat">Tin nhắn</a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item" href="/company/change-password">Đổi mật khẩu</a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item" href="/auth/logout">Đăng xuất</a>
                                     </div>
                                 </div>
                             `;
                         }
                     } else {
-                        var isLoggedIn = false;
+                        document.getElementById("navigation-button").innerHTML = `
+                            <a href="/company/register"><button class="btn btn-outline-danger btn-register">Nhà tuyển dụng</button></a>
+                            <a href="/auth/login"><button class="btn btn-success btn-login">Đăng nhập</button></a>
+                        `;
                     }
                 });
             const handleLogout = () => {
-                document.cookie = "session=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+                fetch("/auth/logout")
+                    .then((res) => res.json())
+                    .then((data) => {
+                        if (data.success) {
+                            window.location.href = "/";
+                        }
+                    });
             };
         </script>
     </body>

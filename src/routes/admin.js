@@ -23,6 +23,10 @@ router.get("/companies/add", passportJWT, (req, res) => {
 });
 router.post("/companies/add", passportJWT, adminController.addCompany);
 
+router.get("/company/:id/jobs", passportJWT, adminController.getCompanyJobs);
+
+router.post("/jobs/delete", passportJWT, adminController.deleteJob);
+
 router.get("/registrations", passportJWT, adminController.getCompanyRegistrations);
 router.post("/registrations/delete", passportJWT, adminController.deleteCompanyRegistration);
 router.post("/registrations/done", passportJWT, adminController.approveCompanyRegistration);

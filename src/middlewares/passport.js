@@ -1,6 +1,5 @@
 const passport = require("passport");
 const jwtStrategy = require("passport-jwt").Strategy;
-const ExtractJwt = require("passport-jwt").ExtractJwt;
 
 const User = require("../models/User");
 const Company = require("../models/Company");
@@ -43,15 +42,15 @@ passport.use(
             const { id, identify } = { ...jwtPayload };
             if (id) {
                 if (identify === "user") {
-                    const user = await User.findById(id);
+                    const user = await User.findById(id).select("_id, role");
                     if (user) {
                         req.user = user;
                         return done(null, user);
                     }
                 } else if (identify === "company") {
-                    const company = await Company.findById(id);
+                    const company = await Company.findById(id).select("_id");
                     if (company) {
-                        req.user = company;
+                        req.company = company;
                         return done(null, company);
                     }
                 }

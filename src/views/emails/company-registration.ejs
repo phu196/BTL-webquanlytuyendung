@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="vi">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Thư Cảm Ơn Đăng Ký</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                line-height: 1.6;
+                margin: 0;
+                padding: 0;
+                background-color: #f4f4f4;
+            }
+            .container {
+                width: 80%;
+                margin: auto;
+                overflow: hidden;
+                background: white;
+                padding: 20px;
+                border-radius: 10px;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            }
+            .header {
+                text-align: center;
+                margin-bottom: 20px;
+            }
+            .header h1 {
+                color: #333;
+            }
+            .content {
+                margin-bottom: 20px;
+            }
+            .footer {
+                text-align: center;
+                color: #888;
+                font-size: 12px;
+            }
+            .button {
+                display: inline-block;
+                padding: 10px 15px;
+                color: white;
+                background: #007bff;
+                border-radius: 5px;
+                text-decoration: none;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="header">
+                <h1>Cảm Ơn Bạn Đã Đăng Ký!</h1>
+            </div>
+            <div class="content">
+                <p>Kính gửi <%= companyName %>,</p>
+                <p>
+                    Cảm ơn bạn đã đăng ký tài khoản trên nền tảng tuyển dụng của chúng tôi. Dưới đây là thông tin đăng
+                    nhập của bạn:
+                </p>
+                <ul>
+                    <li><strong>Email:</strong> <%= email %></li>
+                    <li><strong>Mật khẩu:</strong> <%= password %></li>
+                </ul>
+                <p>Chúng tôi khuyến nghị bạn thay đổi mật khẩu ngay sau lần đăng nhập đầu tiên để bảo mật tài khoản.</p>
+                <p>Nếu bạn có bất kỳ câu hỏi nào, đừng ngần ngại liên hệ với đội ngũ hỗ trợ của chúng tôi.</p>
+            </div>
+            <div class="footer">
+                <p>Trân trọng,</p>
+                <p>Đội Ngũ Nền Tảng Tuyển Dụng</p>
+            </div>
+        </div>
+    </body>
+</html>

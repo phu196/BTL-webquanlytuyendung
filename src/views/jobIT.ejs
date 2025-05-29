@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.5.0/font/bootstrap-icons.min.css"
+        />
+        <style>
+            .company-card {
+                border: 1px solid #ddd;
+                border-radius: 10px;
+                padding: 20px;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            }
+            .company-logo {
+                max-width: 50px;
+                max-height: 50px;
+                object-fit: contain;
+            }
+            .company-card-title {
+                font-size: 1.2rem;
+                font-weight: bold;
+            }
+            .company-card-body {
+                min-height: 150px;
+            }
+            .company-card-footer {
+                margin-top: 15px;
+            }
+            .keyword-badge {
+                background-color: #f0f0f0;
+                color: #000;
+                border-radius: 10px;
+                padding: 5px 10px;
+                margin: 3px;
+                font-size: 0.9rem;
+            }
+            .carousel-control-prev,
+            .carousel-control-next {
+                filter: invert(1);
+                z-index: 1;
+            }
+            .carousel-control-prev {
+                margin-left: -200px;
+            }
+            .carousel-control-next {
+                margin-right: -200px;
+            }
+            .job-card {
+                border: 1px solid #ddd;
+                border-radius: 10px;
+                padding: 20px;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+                background-color: #fff;
+            }
+            .job-logo {
+                max-width: 50px;
+                max-height: 50px;
+                object-fit: contain;
+            }
+            .job-card-title {
+                font-size: 1.1rem;
+                font-weight: bold;
+            }
+            .keyword-badge-job {
+                background-color: #f0f0f0;
+                color: #000;
+                border-radius: 10px;
+                padding: 5px 10px;
+                margin: 3px;
+                font-size: 0.9rem;
+            }
+            /* Loại bỏ màu xanh và gạch chân của thẻ a */
+            .link {
+                text-decoration: none; /* Bỏ gạch chân */
+                color: inherit; /* Sử dụng màu của phần tử bên trong, không mặc định là màu xanh */
+            }
+
+            .link:hover {
+                text-decoration: none; /* Bỏ gạch chân khi hover */
+            }
+        </style>
+    </head>
+    <body>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        <%- include('partials/header') %>
+        <div class="container mt-5">
+            <h3 class="fw-bold mb-4">Tìm việc IT</h3>
+
+            <% if(jobs.length === 0) { %>
+                <h4> Hiện tại không có công việc phù hợp</h4>
+            <% } else { %>
+            <div id="jobCarousel" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    <% for (let i = 0; i < jobs.length; i += 3) { %>
+                    <div class="carousel-item <%= i === 0 ? 'active' : '' %>">
+                        <div class="row">
+                            <% jobs.slice(i, i + 3).forEach(job => { %>
+
+                            <div class="col-md-4 mb-4">
+                                <div class="job-card" style="min-height: 250px">
+                                    <div class="d-flex align-items-center mb-3">
+                                        <a href="/job/<%= job.id %>" class="link d-flex align-items-center mb-3">
+                                            <img src="<%= job.logo %>" alt="Job Logo" class="job-logo me-3" />
+                                            <h5 class="job-card-title mb-0"><%= job.title %></h5>
+                                        </a>
+                                    </div>
+                                    <div class="job-card-body">
+                                        <p><%= job.companyName %></p>
+                                        <p><%= job.salary %></p>
+                                        <p><%= job.location %></p>
+                                    </div>
+                                    <div class="job-card-footer">
+                                        <% job.keywords.forEach(keyword => { %>
+                                        <span class="keyword-badge-job"><%= keyword %></span>
+                                        <% }); %>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+
+                            <% }); %>
+                        </div>
+                    </div>
+                    <% } %>
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#jobCarousel" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#jobCarousel" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+        </div>
+        <% } %>
+
+        <%- include('partials/footer') %>
+    </body>
+</html>
