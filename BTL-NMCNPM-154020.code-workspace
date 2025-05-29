@@ -1,0 +1,15 @@
+{
+	"folders": [
+		{
+			"name": "BTL-NMCNPM-154020",
+			"path": "../../Mã nguồn/BTL-NMCNPM-154020"
+		},
+		{
+			"name": "be",
+			"path": "../../Mã nguồn/be"
+		}
+	],
+	"settings": {
+		"liveServer.settings.multiRootWorkspaceName": "be"
+	}
+}

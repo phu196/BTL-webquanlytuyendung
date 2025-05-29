@@ -1,4 +1,4 @@
-require("dotenv").config({ path: ".env.example" }); // TODO: Change to .env in production
+require("dotenv").config({ path: ".env" }); // TODO: Change to .env in production
 const express = require("express");
 const mongoose = require("mongoose");
 const morgan = require("morgan");
@@ -37,7 +37,7 @@ app.set("views", path.join(__dirname, "views"));
 
 // MongoDB connection
 mongoose
-    .connect(process.env.MONGO_URI, {
+    .connect(process.env.MONGO_URL, { // Sửa dòng này
         useNewUrlParser: true,
         useUnifiedTopology: true,
     })
